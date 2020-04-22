@@ -1,0 +1,15 @@
+server:
+  port: 9090
+
+spring:
+  profiles:
+    active:
+      - vanechoic
+      - dev
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    repositories:
+      enabled: true
+    show-sql: true

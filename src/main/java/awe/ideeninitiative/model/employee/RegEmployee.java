@@ -1,16 +1,17 @@
 package awe.ideeninitiative.model.employee;
 
+import awe.ideeninitiative.model.AbstractEntity;
 import awe.ideeninitiative.model.idea.AbstractIdea;
+import awe.ideeninitiative.model.idea.InternalIdea;
+import awe.ideeninitiative.model.idea.ProductIdea;
 
 import javax.persistence.*;
 import java.io.File;
 import java.util.List;
 
 @Entity
-public class RegEmployee {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class RegEmployee extends AbstractEntity {
 
     private String name;
 
@@ -19,10 +20,6 @@ public class RegEmployee {
     private String password;
 
     private File profilePicture;
-/*
-    @OneToMany
-    @JoinColumn(name="employee_id", insertable=false, updatable=false)
-    private List<AbstractIdea> ideas;*/
 
     public String getEmail() {
         return email;
