@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'org.openapi.generator' version '4.3.0'
 }
 
 group = 'awe'
@@ -39,4 +40,24 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+openApiValidate {
+	inputSpec = "$rootDir/src/main/resources/openapi-spec.yaml".toString()
+	recommend = true
+}
+
+openApiGenerate {
+	skipValidateSpec = false
+	generatorName = "spring"
+	inputSpec = "${projectDir}/src/main/resources/openapi-spec.yaml"
+	outputDir = "$buildDir/generated/openapi"
+	configOptions = [
+			dateLibrary: "java8",
+			async: "true",
+			apiPackage: "api",
+			invokerPackage: "invoker",
+			modelPackage: "model"
+	]
+	generateApiDocumentation = true
 }

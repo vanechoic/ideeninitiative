@@ -9,20 +9,23 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+/**
+ * Bildet die Produktideen der Mitarbeiter ab.
+ */
 @Entity
 public class ProductIdea extends AbstractIdea {
     private Branches branch;
 
     @ElementCollection(targetClass = DistributionChannels.class)
     @CollectionTable(name = "productidea_dist_channels",
-            joinColumns = @JoinColumn(name = "id"))
+            joinColumns = @JoinColumn(name = "product_idea_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "dist_channels")
     private Set<DistributionChannels> distributionChannels;
 
     @ElementCollection(targetClass = TargetGroups.class)
     @CollectionTable(name = "productidea_target_group",
-            joinColumns = @JoinColumn(name = "id"))
+            joinColumns = @JoinColumn(name = "product_idea_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "target_groups")
     @NotNull
