@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Generate REST API ###
+/generate-api/
