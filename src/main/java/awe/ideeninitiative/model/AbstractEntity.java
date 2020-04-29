@@ -20,4 +20,8 @@ public class AbstractEntity {
 
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
+
+    public Integer getId(){
+        return id;
+    }
 }
