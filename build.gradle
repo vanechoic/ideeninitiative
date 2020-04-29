@@ -5,6 +5,8 @@ plugins {
 	id 'org.openapi.generator' version '4.3.0'
 }
 
+compileJava.dependsOn('openApiGenerate')
+
 group = 'awe'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -36,28 +38,57 @@ dependencies {
 	}
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.openapitools:openapi-generator:4.3.0'
+	implementation 'org.openapitools:openapi-generator-cli:4.3.0'
+	implementation 'org.openapitools:openapi-generator-gradle-plugin:4.3.0'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir "${rootDir}/generated-api/openapi/src/main/java"
+		}
+	}
+}
+
+// Validating a single specification
+openApiValidate {
+	inputSpec = "$rootDir/src/main/resources/openapi-spec.yaml"
+}
+
+openApiGenerate{
+	generatorName = "spring"
+	library = "spring-boot"
+	inputSpec = "${rootDir}/src/main/resources/openapi-spec.yaml".toString()
+	outputDir = "${rootDir}/generated-api/openapi".toString()
+	systemProperties = [
+			modelDocs      : "false",
+			models         : "",
+			apis           : "",
+			supportingFiles: "false"
+	]
+	configOptions = [
+			useOptional          : "true",
+			swaggerDocketConfig  : "false",
+			performBeanValidation: "false",
+			useBeanValidation    : "false",
+			useTags              : "true",
+			singleContentTypes   : "true",
+			basePackage          : "awe.ideeninitiative.api",
+			configPackage        : "awe.ideeninitiative.api",
+			title                : rootProject.name,
+			java8                : "false",
+			dateLibrary          : "java8",
+			serializableModel    : "true",
+			artifactId           : rootProject.name,
+			apiPackage           : "awe.ideeninitiative.api",
+			modelPackage         : "awe.ideeninitiative.api.model",
+			invokerPackage       : "awe.ideeninitiative.api",
+			interfaceOnly        : "true"
+	]
 }
 
 test {
 	useJUnitPlatform()
-}
-
-openApiValidate {
-	inputSpec = "$rootDir/src/main/resources/openapi-spec.yaml".toString()
-	recommend = true
-}
-
-openApiGenerate {
-	skipValidateSpec = false
-	generatorName = "spring"
-	inputSpec = "${projectDir}/src/main/resources/openapi-spec.yaml"
-	outputDir = "$buildDir/generated/openapi"
-	configOptions = [
-			dateLibrary: "java8",
-			async: "true",
-			apiPackage: "api",
-			invokerPackage: "invoker",
-			modelPackage: "model"
-	]
-	generateApiDocumentation = true
 }

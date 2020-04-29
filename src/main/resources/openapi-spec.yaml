@@ -131,7 +131,6 @@ paths:
               $ref: "#/definitions/Pet"
         400:
           description: "Invalid tag value"
-      deprecated: true
   /pet/{petId}:
     get:
       tags:
