@@ -1,8 +1,7 @@
 package awe.ideeninitiative.model.repositories;
 
-import awe.ideeninitiative.model.employee.RegEmployee;
-import awe.ideeninitiative.model.employee.RegEmployeeBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
+import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,14 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class RegEmployeeRepositoryTest {
+class MitarbeiterRepositoryTest {
 
-    @Autowired private RegEmployeeRepository regEmployeeRepository;
+    @Autowired private MitarbeiterRepository mitarbeiterRepository;
 
     private Given given = new Given();
     private When when = new When();
     private Then then = new Then();
-    private RegEmployee bob;
+    private Mitarbeiter bob;
 
     @Test
     public void testCreateAndSaveNewEmployee(){
@@ -32,17 +31,16 @@ class RegEmployeeRepositoryTest {
             String vorname = "Bob";
             String nachname = "Baumeister";
             String email = "bob.der@baumeister.de";
-            bob = RegEmployeeBuilder.aRegEmployee().withUsername(username)//
-                .withFirstName(vorname)//
-                .withLastName(nachname)//
-                .withEmail(email).build();
+            String passwort = "Passwort im Klartext"; //TODO: MUSS AUF JEDEN FALL NOCH VERSCHLUESSELT WERDEN!!!
+            bob = MitarbeiterBuilder.aMitarbeiter().withEmail(email).withBenutzername(username).withVorname(vorname)//
+            .withNachname(nachname).withPasswort(passwort).build();
         }
     }
 
     private class When{
 
         public void derMitarbeiterBobGespeichertWird() {
-            regEmployeeRepository.save(bob);
+            mitarbeiterRepository.save(bob);
         }
     }
 

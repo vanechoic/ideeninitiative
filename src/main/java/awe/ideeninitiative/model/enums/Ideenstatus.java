@@ -1,5 +1,5 @@
 package awe.ideeninitiative.model.enums;
 
-public enum IdeaStatus {
+public enum Ideenstatus {
     OPEN, ACCEPTED, REJECTED, IN_EVALUATION
 }
