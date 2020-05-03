@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.openapitools:openapi-generator-cli:4.3.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openapitools/openapi-generator-cli/4.3.0/d2a723ec4fae52d359d3c2507785e11a0264bc46/openapi-generator-cli-4.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openapitools/openapi-generator-cli/4.3.0/482e639498b6c51342f4b07f9f314340a5ae9e9a/openapi-generator-cli-4.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

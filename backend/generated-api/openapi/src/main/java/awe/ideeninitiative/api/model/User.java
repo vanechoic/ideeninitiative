@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * User
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-05-03T16:16:47.599491700+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-05-03T16:45:14.411471300+02:00[Europe/Berlin]")
 
 public class User  implements Serializable {
   private static final long serialVersionUID = 1L;

@@ -5,6 +5,8 @@ spring:
   profiles:
     active:
       - jfranke
+      - vanechoic
+      - Nils
       - dev
   jpa:
     hibernate:
