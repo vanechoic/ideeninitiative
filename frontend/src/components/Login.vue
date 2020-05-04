@@ -3,32 +3,35 @@
     <div class="container" :class="{'sign-up-active' : signUp}">
       <div class="overlay-container">
         <div class="overlay">
-          <div class="overlay-left">
+          <div class="overlay-links">
             <h2>Zur Anmeldung!</h2>
             <p>Bitte Benutzernamen und Passwort angeben</p>
-            <button class="invert" id="signIn" @click="signUp = !signUp">Anmelden</button>
+            <button class="invert" id="zurAnmeldung" @click="signUp = !signUp">Anmelden</button>
           </div>
-          <div class="overlay-right">
+          <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
             <p>Bitte ihre Daten eingeben</p>
-            <button class="invert" id="signUp" @click="signUp = !signUp">Registrieren</button>
+            <button class="nichtRegistriert">Weiter ohne Registrierung</button>
+            <button class="invert" id="zurRegistrierung" @click="signUp = !signUp">Registrieren</button>
           </div>
         </div>
       </div>
-      <form class="sign-up" action="#">
+      <form class="registrieren" action="#">
         <h2>Registrierung</h2>
         <div>Bitte mit E-Mail-Adresse registrieren</div>
-        <input type="text" placeholder="Benutzername" />
-        <input type="email" placeholder="beispiel@email.de" />
-        <input type="password" placeholder="Passwort" />
-        <button>Registrieren</button>
+        <input type="text" placeholder="Benutzername" id="benutzernameReg"/>
+        <input type="text" placeholder="Vorname" id="vorname">
+        <input type="text" placeholder="Nachname" id="nachname">
+        <input type="email" placeholder="beispiel@email.de" id="emailReg"/>
+        <input type="password" placeholder="Passwort" id="passwortReg"/>
+        <button class="registrierung" id="registrierungButton">Registrieren</button>
       </form>
-      <form class="sign-in" action="#">
+      <form class="anmelden" action="#">
         <h2>Anmeldung</h2>
         <div>Bitte geben sie ihre Benutzerdaten ein</div>
-        <input type="text" placeholder="Benutzername" />
-        <input type="password" placeholder="Passwort" />
-        <button>Anmelden</button>
+        <input type="text" placeholder="Benutzername" id="benutzernameAn" />
+        <input type="password" placeholder="Passwort" id="passwortAn"/>
+        <button class="login" id="anmeldungButton">Anmelden</button>
       </form>
     </div>
   </article>
@@ -88,10 +91,10 @@
       transform: translateX($property);
       transition: transform .5s ease-in-out;
     }
-    .overlay-left {
+    .overlay-links {
       @include overlays(-20%);
     }
-    .overlay-right {
+    .overlay-rechts {
       @include overlays(0);
       right: 0;
     }
@@ -125,6 +128,11 @@
     background-color: transparent;
     border-color: #fff;
   }
+  .nichtRegistriert{
+    background-color: transparent;
+    border-color: #fff;
+    font-size: 0.5rem;
+  }
   form {
     position: absolute;
     top: 0;
@@ -144,7 +152,7 @@
     input {
       background-color: #eee;
       border: none;
-      padding: 8px 15px;
+      padding: 5px 15px;
       margin: 6px 0;
       width: calc(100% - 30px);
       border-radius: 15px;
@@ -159,20 +167,20 @@
       }
     }
   }
-  .sign-in {
+  .anmelden {
     left: 0;
     z-index: 2;
   }
-  .sign-up {
+  .registrieren {
     left: 0;
     z-index: 1;
     opacity: 0;
   }
   .sign-up-active {
-    .sign-in {
+    .anmelden {
       transform: translateX(100%);
     }
-    .sign-up {
+    .registrieren {
       transform: translateX(100%);
       opacity: 1;
       z-index: 5;
@@ -184,10 +192,10 @@
     .overlay {
       transform: translateX(50%);
     }
-    .overlay-left {
+    .overlay-links {
       transform: translateX(0);
     }
-    .overlay-right {
+    .overlay-rechts {
       transform: translateX(20%);
     }
   }
