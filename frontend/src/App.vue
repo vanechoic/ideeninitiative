@@ -1,15 +1,23 @@
 <template>
   <div id="app">
-    <Login />
+    <component v-bind:is="component"></component>
+    <button class="demo" v-on:click="component='sn'">SystemNachricht</button>
   </div>
 </template>
 
 <script>
 import Login from './components/Login.vue'
+import SystemNachricht from './components/SystemNachricht.vue'
 export default {
   name: 'app',
   components: {
-    Login
+    'login': Login,
+    'sn': SystemNachricht
+  },
+  data(){
+    return{
+      component: 'login'
+    }
   }
 }
 </script>
@@ -28,5 +36,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .demo{
+    position: absolute;
+    margin: 20% 0;
+    z-index: 110;
+    
   }
 </style>
