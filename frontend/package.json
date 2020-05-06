@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@syncfusion/ej2-vue-dropdowns": "^18.1.48",
     "core-js": "^3.6.4",
     "vue": "^2.6.11"
   },

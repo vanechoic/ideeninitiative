@@ -1,18 +1,21 @@
 <template>
   <div id="app">
     <component v-bind:is="component"></component>
-    <button class="demo" v-on:click="component='sn'">SystemNachricht</button>
+    <button id="sn" class="demo" v-on:click="component='sn'">SystemNachricht</button><!--Demo -->
+    <button id="hs" class="demo" v-on:click="component='hs'">Hauptseite</button><!--Demo -->
   </div>
 </template>
 
 <script>
 import Login from './components/Login.vue'
 import SystemNachricht from './components/SystemNachricht.vue'
+import Hauptseite from './components/Hauptseite.vue'
 export default {
   name: 'app',
   components: {
     'login': Login,
-    'sn': SystemNachricht
+    'sn': SystemNachricht,
+    'hs': Hauptseite
   },
   data(){
     return{
@@ -41,6 +44,8 @@ export default {
     position: absolute;
     margin: 20% 0;
     z-index: 110;
-    
+  }
+  #hs{
+    margin: 22% 0;
   }
 </style>
