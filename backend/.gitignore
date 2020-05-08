@@ -1,3 +1,6 @@
+# backend/.gitignore
+*.gradle
+*.idea
 *build/
-.gradle
 generated-api/
+
