@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id 'org.openapi.generator' version '4.3.0'
+	id 'idea'
 }
 
 compileJava.dependsOn('openApiGenerate')
@@ -30,6 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -51,7 +53,7 @@ dependencies {
 sourceSets {
 	main {
 		java {
-			srcDir "${rootDir}/generated-api/openapi/src/main/java"
+			srcDirs = ['src/main/java', 'generated-api/openapi/src/main/java']
 		}
 	}
 }
@@ -88,7 +90,7 @@ openApiGenerate{
 			artifactId           : rootProject.name,
 			apiPackage           : "awe.ideeninitiative.api",
 			modelPackage         : "awe.ideeninitiative.api.model",
-			invokerPackage       : "awe.ideeninitiative.api",
+			invokerPackage       : "api",
 			interfaceOnly        : "true"
 	]
 }
