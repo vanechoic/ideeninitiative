@@ -1,14 +1,13 @@
 <template>
   <article>
     <div class="container">
-        <button id="zurSystemnachricht">Systemnachricht verfassen</button>
-        <button id="zurückZurAnmeldung">Zurück zur Anmeldung</button>
-
+        <router-link to="/Systemnachricht" tag="button" id="zurSystemnachricht">Systemnachricht verfassen</router-link>
+        <router-link to="/" tag="button" id="zurückZurAnmeldung">Zurück zur Anmeldung</router-link>
     </div>
   </article>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Mitarbeiter'
 }

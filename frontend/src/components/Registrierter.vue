@@ -10,9 +10,9 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'RegMitarbeiter'
+  name: 'Registrierter'
 }
 </script>
 

@@ -1,7 +1,8 @@
 <template>
+  <article>
     <div class="container">
         <div class="links">
-            <p>Alle Ideen</p>
+            <p>Meine Ideen</p>
             <!--Liste Tutorial:https://www.youtube.com/watch?v=7ZSljEfaiYUs API:https://ej2.syncfusion.com/vue/documentation/api/list-box -->
             <div class="liste">
                 <ejs-listbox :dataSource='dataItem' :fields='dataFields' height='400px'>
@@ -33,43 +34,33 @@
             </div> 
         </div>
         <div class="rechts">
-            <component v-bind:is="component"></component>
+            <button id="ideeVeroeffentlichen"> Idee veröffentlichen </button>
+            <button v-popover:bearbeiten.top id="ideeBearbeiten"> Bearbeiten </button>
+            <popover name="bearbeiten"> Nur möglich wenn Idee nicht veröffentlich ist </popover>
+            <button id="ideeLoeschen"> Löschen </button>
         </div>
     </div>
+  </article>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {ListBoxPlugin} from '@syncfusion/ej2-vue-dropdowns'
-import Mitarbeiter from './Mitarbeiter.vue'
-Vue.use(ListBoxPlugin)
-  export default {
-    components: {
-        'mitarbeiter': Mitarbeiter
-    },
-    data: () => {
+export default {
+  name: 'MeineIdeen',
+  data: () => {
       return {
-        component:'mitarbeiter',
         dataItem:[
             {Id:'i1', Idee:'Idee1'},
-            {Id:'i2', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i3', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i5', Idee:'Idee die sehr kreativ ist'}
+            {Id:'i2', Idee:'Idee2'},
+            {Id:'i3', Idee:'Idee3'}
         ],
         dataFields:{value:'Id', text:'Idee'}
       }
     }
-  }
+}
 </script>
 
 <style lang="scss" scoped>
-@import url(https://cdn.syncfusion.com/ej2/material.css);
-  .container {
+.container {
     position: relative;
     width: 900px;
     height: calc(100% - 20px);
@@ -78,26 +69,38 @@ Vue.use(ListBoxPlugin)
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
-
-    .demo{
-        position: absolute;
-        margin: 20% 0;
-        z-index: 110;
-    }
-    #rm{
-        margin: 60% 0;
-    }
-    #ad{
-        margin: 67% 0;
-    }
-    #mi{
-        margin: 74% 0;
-    }
     #liste{
         height: 300px;
     }
+    [data-popover="bearbeiten"]{
+        background: #444;
+        color: #f9f9f9;
+        
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 5px;
+    }
   }
-  .links{
+ button {
+    border-radius: 20px;
+    border: 1px solid #fff;
+    color: rgb(0, 0, 0);
+    font-size: .75rem;
+    font-weight: bold;
+    padding: 10px 40px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top:10px;
+    transition: transform .1s ease-in;
+    &:active {
+      transform: scale(.9);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+.links{
     position: relative;
     top: 0;
     display: flex;
@@ -152,8 +155,8 @@ Vue.use(ListBoxPlugin)
         outline: none;
         }
     }
-  }
-  .rechts{
+}
+.rechts{
       position: absolute;
       top: 0;
       display: flex;

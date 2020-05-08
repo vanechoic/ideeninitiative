@@ -7,16 +7,17 @@
               <input type="text" id="betreff">
               <label for="nachricht">Nachricht:</label>
               <textarea id="nachricht" rows="20" cols="50"></textarea>
-              <button id="abbrechenButton">Abbrechen</button>
+              <!-- Beachten ob ein Nutzer eingeloggt ist! !-->
+              <router-link to="Startseite" tag="button" id="abbrechenButton">Abbrechen</router-link>
               <button id="sendenButton">Senden</button> 
           </form>
     </div>
   </article>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'SystemNachricht'
+  name: 'Systemnachricht'
 }
 </script>
 
@@ -103,5 +104,8 @@ export default {
   #abbrechenButton{
     background-color:#ec0b0b;
     border-color: #fff;
+  }
+  #nachricht{
+    resize: none;
   }
 </style>
