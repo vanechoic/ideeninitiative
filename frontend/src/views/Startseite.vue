@@ -1,6 +1,6 @@
 <template>
   <div class="startseite">
-     <Hauptseite msg=""/>
+     <component v-bind:is="component"></component>
   </div>
 </template>
 
@@ -10,7 +10,12 @@ import Hauptseite from '@/components/Hauptseite.vue'
 export default {
   name: 'Startseite',
   components: {
-    Hauptseite
+   'hs': Hauptseite
+  },
+  data: () => {
+   return {
+      component:'hs'
+    }
   }
 }
 </script>

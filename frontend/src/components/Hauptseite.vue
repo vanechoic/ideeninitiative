@@ -34,6 +34,10 @@
         </div>
         <div class="rechts">
             <component v-bind:is="component"></component>
+            <button id="rm" class="demo" v-on:click="component='regM'">RegMitarbeiter</button><!--Demo -->
+            <button id="ad" class="demo" v-on:click="component='admin'">Admin</button><!--Demo -->
+            <button id="sp" class="demo" v-on:click="component='sp'">Spezialist</button><!--Demo -->
+            <button id="idee" class="demo" v-on:click="component='idee'">Idee</button><!--Demo -->
         </div>
     </div>
 </template>
@@ -45,7 +49,7 @@ import Mitarbeiter from './Mitarbeiter.vue'
 Vue.use(ListBoxPlugin)
   export default {
     components: {
-        'mitarbeiter': Mitarbeiter
+        'mitarbeiter': Mitarbeiter,
     },
     data: () => {
       return {
@@ -90,11 +94,8 @@ Vue.use(ListBoxPlugin)
     #ad{
         margin: 67% 0;
     }
-    #mi{
-        margin: 74% 0;
-    }
-    #liste{
-        height: 300px;
+    #sp{
+        margin: 53% 0;
     }
   }
   .links{
