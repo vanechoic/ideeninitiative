@@ -6,7 +6,6 @@
 
 <script>
 import Hauptseite from '@/components/Hauptseite.vue'
-
 export default {
   name: 'Startseite',
   components: {

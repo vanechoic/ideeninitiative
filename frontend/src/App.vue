@@ -21,15 +21,4 @@ body {
     justify-content: center;
     align-items: center;
   }
-  .demo{
-    position: absolute;
-    margin: 20% 0;
-    z-index: 110;
-  }
-  #hs{
-    margin: 22% 0;
-  }
-  #mi{
-    margin: 20% 10%;
-  }
 </style>

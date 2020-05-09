@@ -4,23 +4,26 @@
             <p>Alle Ideen</p>
             <!--Liste Tutorial:https://www.youtube.com/watch?v=7ZSljEfaiYUs API:https://ej2.syncfusion.com/vue/documentation/api/list-box -->
             <div class="liste">
-                <ejs-listbox :dataSource='dataItem' :fields='dataFields' height='400px'>
+                <ejs-listbox :dataSource='dataItem' :fields='dataFields' :cssClass='listBox'>
                 </ejs-listbox>
             </div>
             <!--3 Filter Dropdowns -->
             <div class="filter">
                 <div class="filterElement">
                     <select id="filter1">
+                        <option value="" disabled selected>Filter 1</option>
                         <option value="Sparte 1">Sparte 1</option>
                         <option value="Sparte 2">Sparte 2</option>
                         <option value="Sparte 3">Sparte 3</option>
                         <option value="Sparte 3">Sparte 4</option>
                     </select>
                     <select id="filter2">
+                        <option value="" disabled selected>Filter 2</option>
                         <option value="Sparte 1">Sparte 1</option>
                         <option value="Sparte 2">Sparte 2</option>
                     </select>
                     <select id="filter3">
+                        <option value="" disabled selected>Filter 3</option>
                         <option value="Sparte 1">Sparte 1</option>
                         <option value="Sparte 2">Sparte 2</option>
                         <option value="Sparte 3">Sparte 3</option>
@@ -34,10 +37,6 @@
         </div>
         <div class="rechts">
             <component v-bind:is="component"></component>
-            <button id="rm" class="demo" v-on:click="component='regM'">RegMitarbeiter</button><!--Demo -->
-            <button id="ad" class="demo" v-on:click="component='admin'">Admin</button><!--Demo -->
-            <button id="sp" class="demo" v-on:click="component='sp'">Spezialist</button><!--Demo -->
-            <button id="idee" class="demo" v-on:click="component='idee'">Idee</button><!--Demo -->
         </div>
     </div>
 </template>
@@ -62,7 +61,6 @@ Vue.use(ListBoxPlugin)
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i5', Idee:'Idee die sehr kreativ ist'}
         ],
         dataFields:{value:'Id', text:'Idee'}
@@ -82,21 +80,6 @@ Vue.use(ListBoxPlugin)
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
-
-    .demo{
-        position: absolute;
-        margin: 20% 0;
-        z-index: 110;
-    }
-    #rm{
-        margin: 60% 0;
-    }
-    #ad{
-        margin: 67% 0;
-    }
-    #sp{
-        margin: 53% 0;
-    }
   }
   .links{
     position: relative;
@@ -117,6 +100,10 @@ Vue.use(ListBoxPlugin)
     .liste{
         width: 100%;
         height: 300px;
+        .listBox{
+            height: 300px;
+            border:none;
+        }
     }
     .filterElement{
         float: left;
@@ -133,7 +120,6 @@ Vue.use(ListBoxPlugin)
         }
     }
     button {
-        
         border-radius: 20px;
         border: 1px solid #00894d;
         background-color:#00894d;
