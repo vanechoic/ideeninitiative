@@ -4,7 +4,7 @@
             <p>Alle Ideen</p>
             <!--Liste Tutorial:https://www.youtube.com/watch?v=7ZSljEfaiYUs API:https://ej2.syncfusion.com/vue/documentation/api/list-box -->
             <div class="liste">
-                <ejs-listbox :dataSource='dataItem' :fields='dataFields' :cssClass='listBox'>
+                <ejs-listbox :dataSource='dataItem' :fields='dataFields' :cssClass='listBox' height='300px'>
                 </ejs-listbox>
             </div>
             <!--3 Filter Dropdowns -->
@@ -61,6 +61,7 @@ Vue.use(ListBoxPlugin)
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i5', Idee:'Idee die sehr kreativ ist'}
         ],
         dataFields:{value:'Id', text:'Idee'}
@@ -101,7 +102,6 @@ Vue.use(ListBoxPlugin)
         width: 100%;
         height: 300px;
         .listBox{
-            height: 300px;
             border:none;
         }
     }
