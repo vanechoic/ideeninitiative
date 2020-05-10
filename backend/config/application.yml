@@ -4,9 +4,7 @@ server:
 spring:
   profiles:
     active:
-      - jfranke
       - vanechoic
-      - Nils
       - dev
   jpa:
     hibernate:
@@ -15,3 +13,5 @@ spring:
     repositories:
       enabled: true
     show-sql: true
+jwt:
+  secret: javainuse
