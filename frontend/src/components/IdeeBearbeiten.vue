@@ -1,30 +1,39 @@
 <template>
   <article>
-    <div class="container">
+    <b-container class="container">
         <h1>Idee bearbeiten</h1>
-        <!-- Beschreibungstext -->
-        <div class="beschreibung">
-            <p> Beschreibungstext </p>
-            <textarea> </textarea>
-        </div>
-        <!-- Datei Upload -->
-        <div class="dateien">
-            <p> Datei Upload </p>
-            <input type="file">
-        </div>
-        <!-- Vorteile -->
-        <div class="vorteile">
-            <p > Vorteile </p>
-            <input type="text">
-            <button class="ideeButton" id="hinzu"> + </button>
-            <button class="ideeButton" id="entfernen"> - </button><br>
-            <textarea readonly> </textarea>
-        </div>
-        <!-- Existierende Idee - Checkbox -->
-        <div class="existiert">
-            <label for="existiertBereits"> Existiert eine vergleichbare Idee? </label>
-            <input type="checkbox" id="existiertBereits">
-        </div>
+        <b-row>
+            <!-- Beschreibungstext -->
+            <div class="beschreibung">
+                <h2> Beschreibungstext </h2>
+                <textarea> </textarea>
+            </div>
+        </b-row>
+        <b-row>
+            <!-- Datei Upload -->
+            <div class="dateien">
+                <h2> Datei Upload </h2>
+                <input type="file">
+            </div>
+        </b-row>
+        <b-row>
+            <!-- Vorteile -->
+            <div class="vorteile">
+                <h2> Vorteile </h2>
+                <input id="vorteile" type="text">
+                <button class="ideeButton" id="hinzu"> + </button>
+                <button class="ideeButton" id="entfernen"> - </button><br>
+                <textarea readonly id="vorteileAnzeigen"> </textarea>
+            </div>
+        </b-row>
+        <b-row>
+            <!-- Existierende Idee - Checkbox -->
+            <div class="existiert">
+                <label for="existiertBereits"> Existiert eine vergleichbare Idee? </label>
+                <input type="checkbox" id="existiertBereits">
+            </div>
+        </b-row>
+        <b-row>
         <!--Comboboxen zur Ideen-Spezifikation -->
         <div class="ideenDropdowns">
             <div class="combobox">
@@ -68,11 +77,14 @@
                 </select>
             </div>
         </div>
-        <div class="buttons">
-            <button id="hinzu"> Abbrechen </button>
-            <button id="entfernen"> Speichern </button>
-        </div>
-    </div>
+        </b-row>
+        <b-row>
+            <div class="buttons">
+                <button id="hinzu"> Abbrechen </button>
+                <button id="entfernen"> Speichern </button>
+            </div>
+        </b-row>
+    </b-container>
   </article>
 </template>
 
@@ -100,6 +112,11 @@
     }
     h1{
         text-align: center;
+        margin: 30px;
+    }
+    label{
+        font-size: 1.1em;
+        margin-right: 30px;
     }
     .beschreibung{
         margin-left: 30px;
@@ -120,6 +137,13 @@
     }
     .vorteile{
         margin: 30px;
+    }
+    #vorteileAnzeigen{
+        resize: none;
+        width: 30%;
+    }
+    #vorteile{
+        width: 30%;
     }
     .existiert{
         margin: 30px;

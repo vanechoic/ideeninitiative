@@ -11,16 +11,19 @@
             <div class="filter">
                 <div class="filterElement">
                     <select id="filter1">
+                        <option value="" disabled selected>Filter 1</option>
                         <option value="Sparte 1">Sparte 1</option>
                         <option value="Sparte 2">Sparte 2</option>
                         <option value="Sparte 3">Sparte 3</option>
                         <option value="Sparte 3">Sparte 4</option>
                     </select>
                     <select id="filter2">
+                        <option value="" disabled selected>Filter 2</option>
                         <option value="Sparte 1">Sparte 1</option>
                         <option value="Sparte 2">Sparte 2</option>
                     </select>
                     <select id="filter3">
+                        <option value="" disabled selected>Filter 3</option>
                         <option value="Sparte 1">Sparte 1</option>
                         <option value="Sparte 2">Sparte 2</option>
                         <option value="Sparte 3">Sparte 3</option>
@@ -45,7 +48,7 @@ import Mitarbeiter from './Mitarbeiter.vue'
 Vue.use(ListBoxPlugin)
   export default {
     components: {
-        'mitarbeiter': Mitarbeiter
+        'mitarbeiter': Mitarbeiter,
     },
     data: () => {
       return {
@@ -116,6 +119,9 @@ Vue.use(ListBoxPlugin)
     .liste{
         width: 100%;
         height: 300px;
+        .listBox{
+            border:none;
+        }
     }
     .filterElement{
         float: left;
@@ -132,7 +138,6 @@ Vue.use(ListBoxPlugin)
         }
     }
     button {
-        
         border-radius: 20px;
         border: 1px solid #00894d;
         background-color:#00894d;
