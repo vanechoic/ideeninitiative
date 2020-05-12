@@ -2,10 +2,10 @@
     <div class="container">
         <div class="links">
             <p>Alle Ideen</p>
-            <!--Liste Tutorial:https://www.youtube.com/watch?v=7ZSljEfaiYUs API:https://ej2.syncfusion.com/vue/documentation/api/list-box -->
-            <div class="liste">
-                <ejs-listbox :dataSource='dataItem' :fields='dataFields' :cssClass='listBox' height='300px'>
-                </ejs-listbox>
+            <div class="listeContainer">
+                <ul class="liste">
+                    <li v-for='idee in Ideen' :key='idee.Idee'  v-on:click="showModal = true">{{idee.Idee}}</li>
+                </ul>
             </div>
             <!--3 Filter Dropdowns -->
             <div class="filter">
@@ -38,6 +38,11 @@
         <div class="rechts">
             <component v-bind:is="component"></component>
         </div>
+        <transition name="fade" appear>
+            <div class="modal-overlay" v-if="showModal">
+                <button class="zurückBtn" v-on:click="showModal =false">Zurück</button>
+            </div>  
+        </transition>
     </div>
 </template>
 
@@ -52,8 +57,9 @@ Vue.use(ListBoxPlugin)
     },
     data: () => {
       return {
+        showModal:false,
         component:'mitarbeiter',
-        dataItem:[
+        Ideen:[
             {Id:'i1', Idee:'Idee1'},
             {Id:'i2', Idee:'Idee als Beispiel für Liste '},
             {Id:'i3', Idee:'Idee als Beispiel für Liste '},
@@ -62,6 +68,15 @@ Vue.use(ListBoxPlugin)
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
             {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Ikjafbnakibnfaof '},
             {Id:'i5', Idee:'Idee die sehr kreativ ist'}
         ],
         dataFields:{value:'Id', text:'Idee'}
@@ -71,7 +86,6 @@ Vue.use(ListBoxPlugin)
 </script>
 
 <style lang="scss" scoped>
-@import url(https://cdn.syncfusion.com/ej2/material.css);
   .container {
     position: relative;
     width: 900px;
@@ -98,12 +112,27 @@ Vue.use(ListBoxPlugin)
         margin: 8px 0 8px;
         top:0;
     }
-    .liste{
+    .listeContainer{
         width: 100%;
-        height: 300px;
-        .listBox{
-            border:none;
-        }
+        height: 400px;
+        border:1px solid #000;
+        font-family:arial;
+    }
+    ul{
+        height: 400px;
+        list-style:none;
+        margin:0;
+        overflow:auto;
+        padding:0;
+        text-indent:10px;
+    }
+    li{
+        line-height:30px;
+        color: rgba(0, 0, 0, 9);
+        border: .5px solid #000;
+    }
+    li:hover{
+            background-color: rgba(0, 0, 0, .1);
     }
     .filterElement{
         float: left;
@@ -153,5 +182,23 @@ Vue.use(ListBoxPlugin)
       text-align: center;
       background-color: #00894d;
       margin-left:52.5%;
+  }
+  .modal-overlay{
+        position: absolute;
+        top:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 200;
+        background-color: rgba(0, 0, 0, .2);
+        #zurückBtn{
+            background-color:#f80303;
+        }
+  }
+  .fade-enter-active, .fade-leave-active{
+      transition: opacity 0.5;
+  }
+  .fade-enter, .fade-leave-to{
+      opacity: 0;
   }
 </style>
