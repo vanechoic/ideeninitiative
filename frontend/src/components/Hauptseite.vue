@@ -3,8 +3,8 @@
         <div class="links">
             <p>Alle Ideen</p>
             <!--Liste Tutorial:https://www.youtube.com/watch?v=7ZSljEfaiYUs API:https://ej2.syncfusion.com/vue/documentation/api/list-box -->
-            <div class="liste">
-                <ejs-listbox :dataSource='dataItem' :fields='dataFields' height='400px'>
+            <div>
+                <ejs-listbox :dataSource='dataItem' :fields='dataFields' cssClass='liste'>
                 </ejs-listbox>
             </div>
             <!--3 Filter Dropdowns -->
@@ -94,7 +94,7 @@ Vue.use(ListBoxPlugin)
         margin: 74% 0;
     }
     #liste{
-        height: 300px;
+        height: 100px;
     }
   }
   .links{

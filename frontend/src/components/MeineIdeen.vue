@@ -4,8 +4,8 @@
         <div class="links">
             <p>Meine Ideen</p>
             <!--Liste Tutorial:https://www.youtube.com/watch?v=7ZSljEfaiYUs API:https://ej2.syncfusion.com/vue/documentation/api/list-box -->
-            <div class="liste">
-                <ejs-listbox :dataSource='dataItem' :fields='dataFields' height='400px'>
+            <div>
+                <ejs-listbox :dataSource='dataItem' :fields='dataFields' cssClass='liste'>
                 </ejs-listbox>
             </div>
             <!--3 Filter Dropdowns -->
@@ -35,28 +35,34 @@
         </div>
         <div class="rechts">
             <button id="ideeVeroeffentlichen"> Idee veröffentlichen </button>
-            <button v-popover:bearbeiten.top id="ideeBearbeiten"> Bearbeiten </button>
-            <popover name="bearbeiten"> Nur möglich wenn Idee nicht veröffentlich ist </popover>
+            <button id="ideeBearbeiten"> Bearbeiten </button>
             <button id="ideeLoeschen"> Löschen </button>
+            <router-link to="Startseite" tag="button" id="zurueck"> Zurück </router-link>
         </div>
     </div>
   </article>
 </template>
 
 <script lang="ts">
-export default {
-  name: 'MeineIdeen',
-  data: () => {
+import Vue from 'vue'
+import {ListBoxPlugin} from '@syncfusion/ej2-vue-dropdowns'
+Vue.use(ListBoxPlugin)
+  export default {
+    data: () => {
       return {
         dataItem:[
             {Id:'i1', Idee:'Idee1'},
-            {Id:'i2', Idee:'Idee2'},
-            {Id:'i3', Idee:'Idee3'}
+            {Id:'i2', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i3', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
+            {Id:'i5', Idee:'Idee die sehr kreativ ist'}
         ],
         dataFields:{value:'Id', text:'Idee'}
       }
     }
-}
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -69,17 +75,6 @@ export default {
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
-    #liste{
-        height: 300px;
-    }
-    [data-popover="bearbeiten"]{
-        background: #444;
-        color: #f9f9f9;
-        
-        font-size: 12px;
-        line-height: 1.5;
-        margin: 5px;
-    }
   }
  button {
     border-radius: 20px;
@@ -135,7 +130,6 @@ export default {
         }
     }
     button {
-        
         border-radius: 20px;
         border: 1px solid #00894d;
         background-color:#00894d;
