@@ -93,9 +93,13 @@ export default {
     }
     .overlay-links {
       @include overlays(-20%);
+      width:50%;
+      height: 100%;
     }
     .overlay-rechts {
       @include overlays(0);
+      width:50%;
+      height: 100%;
       right: 0;
     }
   }
@@ -169,10 +173,14 @@ export default {
   }
   .anmelden {
     left: 0;
+    width:50%;
+    height: 100%;
     z-index: 2;
   }
   .registrieren {
     left: 0;
+    width:50%;
+    height: 100%;
     z-index: 1;
     opacity: 0;
   }
