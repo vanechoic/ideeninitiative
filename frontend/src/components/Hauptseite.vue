@@ -95,6 +95,24 @@ Vue.use(ListBoxPlugin)
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
+
+    .demo{
+        position: absolute;
+        margin: 20% 0;
+        z-index: 110;
+    }
+    #rm{
+        margin: 60% 0;
+    }
+    #ad{
+        margin: 67% 0;
+    }
+    #mi{
+        margin: 74% 0;
+    }
+    #liste{
+        height: 100px;
+    }
   }
   .links{
     position: relative;

@@ -13,7 +13,7 @@ body {
   }
   #app {
     font-family: Tahoma;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #00894d;
     background-color: #104227;
     height: 100vh;
@@ -21,4 +21,7 @@ body {
     justify-content: center;
     align-items: center;
   }
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
 </style>
