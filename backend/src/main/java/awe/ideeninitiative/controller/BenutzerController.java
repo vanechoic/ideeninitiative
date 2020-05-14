@@ -9,8 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
 public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
 
     static final Logger logger = LoggerFactory.getLogger(BenutzerController.class);
@@ -23,8 +28,31 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
         return new ResponseEntity<Void>(HttpStatus.I_AM_A_TEAPOT);
     }
 
+/*    private void pruefeEingabenAufVollstaendigkeit(Benutzer benutzer) throws UnvollstaendigeEingabeException {
+        List<String> unvollstaendigeParameter = new ArrayList<String>();
+        if(StringUtils.isEmpty(benutzer.getBenutzername())){
+            unvollstaendigeParameter.add("Benutzername");
+        }
+        if(StringUtils.isEmpty(benutzer.getEmail())){
+            unvollstaendigeParameter.add("E-Mail");
+        }
+        if(StringUtils.isEmpty(benutzer.getVorname())){
+            unvollstaendigeParameter.add("Vorname");
+        }
+        if(StringUtils.isEmpty(benutzer.getNachname())){
+            unvollstaendigeParameter.add("Nachname");
+        }
+        if(StringUtils.isEmpty(benutzer.getPasswort())){
+            unvollstaendigeParameter.add("Passwort");
+        }
+        if(!unvollstaendigeParameter.isEmpty()){
+            throw new UnvollstaendigeEingabeException(unvollstaendigeParameter);
+        }
+    }*/
+
     @Override
-    public ResponseEntity<String> benutzerAnlegen(Benutzer benutzer) {
+    public ResponseEntity<String> benutzerAnlegen(Benutzer benutzer){
+        //pruefeEingabenAufVollstaendigkeit(benutzer);
         logger.error(benutzer.getVorname());
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
@@ -38,8 +66,15 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
 
     @Override
     public ResponseEntity<String> benutzerAnmelden(String benutzername, String passwort) {
-        logger.error("funzt");
-        return ResponseEntity.ok("lauft");
+        logger.error(benutzername + " mit "+ passwort);
+        final String token;
+        try {
+            token = benutzerService.mitarbeiterAnmelden(benutzername, passwort);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(token); //TODO: new JwtResponse?
     }
 
     @Override

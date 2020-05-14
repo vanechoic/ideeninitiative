@@ -1,9 +1,9 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.6.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
-	id 'org.openapi.generator' version '4.3.0'
-	id 'idea'
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'org.openapi.generator' version '4.3.0'
+    id 'idea'
 }
 
 compileJava.dependsOn('openApiGenerate')
@@ -13,89 +13,91 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'mysql:mysql-connector-java'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	//Generator:
-	implementation 'org.openapitools:openapi-generator:4.3.0'
-	implementation 'org.openapitools:openapi-generator-cli:4.3.0'
-	implementation 'org.openapitools:openapi-generator-gradle-plugin:4.3.0'
-	implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
-	implementation 'javax.validation:validation-api:1.1.0.Final'
-	implementation 'org.hibernate:hibernate-validator:5.4.2.Final'
-	implementation 'org.hibernate:hibernate-validator-annotation-processor:5.4.2.Final'
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    //Generator:
+    implementation 'org.openapitools:openapi-generator:4.3.0'
+    implementation 'org.openapitools:openapi-generator-cli:4.3.0'
+    implementation 'org.openapitools:openapi-generator-gradle-plugin:4.3.0'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+    implementation 'javax.validation:validation-api:1.1.0.Final'
+    implementation 'org.hibernate:hibernate-validator:5.4.2.Final'
+    implementation 'org.hibernate:hibernate-validator-annotation-processor:5.4.2.Final'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 sourceSets {
-	main {
-		java {
-			srcDirs = ['src/main/java', 'generated-api/openapi/src/main/java']
-		}
-	}
+    main {
+        java {
+            srcDirs = ['src/main/java', 'generated-api/openapi/src/main/java']
+        }
+    }
 }
 
 // Validating a single specification
 openApiValidate {
-	inputSpec = "$rootDir/src/main/resources/openapi-spec.yaml"
+    inputSpec = "$rootDir/src/main/resources/openapi-spec.yaml"
 }
 
 openApiGenerate{
-	generatorName = "spring"
-	library = "spring-boot"
-	inputSpec = "${rootDir}/src/main/resources/openapi-spec.yaml".toString()
-	outputDir = "${rootDir}/generated-api/openapi".toString()
-	systemProperties = [
-			modelDocs      : "false",
-			models         : "",
-			apis           : "",
-			supportingFiles: "false"
-	]
-	configOptions = [
-			useOptional          : "true",
-			swaggerDocketConfig  : "false",
-			performBeanValidation: "false",
-			useBeanValidation    : "false",
-			useTags              : "true",
-			singleContentTypes   : "true",
-			basePackage          : "awe.ideeninitiative.api",
-			configPackage        : "awe.ideeninitiative.api",
-			title                : rootProject.name,
-			java8                : "false",
-			dateLibrary          : "java8",
-			serializableModel    : "true",
-			artifactId           : rootProject.name,
-			apiPackage           : "awe.ideeninitiative.api",
-			modelPackage         : "awe.ideeninitiative.api.model",
-			invokerPackage       : "api",
-			interfaceOnly        : "true"
-	]
+    generatorName = "spring"
+    library = "spring-boot"
+    inputSpec = "${rootDir}/src/main/resources/openapi-spec.yaml".toString()
+    outputDir = "${rootDir}/generated-api/openapi".toString()
+    templateDir = "${rootDir}/src/main/resources/templates".toString()
+    systemProperties = [
+            modelDocs      : "false",
+            models         : "",
+            apis           : "",
+            supportingFiles: "false"
+    ]
+    configOptions = [
+            useOptional          : "true",
+            swaggerDocketConfig  : "false",
+            performBeanValidation: "true",
+            useBeanValidation    : "true",
+            useTags              : "true",
+            singleContentTypes   : "true",
+            basePackage          : "awe.ideeninitiative.api",
+            configPackage        : "awe.ideeninitiative.api",
+            title                : rootProject.name,
+            java8                : "false",
+            dateLibrary          : "java8",
+            serializableModel    : "true",
+            artifactId           : rootProject.name,
+            apiPackage           : "awe.ideeninitiative.api",
+            modelPackage         : "awe.ideeninitiative.api.model",
+            invokerPackage       : "api",
+            interfaceOnly        : "true",
+            unhandledException   : "true"
+    ]
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

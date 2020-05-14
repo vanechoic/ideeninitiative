@@ -35,6 +35,10 @@ paths:
           description: "erfolgreich"
           schema:
             type: "string"
+        400:
+          description: "Fehlende Eingabe"
+          schema:
+            $ref: '#/definitions/ApiFehler'
   /benutzer/login:
     get:
       tags:
@@ -173,13 +177,13 @@ definitions:
         type: "string"
     xml:
       name: "Mitarbeiter"
-  ApiResponse:
+  ApiFehler:
     type: "object"
     properties:
-      code:
+      httpStatusCode:
         type: "integer"
         format: "int32"
-      type:
+      fehlertyp:
         type: "string"
-      message:
+      fehlertext:
         type: "string"

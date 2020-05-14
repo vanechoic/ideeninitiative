@@ -6,16 +6,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "awe.ideeninitiative")
+@EnableJpaRepositories(basePackages = "awe.ideeninitiative.model.repositories")
 @ComponentScan(basePackages = "awe.ideeninitiative")
 public class IdeeninitiativeApplication {
 
 	static final Logger logger = LoggerFactory.getLogger(IdeeninitiativeApplication.class);
 
 	public static void main(String[] args) {
-		logger.error("   hi");
 		SpringApplication.run(IdeeninitiativeApplication.class, args);
 	}
 
