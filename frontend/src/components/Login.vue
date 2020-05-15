@@ -19,32 +19,85 @@
       <form class="registrieren" action="#">
         <h2>Registrierung</h2>
         <div>Bitte mit E-Mail-Adresse registrieren</div>
-        <input type="text" placeholder="Benutzername" id="benutzernameReg"/>
-        <input type="text" placeholder="Vorname" id="vorname">
-        <input type="text" placeholder="Nachname" id="nachname">
-        <input type="email" placeholder="beispiel@email.de" id="emailReg"/>
-        <input type="password" placeholder="Passwort" id="passwortReg"/>
-        <button class="registrierung" id="registrierungButton">Registrieren</button>
+        <input type="text" placeholder="Benutzername" id="benutzernameReg" v-model="benutzernameReg"/>
+        <input type="text" placeholder="Vorname" id="vorname" v-model="vorname">
+        <input type="text" placeholder="Nachname" id="nachname" v-model="nachname">
+        <input type="email" placeholder="beispiel@email.de" id="emailReg" v-model="emailReg"/>
+        <input type="password" placeholder="Passwort" id="passwortReg" v-model="passwortReg"/>
+        <button class="registrierung" id="registrierungButton" v-on:click="registrieren()">Registrieren</button>
       </form>
       <form class="anmelden" action="#">
         <h2>Anmeldung</h2>
         <div>Bitte geben sie ihre Benutzerdaten ein</div>
-        <input type="text" placeholder="Benutzername" id="benutzernameAn" />
-        <input type="password" placeholder="Passwort" id="passwortAn"/>
-        <button class="login" id="anmeldungButton">Anmelden</button>
+        <input type="text" placeholder="Benutzername" id="benutzernameAn" v-model="benutzernameAn"/>
+        <input type="password" placeholder="Passwort" id="passwortAn" v-model="passwortAn"/>
+        <button class="login" id="anmeldungButton" v-on:click="anmelden()">Anmelden</button>
       </form>
     </div>
   </article>
 </template>
 
 <script lang="ts">
-export default {
-    data: () => {
-      return {
-        signUp: false
-      }
-    }
-  }
+import axios from 'axios'
+import Vue from "vue"
+
+export default Vue.extend({
+    data: () => ({
+        signUp: false,
+        benutzernameReg: '',
+        vorname: '',
+        nachname: '',
+        emailReg: '',
+        passwortReg: '',
+        benutzernameAn: '',
+        passwortAn: ''
+    }),
+    methods: {
+            registrieren: function(event: Event) {
+              console.log("REGISTRIEREN BUTTON");
+              var axiosInstance = axios.create({
+                baseURL: 'http://localhost:9090/benutzer',
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+                }
+              });
+              axiosInstance.post('http://localhost:9090/benutzer', {
+                  benutzername: this.benutzernameReg,
+                  vorname: this.vorname,
+                  nachname: this.nachname,
+                  email: this.emailReg,
+                  passwort: this.passwortReg
+              })
+              .then(function (response) {
+                  console.log(response);
+              });
+            },
+            anmelden: function(event: Event) {
+              console.log("ANMELDEN BUTTON");
+              var axiosInstance = axios.create({
+                baseURL: 'http://localhost:9090/benutzer',
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+                }
+              });
+              axiosInstance.post('http://localhost:9090/benutzer/login', {
+                  benutzername: this.benutzernameAn,
+                  passwort: this.passwortAn
+              })
+              .then(function (response) {
+                  console.log(response);
+              });
+            }
+        }
+  })
 </script>
 
 <style lang="scss" scoped>

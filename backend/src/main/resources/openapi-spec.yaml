@@ -40,7 +40,7 @@ paths:
           schema:
             $ref: '#/definitions/ApiFehler'
   /benutzer/login:
-    get:
+    post:
       tags:
         - "benutzer"
       summary: "Logs user into the system"
@@ -49,18 +49,21 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "benutzername"
-          in: "query"
+        - name: "anmeldedaten"
+          in: "body"
           description: "Der Benutzername des einzuloggenden Benutzers"
           required: true
-          type: "string"
-          minLength: 1
-        - name: "passwort"
-          in: "query"
-          description: "Das Passwort des einzuloggenden Benutzers in Klartext?"
-          required: true
-          type: "string"
-          minLength: 8
+          schema:
+            type: object
+            required:
+              - userName
+            properties:
+              benutzername:
+                type: string
+                minLength: 1
+              passwort:
+                type: string
+                minLength: 8
       responses:
         200:
           description: "erfolgreich"

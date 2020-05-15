@@ -1,6 +1,7 @@
 package awe.ideeninitiative.controller;
 
 import awe.ideeninitiative.api.model.Benutzer;
+import awe.ideeninitiative.api.model.InlineObject;
 import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import org.slf4j.Logger;
@@ -10,11 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
 
@@ -42,11 +44,11 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<String> benutzerAnmelden(String benutzername, String passwort) {
-        logger.error(benutzername + " mit "+ passwort);
+    public ResponseEntity<String> benutzerAnmelden(InlineObject anmeldedaten) throws Exception {
+        logger.error(anmeldedaten.getBenutzername() + " mit "+ anmeldedaten.getPasswort());
         final String token;
         try {
-            token = benutzerService.mitarbeiterAnmelden(benutzername, passwort);
+            token = benutzerService.mitarbeiterAnmelden(anmeldedaten.getBenutzername(), anmeldedaten.getPasswort());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
