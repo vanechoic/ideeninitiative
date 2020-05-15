@@ -1,35 +1,19 @@
 <template>
   <div id="app">
-    <component v-bind:is="component"></component>
-    <button class="demo" v-on:click="component='sn'">SystemNachricht</button>
+    <div id="nav">
+    </div>
+    <router-view/>
   </div>
 </template>
 
-<script>
-import Login from './components/Login.vue'
-import SystemNachricht from './components/SystemNachricht.vue'
-export default {
-  name: 'app',
-  components: {
-    'login': Login,
-    'sn': SystemNachricht
-  },
-  data(){
-    return{
-      component: 'login'
-    }
-  }
-}
-</script>
-
 <style lang="scss">
-  body {
+body {
     margin: 0;
     padding: 0;
   }
   #app {
     font-family: Tahoma;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #00894d;
     background-color: #104227;
     height: 100vh;
@@ -37,10 +21,7 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .demo{
-    position: absolute;
-    margin: 20% 0;
-    z-index: 110;
-    
-  }
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
 </style>

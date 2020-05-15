@@ -11,7 +11,7 @@
           <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
             <p>Bitte ihre Daten eingeben</p>
-            <button class="nichtRegistriert">Weiter ohne Registrierung</button>
+            <router-link to="/Startseite" tag="button" class="nichtRegistriert">Weiter ohne Registrierung</router-link>
             <button class="invert" id="zurRegistrierung" @click="signUp = !signUp">Registrieren</button>
           </div>
         </div>
@@ -37,8 +37,8 @@
   </article>
 </template>
 
-<script>
-  export default {
+<script lang="ts">
+export default {
     data: () => {
       return {
         signUp: false
@@ -93,9 +93,13 @@
     }
     .overlay-links {
       @include overlays(-20%);
+      width:50%;
+      height: 100%;
     }
     .overlay-rechts {
       @include overlays(0);
+      width:50%;
+      height: 100%;
       right: 0;
     }
   }
@@ -169,10 +173,14 @@
   }
   .anmelden {
     left: 0;
+    width:50%;
+    height: 100%;
     z-index: 2;
   }
   .registrieren {
     left: 0;
+    width:50%;
+    height: 100%;
     z-index: 1;
     opacity: 0;
   }
