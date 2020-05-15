@@ -92,8 +92,11 @@ export default Vue.extend({
                   benutzername: this.benutzernameAn,
                   passwort: this.passwortAn
               })
-              .then(function (response) {
-                  console.log(response);
+              .then(resp => {
+                console.log(resp.data)
+                const token = resp.data
+                localStorage.setItem('token', token)
+                axiosInstance.defaults.headers.common['Authorization'] = token
               });
             }
         }
