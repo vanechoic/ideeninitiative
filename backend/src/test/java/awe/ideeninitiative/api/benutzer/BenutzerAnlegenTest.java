@@ -1,7 +1,6 @@
 package awe.ideeninitiative.api.benutzer;
 
 import awe.ideeninitiative.api.model.Benutzer;
-import awe.ideeninitiative.api.model.BenutzerBuilder;
 import awe.ideeninitiative.controller.BenutzerController;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
@@ -63,8 +62,12 @@ public class BenutzerAnlegenTest {
         }
 
         public void vollstaendigeBenutzereingaben() {
-            iroh = BenutzerBuilder.aBenutzer().withBenutzername(benutzername)//
-                .withEmail(email).withVorname(vorname).withNachname(nachname).withPasswort(passwort).build();
+            iroh = new Benutzer();
+            iroh.setBenutzername(benutzername);
+            iroh.setVorname(vorname);
+            iroh.setNachname(nachname);
+            iroh.setEmail(email);
+            iroh.setPasswort(passwort);
         }
 
         public void vollstaendigeBenutzereingabenOhneBenutzernamen() {
