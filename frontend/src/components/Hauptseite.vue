@@ -40,7 +40,33 @@
         </div>
         <transition name="fade" appear>
             <div class="modal-overlay" v-if="showModal">
-                <button class="zurückBtn" v-on:click="showModal =false">Zurück</button>
+                <div class="kopfzeile">
+                    <label id="ideeName">Idee Name
+                        <!--{{}}-->
+                    </label>
+                    <div class="erstellInfos">
+                        <label class="erstellerLbl" for="ersteller">Ersteller:</label>
+                        <div id="ersteller">
+                            <!--{{}}-->
+                            gggg
+                        </div>
+                        <label id="erstellDatumLbl">Erstellt am:</label>
+                        <div id="erstellDatum">
+                            <!--{{}}-->
+                            20.12.20
+                        </div>
+                    </div>
+                </div>
+                <div class="hauptteil">
+                    <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
+                    <div id="beschreibung">
+                        <!--{{}}-->
+                       adadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+                    </div>
+                </div>
+                <div class="fußzeile">
+                    <button class="zurueckBtn" v-on:click="showModal =false">Zurück</button>
+                </div>
             </div>  
         </transition>
     </div>
@@ -87,32 +113,17 @@ Vue.use(ListBoxPlugin)
 
 <style lang="scss" scoped>
   .container {
-    position: relative;
-    width: 900px;
-    height: calc(100% - 20px);
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 200px);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
-
-    .demo{
-        position: absolute;
-        margin: 20% 0;
-        z-index: 110;
-    }
-    #rm{
-        margin: 60% 0;
-    }
-    #ad{
-        margin: 67% 0;
-    }
-    #mi{
-        margin: 74% 0;
-    }
-    #liste{
-        height: 100px;
-    }
+    left: 10%;
+    top:10%;
+    right:10%;
   }
   .links{
     position: relative;
@@ -166,7 +177,8 @@ Vue.use(ListBoxPlugin)
             margin-right: 2px;
         }
     }
-    button {
+  }
+  button {
         border-radius: 20px;
         border: 1px solid #00894d;
         background-color:#00894d;
@@ -186,7 +198,6 @@ Vue.use(ListBoxPlugin)
         outline: none;
         }
     }
-  }
   .rechts{
       position: absolute;
       top: 0;
@@ -195,8 +206,8 @@ Vue.use(ListBoxPlugin)
       justify-content: space-around;
       flex-direction: column;
       padding: 2%;
-      width: calc(50% - 55px);
-      height: calc(100% - 20px);
+      width: 50%;
+      height:100%;
       text-align: center;
       background-color: #00894d;
       margin-left:52.5%;
@@ -208,8 +219,9 @@ Vue.use(ListBoxPlugin)
         right: 0;
         bottom: 0;
         z-index: 200;
-        background-color: rgba(0, 0, 0, .2);
-        #zurückBtn{
+        padding: 3%;
+        background-color:#ccc;
+        .zurueckBtn{
             background-color:#f80303;
         }
   }
@@ -218,5 +230,51 @@ Vue.use(ListBoxPlugin)
   }
   .fade-enter, .fade-leave-to{
       opacity: 0;
+  }
+  .kopfzeile{
+      
+      #ideeName{
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: column;
+      text-align: center;
+      }
+      .erstellInfos{
+          justify-content: space-around;
+          #ersteller{
+              color: black;
+          }
+          #erstellDatum{
+              color: black;
+          }
+      }
+  }
+  .hauptteil{
+      position:absolute;
+      width: 100%;
+      height: 70%;
+      align-items: center;
+      justify-content: space-around;
+      #beschreibung{
+          display: block;
+          background-color: #fff;
+          word-wrap: break-word;
+          margin: 0 2%;
+          padding: .2% 1%;
+          width:90%;
+          height:85%;
+          border:1px solid  rgba(0, 0, 0, .3);
+          overflow: scroll;
+          color: black;
+          border-radius: 20px;
+      }
+  }
+  .fußzeile{
+      position: absolute;
+      bottom: 0;
+      top:95%;
+      left:90%;
   }
 </style>
