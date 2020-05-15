@@ -43,7 +43,10 @@ public class IdeeninitiativeExceptionHandler{
     }
 
     private ResponseEntity<ApiFehler> erzeugeApiFehler(String fehlertyp, String fehlertext, HttpStatus httpStatus){
-        ApiFehler apiFehler = ApiFehlerBuilder.anApiFehler().withFehlertyp(fehlertyp).withFehlertext(fehlertext).withHttpStatusCode(httpStatus.value()).build();
+        ApiFehler apiFehler = new ApiFehler();
+        apiFehler.setFehlertext(fehlertext);
+        apiFehler.setFehlertyp(fehlertyp);
+        apiFehler.setHttpStatusCode(httpStatus.value());
         return new ResponseEntity<>(apiFehler, httpStatus);
     }
 }
