@@ -14,5 +14,7 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
     public Optional<Mitarbeiter> findFirstByEmailOrBenutzername(String email, String benutzername);
 
     public Optional<Mitarbeiter> findFirstByBenutzername(String benutzername);
+
+    public List<Mitarbeiter>  findAllByEmail(String email);
 }
 

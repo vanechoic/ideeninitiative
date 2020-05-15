@@ -49,6 +49,8 @@ dependencies {
     implementation 'org.hibernate:hibernate-validator:5.4.2.Final'
     implementation 'org.hibernate:hibernate-validator-annotation-processor:5.4.2.Final'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.mockito:mockito-core:3.3.3'
+    implementation 'org.mockito:mockito-junit-jupiter:3.3.3'
 }
 
 sourceSets {

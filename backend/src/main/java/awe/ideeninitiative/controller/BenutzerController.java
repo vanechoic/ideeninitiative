@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -28,31 +28,8 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
         return new ResponseEntity<Void>(HttpStatus.I_AM_A_TEAPOT);
     }
 
-/*    private void pruefeEingabenAufVollstaendigkeit(Benutzer benutzer) throws UnvollstaendigeEingabeException {
-        List<String> unvollstaendigeParameter = new ArrayList<String>();
-        if(StringUtils.isEmpty(benutzer.getBenutzername())){
-            unvollstaendigeParameter.add("Benutzername");
-        }
-        if(StringUtils.isEmpty(benutzer.getEmail())){
-            unvollstaendigeParameter.add("E-Mail");
-        }
-        if(StringUtils.isEmpty(benutzer.getVorname())){
-            unvollstaendigeParameter.add("Vorname");
-        }
-        if(StringUtils.isEmpty(benutzer.getNachname())){
-            unvollstaendigeParameter.add("Nachname");
-        }
-        if(StringUtils.isEmpty(benutzer.getPasswort())){
-            unvollstaendigeParameter.add("Passwort");
-        }
-        if(!unvollstaendigeParameter.isEmpty()){
-            throw new UnvollstaendigeEingabeException(unvollstaendigeParameter);
-        }
-    }*/
-
     @Override
     public ResponseEntity<String> benutzerAnlegen(Benutzer benutzer){
-        //pruefeEingabenAufVollstaendigkeit(benutzer);
         logger.error(benutzer.getVorname());
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
@@ -61,7 +38,7 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
                 .withEmail(benutzer.getEmail())//
                 .withPasswort(benutzer.getPasswort()).build(); //TODO: Passwort verschlüsseln!
         benutzerService.mitarbeiterAnlegen(neuerMitarbeiter);
-        return ResponseEntity.ok(neuerMitarbeiter.getId().toString());
+        return ResponseEntity.ok(neuerMitarbeiter.toString());
     }
 
     @Override
