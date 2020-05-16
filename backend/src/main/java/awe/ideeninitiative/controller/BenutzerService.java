@@ -5,6 +5,8 @@ import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.security.JwtUtil;
 import awe.ideeninitiative.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Date;
 
 @Service
 public class BenutzerService {
@@ -47,7 +52,15 @@ public class BenutzerService {
         logger.error("BenutzerService - anmelden: " + benutzername + " mit "+ passwort);
         pruefeBenutzernamenUndPasswort(benutzername, passwort);
         final UserDetails anmeldedaten = userDetailsService.loadUserByUsername(benutzername);
-        return jwtUtil.generiereToken(anmeldedaten);
+       /* return jwtUtil.generiereToken(anmeldedaten);
+*/
+        return Jwts.builder()
+                .setSubject(anmeldedaten.getUsername())
+                .setIssuedAt(Date.from(Instant.ofEpochSecond(1589629653)))
+                .setExpiration(Date.from(Instant.ofEpochSecond(1589633253)))
+                .claim("rollen", "ROLE_MITARBEITER")
+                .signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
+                .compact();
     }
 
     /** authenticate!
