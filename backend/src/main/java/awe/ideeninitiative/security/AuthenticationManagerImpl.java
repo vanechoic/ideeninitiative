@@ -53,6 +53,7 @@ public class AuthenticationManagerImpl implements AuthenticationProvider {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
+    /*
     private String ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
         List<String> rollen = new ArrayList<String>();
         rollen.add(BenutzerRollen.ROLE_MITARBEITER.toString()); //TODO: Sauber: Wie wird der Admin gekennzeichnet?
@@ -60,5 +61,5 @@ public class AuthenticationManagerImpl implements AuthenticationProvider {
             rollen.add(BenutzerRollen.ROLE_ADMIN.toString());
         }
         return rollen.toString();
-    }
+    }*/
 }

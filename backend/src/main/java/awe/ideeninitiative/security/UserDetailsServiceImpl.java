@@ -41,9 +41,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private String ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
         List<String> rollen = new ArrayList<String>();
-        rollen.add(BenutzerRollen.ROLE_MITARBEITER.toString()); //TODO: Sauber: Wie wird der Admin gekennzeichnet?
+        rollen.add(BenutzerRollen.MITARBEITER.toString()); //TODO: Sauber: Wie wird der Admin gekennzeichnet?
         if(mitarbeiter.istFachspezialist()){
-            rollen.add(BenutzerRollen.ROLE_ADMIN.toString());
+            rollen.add(BenutzerRollen.FACHSPEZIALIST.toString());
+        }
+        if(mitarbeiter.istAdmin()){
+            rollen.add(BenutzerRollen.ADMIN.toString());
         }
         return rollen.toString();
     }

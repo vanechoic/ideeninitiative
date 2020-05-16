@@ -31,6 +31,8 @@ public class Mitarbeiter extends AbstractEntity {
 
     private boolean istFachspezialist;
 
+    private boolean istAdmin;
+
     /**
      * Speichert die Fachkenntnisse über Vertriebskanäle.
      */
@@ -154,5 +156,13 @@ public class Mitarbeiter extends AbstractEntity {
 
     public void setHandlungsfelder(Set<Handlungsfeld> handlungsfelder) {
         this.handlungsfelder = handlungsfelder;
+    }
+
+    public boolean istAdmin() {
+        return istAdmin;
+    }
+
+    public void setIstAdmin(boolean istAdmin) {
+        this.istAdmin = istAdmin;
     }
 }
