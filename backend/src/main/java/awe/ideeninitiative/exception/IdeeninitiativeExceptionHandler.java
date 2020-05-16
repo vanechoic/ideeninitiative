@@ -1,7 +1,6 @@
 package awe.ideeninitiative.exception;
 
 import awe.ideeninitiative.api.model.ApiFehler;
-import awe.ideeninitiative.api.model.ApiFehlerBuilder;
 import awe.ideeninitiative.controller.BenutzerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
