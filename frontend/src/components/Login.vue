@@ -97,7 +97,16 @@ export default Vue.extend({
                 const token = resp.data
                 localStorage.setItem('token', token)
                 axiosInstance.defaults.headers.common['Authorization'] = token
+
+                var jwt = require('jsonwebtoken')
+                var decode = jwt.decode(token);
+                console.log(decode)
+                if (decode["rollen"] == "ROLE_MITARBEITER") this.$router.push("/Home");
               });
+            },
+            routing: function(e: Event)
+            {
+              this.$router.push("/Home")
             }
         }
   })
