@@ -13,6 +13,7 @@
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.4",
     "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",

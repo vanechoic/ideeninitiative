@@ -1,16 +1,19 @@
 <template>
   <div class="reg-mitarbeiter">
-    <Registrierter msg="" />
+    <Hauptseite/>
+    <Registrierter/>
   </div>
 </template>
 
 <script>
 import Registrierter from "@/components/Registrierter.vue";
+import Hauptseite from "@/components/Hauptseite.vue";
 
 export default {
   name: "RegMitarbeiter",
   components: {
-    Registrierter,
+    Hauptseite,
+    Registrierter
   },
 };
 </script>

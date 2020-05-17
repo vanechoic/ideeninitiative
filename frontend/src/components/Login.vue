@@ -40,6 +40,7 @@
 <script lang="ts">
 import axios from 'axios'
 import Vue from "vue"
+import HauptseiteVue from './Hauptseite.vue';
 
 export default Vue.extend({
     data: () => ({
@@ -50,7 +51,7 @@ export default Vue.extend({
         emailReg: '',
         passwortReg: '',
         benutzernameAn: '',
-        passwortAn: ''
+        passwortAn: '',
     }),
     methods: {
             registrieren: function(event: Event) {
@@ -101,12 +102,15 @@ export default Vue.extend({
                 var jwt = require('jsonwebtoken')
                 var decode = jwt.decode(token);
                 console.log(decode)
-                if (decode["rollen"] == "ROLE_MITARBEITER") this.$router.push("/Home");
+
+                if (decode["rollen"] == "ROLE_MITARBEITER")
+                  this.$router.push({ name: 'Startseite', params: {dtoken:decode}})
               });
             },
             routing: function(e: Event)
             {
-              this.$router.push("/Home")
+              //this.$router.push("/Home")
+              
             }
         }
   })

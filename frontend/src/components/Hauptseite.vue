@@ -74,17 +74,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {ListBoxPlugin} from '@syncfusion/ej2-vue-dropdowns'
+import axios from 'axios'
 import Mitarbeiter from './Mitarbeiter.vue'
-Vue.use(ListBoxPlugin)
+import Registrierter from '@/components/Registrierter.vue'
   export default {
+    name:'Startseite',
     components: {
         'mitarbeiter': Mitarbeiter,
+        'registrierter': Registrierter
     },
-    data: () => {
+    props:['dToken'],
+    data: ()=> {
       return {
         showModal:false,
         component:'mitarbeiter',
+        props:{
+            tokenProp:{
+                required:true
+            }
+        },
         Ideen:[
             {Id:'i1', Idee:'Idee1'},
             {Id:'i2', Idee:'Idee als Beispiel für Liste '},
@@ -107,6 +115,10 @@ Vue.use(ListBoxPlugin)
         ],
         dataFields:{value:'Id', text:'Idee'}
       }
+    },
+    created(){
+        
+        //onsole.log(tokenProp+'###########################')
     }
   }
 </script>

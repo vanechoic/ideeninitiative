@@ -1,6 +1,6 @@
 <template>
   <div class="startseite">
-     <component v-bind:is="component"></component>
+     <child-comp :some-token-prop="tokenProp"></child-comp>
   </div>
 </template>
 
@@ -12,15 +12,24 @@ import IdeeBearbeiten from '@/components/IdeeBearbeiten.vue'
 
 export default {
   name: 'Startseite',
+  props:['Token'],
   components: {
-    "hs": Hauptseite,
-    "mi": MeineIdeen,
-    "ni": NeueIdee,
-    "ib": IdeeBearbeiten 
+   // "hs": Hauptseite,
+    //"mi": MeineIdeen,
+    //"ni": NeueIdee,
+    //"ib": IdeeBearbeiten 
   },
   data(){
     return{
-      component:'hs'
+      component:'hs',
+      tokenProp: this.fetchData()
+    }
+  },
+  methods:{
+     fetchData () {
+       var dToken= this.$route.params.dtoken
+        console.log(dToken)
+        return dToken;
     }
   }
 }
