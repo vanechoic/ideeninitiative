@@ -7,6 +7,7 @@ import VueAxios from 'vue-axios'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap';
+import { Params } from './services/params-service'
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
