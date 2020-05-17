@@ -53,12 +53,12 @@ public class BenutzerService {
         pruefeBenutzernamenUndPasswort(benutzername, passwort);
         final UserDetails anmeldedaten = userDetailsService.loadUserByUsername(benutzername);
        /* return jwtUtil.generiereToken(anmeldedaten);
-*/
+*/      String[] rollen = {"ROLE_MITARBEITER", "ROLE_FACHSPEZIALIST"};
         return Jwts.builder()
                 .setSubject(anmeldedaten.getUsername())
                 .setIssuedAt(Date.from(Instant.ofEpochSecond(1589629653)))
                 .setExpiration(Date.from(Instant.ofEpochSecond(1589633253)))
-                .claim("rollen", "ROLE_MITARBEITER")
+                .claim("rollen", rollen)
                 .signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
                 .compact();
     }
