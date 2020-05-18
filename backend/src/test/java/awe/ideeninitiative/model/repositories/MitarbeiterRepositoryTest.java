@@ -1,7 +1,7 @@
 package awe.ideeninitiative.model.repositories;
 
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
+import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

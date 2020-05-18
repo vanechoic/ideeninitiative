@@ -1,6 +1,5 @@
 package awe.ideeninitiative.security;
 
-import awe.ideeninitiative.controller.BenutzerService;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import org.slf4j.Logger;
@@ -25,29 +24,48 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.error("UserDetailsService - username: " + username);
         Optional<Mitarbeiter> mitarbeiter = mitarbeiterRepository.findFirstByBenutzername(username);
-        if(mitarbeiter == null || mitarbeiter.isEmpty()){
-            throw new UsernameNotFoundException("Für den Benutzernamen "+username+" existiert kein Konto.");
-        }
-        return benutzerDatenAlsUserDetailsVerpacken(mitarbeiter.get());
+        pruefeObRegistrierterMitarbeiterExistiert(username, mitarbeiter);
+        return formeMitarbeiterZuUserDetailsUm(mitarbeiter.get());
     }
 
-    private UserDetails benutzerDatenAlsUserDetailsVerpacken(Mitarbeiter mitarbeiter) {
+    /**
+     * Stellt sicher, dass ein Mitarbeiter zum gegebenen Benutzernamen gefunden wurde. Wurde kein Mitarbeiter gefunden,
+     * wird eine UsernameNotFoundException geworfen.
+     * @param benutzername
+     * @param mitarbeiter
+     */
+    private void pruefeObRegistrierterMitarbeiterExistiert(String benutzername, Optional<Mitarbeiter> mitarbeiter) throws UsernameNotFoundException{
+        if(mitarbeiter == null || mitarbeiter.isEmpty()){
+            throw new UsernameNotFoundException(String.format("Für den Benutzernamen {0} existiert kein Konto.", benutzername));
+        }
+    }
+
+    /**
+     * Erstellt UserDetails aus den Mitarbeiterdaten.
+     * @param mitarbeiter
+     * @return Mitarbeiter als UserDetails
+     */
+    private UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
         return User.withUsername(mitarbeiter.getBenutzername())
-                .password(mitarbeiter.getPasswort()) //TODO: Passwort entschlüsseln!
+                .password(mitarbeiter.getPasswort())
                 .roles(ermittleBenutzerrollenAlsString(mitarbeiter)).build();
     }
 
-    private String ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
+    /**
+     * Ermittelt alle zutreffenden Rollen für den gegebenen Mitarbeiter und gibt diese zurück.
+     * @param mitarbeiter
+     * @return Liste der zutreffenden Benutzerrollen
+     */
+    protected String[] ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
         List<String> rollen = new ArrayList<String>();
-        rollen.add(BenutzerRollen.MITARBEITER.toString()); //TODO: Sauber: Wie wird der Admin gekennzeichnet?
+        rollen.add(BenutzerRollen.MITARBEITER.toString());
         if(mitarbeiter.istFachspezialist()){
             rollen.add(BenutzerRollen.FACHSPEZIALIST.toString());
         }
         if(mitarbeiter.istAdmin()){
             rollen.add(BenutzerRollen.ADMIN.toString());
         }
-        return rollen.toString();
+        return rollen.toArray(new String[rollen.size()]);
     }
 }
