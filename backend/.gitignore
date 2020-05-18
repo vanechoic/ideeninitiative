@@ -1,0 +1,14 @@
+# backend/.gitignore
+
+# ordner
+.gradle/**
+.idea/**
+build/**
+generated-api/**
+
+# dateien
+*.class
+*.jar
+
+
+
