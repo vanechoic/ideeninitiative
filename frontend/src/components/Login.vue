@@ -12,7 +12,7 @@
             <h2>Zur Registrierung!</h2>
             <p>Bitte ihre Daten eingeben</p>
             <router-link
-              to="/Startseite"
+              to="/Home"
               tag="button"
               class="nichtRegistriert"
             >Weiter ohne Registrierung</router-link>

@@ -76,7 +76,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
-import Mitarbeiter from './Mitarbeiter.vue'
 import Registrierter from '@/components/Registrierter.vue'
 import { properties } from '@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dropdownlist.component'
 import { Params } from "../services/params-service";
@@ -84,13 +83,12 @@ import { Params } from "../services/params-service";
   export default {
     name:'Hauptseite',
     components: {
-        'mitarbeiter': Mitarbeiter,
         'registrierter': Registrierter
     },
     data: ()=> {
       return {
         showModal: false,
-        component:'mitarbeiter',
+        component:'registrierter',
         Ideen:[
             {Id:'i1', Idee:'Idee1'},
             {Id:'i2', Idee:'Idee als Beispiel für Liste '},

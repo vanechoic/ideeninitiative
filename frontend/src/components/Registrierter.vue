@@ -3,9 +3,9 @@
     <div class="container">
         <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild">
         <button id="profilbildHochladen">Profilbild hochladen</button>
-        <button id="ideen">Meine Ideen</button>
-        <button id="ideeErstellen">Idee erstellen</button>
-        <button id="zurSystemnachricht">Systemnachricht verfassen</button>
+        <router-link id="ideen" to="/Meineideen" tag="button">Meine Ideen</router-link>
+        <router-link id="ideeErstellen" to="/Ideeanlegen" tag="button">Idee erstellen</router-link>
+        <router-link id="zurSystemnachricht" to="/Systemnachricht" tag="button">Systemnachricht verfassen</router-link>
     </div>
   </article>
 </template>

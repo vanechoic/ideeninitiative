@@ -81,7 +81,7 @@ import { properties } from '@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dro
 import { Params } from "../services/params-service";
 
   export default {
-    name:'Hauptseite',
+    name:'Hauptseite_Mitarbeiter',
     components: {
         'mitarbeiter': Mitarbeiter
     },

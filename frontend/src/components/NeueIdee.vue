@@ -1,6 +1,6 @@
 <template>
   <article>
-    <b-container class="container">
+    <b-container class="container" name="NeueIdeeContainer">
         <h1>Neue Idee</h1>
         <b-row>
             <!-- Beschreibungstext -->
@@ -80,7 +80,7 @@
         </b-row>
         <b-row>
             <div class="buttons">
-                <button id="hinzu"> Abbrechen </button>
+                <button id="hinzu" @click="goBack()"> Abbrechen </button>
                 <button id="entfernen"> Speichern </button>
             </div>
         </b-row>
@@ -89,10 +89,15 @@
 </template>
 
 <script lang="ts">
-
-  export default {
-    
+import Vue from 'vue'
+export default Vue.extend({
+    methods: {
+    goBack() {
+      if (window.history.length > 1)
+        this.$router.go(-1)
+    }
   }
+  })
 </script>
 
 <style lang="scss" scoped>

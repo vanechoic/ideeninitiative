@@ -8,7 +8,7 @@
               <label for="nachricht">Nachricht:</label>
               <textarea id="nachricht" rows="20" cols="50"></textarea>
               <!-- Beachten ob ein Nutzer eingeloggt ist! !-->
-              <router-link to="Startseite" tag="button" id="abbrechenButton">Abbrechen</router-link>
+              <button id="abbrechenButton" @click="goBack()">Abbrechen</button>
               <button id="sendenButton">Senden</button> 
           </form>
     </div>
@@ -16,9 +16,16 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Systemnachricht'
-}
+import Vue from 'vue'
+export default Vue.extend({
+  name: 'Systemnachricht',
+  methods: {
+    goBack() {
+      if (window.history.length > 1)
+        this.$router.go(-1)
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
