@@ -36,7 +36,7 @@ public class BenutzerService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Mitarbeiter mitarbeiterAnlegen(Mitarbeiter mitarbeiter){
+    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter mitarbeiter){
         pruefeObMitarbeiterExistiert(mitarbeiter);
         mitarbeiter.setPasswort(bCryptPasswordEncoder.encode(mitarbeiter.getPasswort()));
         mitarbeiterRepository.save(mitarbeiter);

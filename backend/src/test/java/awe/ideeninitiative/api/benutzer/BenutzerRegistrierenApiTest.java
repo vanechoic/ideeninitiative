@@ -31,13 +31,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-public class BenutzerAnlegenApiTest {
+public class BenutzerRegistrierenApiTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,7 +58,7 @@ public class BenutzerAnlegenApiTest {
 
     @Before
     public void setup(){
-        when(benutzerServiceMock.mitarbeiterAnlegen(any())).then(returnsFirstArg());
+        when(benutzerServiceMock.mitarbeiterRegistrieren(any())).then(returnsFirstArg());
     }
 
     /**
@@ -68,7 +67,7 @@ public class BenutzerAnlegenApiTest {
     @Test
     public void vollstaendigeEingaben() throws Exception {
         given.vollstaendigeBenutzereingaben();
-        when.derBenutzerControllerBenutzerAnlegenAufgerufenWird();
+        when.derBenutzerControllerBenutzerRegistrierenAufgerufenWird();
         then.dasAufrufergebnisHatHttpStatusCode(HttpStatus.OK);
         then.derBenutzerServiceMitarbeiterAnlegenWurdeAufgerufen();
     }
@@ -76,14 +75,14 @@ public class BenutzerAnlegenApiTest {
     @Test
     public void fehlenderBenutzername() throws Exception {
         given.vollstaendigeBenutzereingabenOhneBenutzername();
-        when.derBenutzerControllerBenutzerAnlegenAufgerufenWird();
+        when.derBenutzerControllerBenutzerRegistrierenAufgerufenWird();
         then.dasAufrufergebnisHatHttpStatusCode(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void zuKurzerBenutzername() throws Exception {
         given.vollstaendigeBenutzereingabenMitZuKurzemBenutzernamen();
-        when.derBenutzerControllerBenutzerAnlegenAufgerufenWird();
+        when.derBenutzerControllerBenutzerRegistrierenAufgerufenWird();
         then.dasAufrufergebnisHatHttpStatusCode(HttpStatus.BAD_REQUEST);
     }
 
@@ -118,7 +117,7 @@ public class BenutzerAnlegenApiTest {
     }
 
     private class When{
-        public void derBenutzerControllerBenutzerAnlegenAufgerufenWird() throws Exception {
+        public void derBenutzerControllerBenutzerRegistrierenAufgerufenWird() throws Exception {
             String irohJson = new ObjectMapper().writeValueAsString(iroh);
 
             aufrufergebnis = mockMvc.perform(MockMvcRequestBuilders.post("/benutzer")
@@ -133,7 +132,7 @@ public class BenutzerAnlegenApiTest {
     private class Then{
 
         public void derBenutzerServiceMitarbeiterAnlegenWurdeAufgerufen() {
-            verify(benutzerServiceMock).mitarbeiterAnlegen(benutzerServiceArgumentCaptor.capture());
+            verify(benutzerServiceMock).mitarbeiterRegistrieren(benutzerServiceArgumentCaptor.capture());
             assertNotNull(benutzerServiceArgumentCaptor.getValue());
             dieMitarbeiterdatenStimmenMitDenBenutzerdatenUberein(benutzerServiceArgumentCaptor.getValue());
         }

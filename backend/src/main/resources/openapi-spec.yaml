@@ -14,13 +14,47 @@ schemes:
   - "https"
   - "http"
 paths:
+  /idee:
+    get:
+      tags:
+        - idee
+      summary: "Alle Ideen abrufen"
+      operationId: "alleIdeenAbrufen"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "erfolgreich"
+          schema:
+            type: "string"
+        500:
+          description: "Es gab einen unerwarteten internen Server-Fehler."
+          schema:
+            type: "string"
+  /idee/meineideen:
+    get:
+      tags:
+        - idee
+      summary: "Benutzerspezifische Ideen abrufen"
+      operationId: "meineIdeen"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "erfolgreich"
+          schema:
+            type: "string"
+        500:
+          description: "Es gab einen unerwarteten internen Server-Fehler."
+          schema:
+            type: "string"
   /benutzer:
     post:
       tags:
         - "benutzer"
-      summary: "Benutzer anlegen"
+      summary: "Benutzer registrieren"
       description: "This can only be done by the logged in user."
-      operationId: "benutzerAnlegen"
+      operationId: "benutzerRegistrieren"
       produces:
         - "application/json"
       parameters:
