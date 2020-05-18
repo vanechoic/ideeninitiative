@@ -3,15 +3,18 @@ package awe.ideeninitiative.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * https://dzone.com/articles/spring-boot-security-json-web-tokenjwt-hello-world
@@ -37,31 +40,65 @@ public class JwtUtil implements Serializable {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
-    //for retrieveing any information from token we will need the secret key
+
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
-    //check if the token has expired
+
+
+    /**
+     * Prüft, ob der Ablaufzeitpunkts des Token vor dem jetzigen Zeitpunkt liegt.
+     * @param token
+     * @return Wahrheitswert
+     */
     private Boolean istTokenAbgelaufen(String token) {
-        final Date expiration = extrahiereAblaufzeitpunktAusToken(token);
-        return expiration.before(new Date());
+        final Date ablaufzeitpunkt = extrahiereAblaufzeitpunktAusToken(token);
+        return ablaufzeitpunkt.before(new Date());
     }
-    //generate token for user
+
+
+    /**
+     * Generiert einen neuen JWT aus den gegebenen Benutzerinformationen.
+     * @param userDetails
+     * @return Generierter Token
+     */
     public String generiereToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return generiereEinzelnenToken(claims, userDetails.getUsername());
+        List<String> rollen = gibRollenAlsStringListeZurueck(userDetails);
+        return generiereEinzelnenToken(rollen, userDetails.getUsername());
     }
-    //while creating the token -
-//1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
-//2. Sign the JWT using the HS512 algorithm and secret key.
-//3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
-//   compaction of the JWT to a URL-safe string
-    private String generiereEinzelnenToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+
+    /**
+     * Formt die Liste der GrantedAuthorities der UserDetails in eine String-Liste um.
+     * @param userDetails
+     * @return Liste der Benutzerrollen als String
+     */
+    private List<String> gibRollenAlsStringListeZurueck(UserDetails userDetails) {
+        return userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+    }
+
+    /**
+     *  Generiert einen neuen JWT für den gegebenen Benutzer mit seinen Rollen. Dabei verwendet wird der definierte Verschlüsselungsalgorithmus,
+     *  sowie der konfigurierte secret key. Gesetzt werden das Subject, das Ablaufdatum, das Erstelldatum und die Rollen.
+     * @param rollen
+     * @param benutzername
+     * @return Generierter JWT
+     */
+    private String generiereEinzelnenToken(List<String> rollen, String benutzername) {
+        return Jwts.builder()
+                .setSubject(benutzername)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .claim("rollen", rollen)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
     }
-    //validate token
+
+    /**
+     * Prüft, dass der Benutzername aus dem Token mit dem durch die DB ermittelten übereinstimmt und noch nicht abgelaufen ist.
+     * @param token
+     * @param userDetails
+     * @return
+     */
     public Boolean validiereToken(String token, UserDetails userDetails) {
         final String username = extrahiereBenutzernamenAusToken(token);
         return (username.equals(userDetails.getUsername()) && !istTokenAbgelaufen(token));

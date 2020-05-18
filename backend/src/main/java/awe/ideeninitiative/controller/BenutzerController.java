@@ -2,8 +2,8 @@ package awe.ideeninitiative.controller;
 
 import awe.ideeninitiative.api.model.Benutzer;
 import awe.ideeninitiative.api.model.InlineObject;
-import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
+import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

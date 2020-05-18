@@ -1,6 +1,5 @@
 package awe.ideeninitiative.controller;
 
-import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.security.JwtUtil;
@@ -49,18 +48,9 @@ public class BenutzerService {
     }
 
     public String mitarbeiterAnmelden(String benutzername, String passwort) throws Exception {
-        logger.error("BenutzerService - anmelden: " + benutzername + " mit "+ passwort);
         pruefeBenutzernamenUndPasswort(benutzername, passwort);
         final UserDetails anmeldedaten = userDetailsService.loadUserByUsername(benutzername);
-       /* return jwtUtil.generiereToken(anmeldedaten);
-*/      String[] rollen = {"ROLE_MITARBEITER", "ROLE_FACHSPEZIALIST"};
-        return Jwts.builder()
-                .setSubject(anmeldedaten.getUsername())
-                .setIssuedAt(Date.from(Instant.ofEpochSecond(1589629653)))
-                .setExpiration(Date.from(Instant.ofEpochSecond(1589633253)))
-                .claim("rollen", rollen)
-                .signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
-                .compact();
+       return jwtUtil.generiereToken(anmeldedaten);
     }
 
     /** authenticate!
@@ -72,9 +62,9 @@ public class BenutzerService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(benutzername, passwort));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new Exception(String.format("Der Benutzer {0} ist deaktiviert.", benutzername), e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new Exception("Die Kombination aus Benutzername und Passwort stimmt nicht überein.", e);
         }
     }
 }
