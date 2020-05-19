@@ -6,14 +6,17 @@
         <router-link id="ideen" to="/Meineideen" tag="button">Meine Ideen</router-link>
         <router-link id="ideeErstellen" to="/Ideeanlegen" tag="button">Idee erstellen</router-link>
         <router-link id="zurSystemnachricht" to="/Systemnachricht" tag="button">Systemnachricht verfassen</router-link>
+        <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
     </div>
   </article>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'Registrierter'
+  name: 'Registrierter',
 }
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -38,8 +41,11 @@ export default {
   }
   #zurSystemnachricht, #profilbildHochladen{
     background-color:#0a0404;
+    width: 80%;
+    left:0;
+    right: 0;
   }
-  #zurückZurAnmeldung{
+  #abmelden{
     background-color:#f80303;
   }
   #ideen{
@@ -47,5 +53,6 @@ export default {
   }
   #ideen, #ideeErstellen{
     color: #000;
+    background-color:#ccc;
   } 
 </style>

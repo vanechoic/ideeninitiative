@@ -5,6 +5,7 @@
         <button id="profilbildHochladen">Profilbild hochladen</button>
         <button id="ideen">Zugewiesende Ideen</button>
         <button id="ideenspeicher">Zum Ideenspeicher</button>
+         <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
     </div>
   </article>
 </template>
@@ -47,4 +48,7 @@ export default {
   #ideen, #ideenspeicher{
     color: #000;
   } 
+   #abmelden{
+    background-color:#f80303;
+  }
 </style>

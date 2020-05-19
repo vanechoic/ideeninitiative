@@ -6,6 +6,7 @@
   </div>
 </template>
 
+
 <style lang="scss">
 body {
     margin: 0;
@@ -16,7 +17,8 @@ body {
     font-size: 1.2rem;
     color: #00894d;
     background-color: #104227;
-    height: 100vh;
+    height: 100%;
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -231,7 +231,7 @@ button {
   padding: 3%;
   background-color: #ccc;
   .zurueckBtn {
-    background-color: #f80303;
+   background-color: #f80303;
   }
 }
 .fade-enter-active,

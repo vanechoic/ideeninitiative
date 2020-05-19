@@ -5,7 +5,7 @@
             <p>Meine Ideen</p>
             <div class="listeContainer">
               <ul class="liste">
-                <li v-for="idee in Ideen" :key="idee.Idee" v-on:click="showModal = true">{{idee.Idee}}</li>
+                <li v-for="idee in Ideen" :key="idee.Idee">{{idee.Idee}}</li>
               </ul>
             </div>
             <!--3 Filter Dropdowns -->
@@ -94,7 +94,7 @@ export default Vue.extend({
  button {
     border-radius: 20px;
     border: 1px solid #fff;
-    color: rgb(0, 0, 0);
+    color:#fff;
     font-size: .75rem;
     font-weight: bold;
     padding: 10px 40px;
@@ -109,6 +109,12 @@ export default Vue.extend({
     &:focus {
       outline: none;
     }
+  }
+  #ideeVeroeffentlichen,#ideeBearbeiten, #zurueck{
+    background-color: black;
+  }
+  #ideeLoeschen{
+    background-color: #f80303;
   }
 .links{
     position: relative;
@@ -183,18 +189,18 @@ export default Vue.extend({
         }
     }
 }
-.rechts{
-      position: absolute;
-      top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      flex-direction: column;
-      padding: 2%;
-      width: calc(50% - 55px);
-      height: calc(100% - 20px);
-      text-align: center;
-      background-color: #00894d;
-      margin-left:52.5%;
-  }
+.rechts {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 2%;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  background-color: #00894d;
+  margin-left: 52.5%;
+}
 </style>

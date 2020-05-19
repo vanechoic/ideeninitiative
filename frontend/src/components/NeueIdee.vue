@@ -6,7 +6,7 @@
             <!-- Beschreibungstext -->
             <div class="beschreibung">
                 <h2> Beschreibungstext </h2>
-                <textarea> </textarea>
+                <textarea id="beschreibungsText"> </textarea>
             </div>
         </b-row>
         <b-row>
@@ -80,8 +80,8 @@
         </b-row>
         <b-row>
             <div class="buttons">
-                <button id="hinzu" @click="goBack()"> Abbrechen </button>
-                <button id="entfernen"> Speichern </button>
+                <button id="entfernen" @click="goBack()"> Abbrechen </button>
+                <button id="hinzu"> Speichern </button>
             </div>
         </b-row>
     </b-container>
@@ -101,9 +101,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.container {
+*{
     position: relative;
+}
+.container {
     float: left;
+    justify-content: space-around;
     width: 900px;
     height: calc(100% - 20px);
     border-radius: 10px;
@@ -117,21 +120,23 @@ export default Vue.extend({
     }
     h1{
         text-align: center;
-        margin: 30px;
+        margin: 2%;
     }
     label{
         font-size: 1.1em;
         margin-right: 30px;
     }
     .beschreibung{
-        margin-left: 30px;
-        margin-right: 30px;
-        height: 200px;
+        top:2%;
+        margin: auto;
+        left:0;
+        right: 0;
+        height: 300px;
     }
     .beschreibung textarea{
         resize: none;
-        width: 70%;
-        height: 100px;
+        width: 100%;
+        height: 90%;
     }
     .ideeButton{
         width: 30px;
@@ -156,13 +161,16 @@ export default Vue.extend({
     }
     .buttons{
         float: right;
-        margin: 30px;
+        margin: 2%;
     }
     #hinzu{
-        background-color:green;
+        background-color:#00894d;
+        color: #fff;
     }
     #entfernen{
-        background-color: red;
+        background-color: #f80303;
+        color: #fff;
+        margin-right: 2px;
     }
   }
  button {
@@ -175,7 +183,6 @@ export default Vue.extend({
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
-    margin-top:10px;
     transition: transform .1s ease-in;
     &:active {
       transform: scale(.9);
