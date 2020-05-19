@@ -37,6 +37,7 @@
           class="registrierung"
           id="registrierungButton"
           v-on:click="registrieren()"
+          @click="signUp = !signUp"
         >Registrieren</button>
       </form>
       <form class="anmelden" action="#">
