@@ -63,13 +63,13 @@ sourceSets {
 
 // Validating a single specification
 openApiValidate {
-    inputSpec = "$rootDir/src/main/resources/openapi-spec.yaml"
+    inputSpec = "$rootDir/src/main/resources/openapi3-spec.yaml"
 }
 
 openApiGenerate{
     generatorName = "spring"
     library = "spring-boot"
-    inputSpec = "${rootDir}/src/main/resources/openapi-spec.yaml".toString()
+    inputSpec = "${rootDir}/src/main/resources/openapi3-spec.yaml".toString()
     outputDir = "${rootDir}/generated-api/openapi".toString()
     templateDir = "${rootDir}/src/main/resources/templates".toString()
     systemProperties = [

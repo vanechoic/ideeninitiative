@@ -1,0 +1,270 @@
+openapi: 3.0.0
+info:
+  description: "This is a sample server Petstore server.  You can find out more
+    about     Swagger at [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample,
+    you can use the api key `special-key` to test the
+    authorization     filters."
+  version: 1.0.0
+  title: Ideeninitiative
+tags:
+  - name: benutzer
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+paths:
+  /idee:
+    get:
+      tags:
+        - idee
+      summary: Alle Ideen abrufen
+      operationId: alleIdeenAbrufen
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Idee'
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+  /idee/meineideen:
+    get:
+      tags:
+        - idee
+      summary: Benutzerspezifische Ideen abrufen
+      operationId: meineIdeen
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Idee'
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: Nicht autorisiert. Sind Sie angemeldet?
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+  /benutzer:
+    post:
+      tags:
+        - benutzer
+      summary: Benutzer registrieren
+      description: This can only be done by the logged in user.
+      operationId: benutzerRegistrieren
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Benutzer"
+        description: Created user object
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+  /benutzer/login:
+    post:
+      tags:
+        - benutzer
+      summary: Logs user into the system
+      description: ""
+      operationId: benutzerAnmelden
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+              properties:
+                benutzername:
+                  type: string
+                  minLength: 1
+                passwort:
+                  type: string
+                  minLength: 8
+        description: Der Benutzername des einzuloggenden Benutzers
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Ungültige Benutzerdaten
+  /benutzer/logout:
+    get:
+      tags:
+        - benutzer
+      summary: Meldet den aktuellen Benutzer ab
+      description: ""
+      operationId: benutzerAbmelden
+      responses:
+        default:
+          description: erfolgreich
+  "/benutzer/{benutzername}":
+    get:
+      tags:
+        - benutzername
+      summary: Benutzerdaten zu Benutzernamen laden
+      description: ""
+      operationId: benutzerdatenAusgeben
+      parameters:
+        - name: benutzername
+          in: path
+          description: "The name that needs to be fetched. Use user1 for testing. "
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Benutzer"
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+    put:
+      tags:
+        - benutzer
+      summary: Benutzerdaten aktualisieren
+      description: This can only be done by the logged in user.
+      operationId: benutzerdatenAktualisieren
+      parameters:
+        - name: benutzername
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Benutzer"
+        description: Updated user object
+        required: true
+      responses:
+        "400":
+          description: Invalid user supplied
+        "404":
+          description: User not found
+    delete:
+      tags:
+        - benutzer
+      summary: Benutzer löschen
+      description: This can only be done by the logged in user.
+      operationId: benutzerdatenLoeschen
+      parameters:
+        - name: benutzername
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+servers:
+  - url: /v2
+components:
+  schemas:
+    Benutzer:
+      type: object
+      required:
+        - benutzername
+        - vorname
+        - nachname
+        - email
+      properties:
+        benutzername:
+          type: string
+          minLength: 1
+        vorname:
+          type: string
+          minLength: 1
+        nachname:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 6
+        passwort:
+          type: string
+          minLength: 8
+      xml:
+        name: Mitarbeiter
+    Idee:
+      properties:
+        bearbeitungsstatus:
+          type: string
+        begruendung:
+          type: string
+        beschreibung:
+          type: string
+        bezeichnung:
+          type: string
+        typ:
+          type: string
+        erfasser:
+          type: string
+        fachspezialist:
+          type: string
+    ApiFehler:
+      type: object
+      properties:
+        httpStatusCode:
+          type: integer
+          format: int32
+        fehlertyp:
+          type: string
+        fehlertext:
+          type: string

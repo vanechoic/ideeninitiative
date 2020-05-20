@@ -1,6 +1,9 @@
 package awe.ideeninitiative.security;
 
+import awe.ideeninitiative.controller.IdeeController;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +23,7 @@ import java.io.IOException;
  */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
+    static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
@@ -28,7 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        logger.error("JwtRequestFilter");
         final String requestTokenHeader = request.getHeader("Authorization");
         String benutzername = null;
         String token = null;

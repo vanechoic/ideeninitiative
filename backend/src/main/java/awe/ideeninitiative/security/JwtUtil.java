@@ -83,7 +83,7 @@ public class JwtUtil implements Serializable {
      * @param benutzername
      * @return Generierter JWT
      */
-    private String generiereEinzelnenToken(List<String> rollen, String benutzername) {
+    protected String generiereEinzelnenToken(List<String> rollen, String benutzername) {
         return Jwts.builder()
                 .setSubject(benutzername)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
