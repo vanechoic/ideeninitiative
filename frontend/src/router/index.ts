@@ -52,4 +52,19 @@ const router = new VueRouter({
   routes
 })
 
-export default router
+// Navigation Guard - Erlaubt nur den Zugriff
+// auf geschützen Bereich, wenn ein Token gesetzt ist
+router.beforeEach((to, from, next) => {
+
+  var jwt = require("jsonwebtoken");
+  var token = jwt.decode(localStorage.getItem("token"));
+
+  if ( (to.name === 'Mitarbeiter' || to.name === 'SystemnachrichtAnzeigen') )
+    next();
+  else if ( (to.name !== 'LoginScreen' && !token) )
+    next({ name: 'LoginScreen' });
+  else
+    next();
+})
+
+export default router;

@@ -2,11 +2,15 @@
   <article>
     <div class="container">
         <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild">
-        <button id="profilbildHochladen">Profilbild hochladen</button>
+        <div class="profilbild-upload-wrapper">
+          <!-- form und action für das submit hinzufügen !-->
+          <input type="file" name="profilbild">
+          <button class="profilbildHochladen">Profilbild hochladen</button>
+        </div>
         <router-link id="ideen" to="/Meineideen" tag="button">Meine Ideen</router-link>
         <router-link id="ideeErstellen" to="/Ideeanlegen" tag="button">Idee erstellen</router-link>
         <router-link id="zurSystemnachricht" to="/Systemnachricht" tag="button">Systemnachricht verfassen</router-link>
-        <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
+        <router-link id="abmelden" :to="{ path: '/' }" replace tag="button" @click="logout()">Abmelden</router-link>
     </div>
   </article>
 </template>
@@ -14,6 +18,11 @@
 <script lang="ts">
 export default {
   name: 'Registrierter',
+  methods: {
+    logout: function(){
+      localStorage.clear();
+    }
+  }
 }
 
 
@@ -39,7 +48,7 @@ export default {
       outline: none;
     }
   }
-  #zurSystemnachricht, #profilbildHochladen{
+  #zurSystemnachricht, .profilbildHochladen{
     background-color:#0a0404;
     width: 80%;
     left:0;
@@ -55,4 +64,16 @@ export default {
     color: #000;
     background-color:#ccc;
   } 
+  .profilbild-upload-wrapper {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  }
+  .profilbild-upload-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  }
 </style>
