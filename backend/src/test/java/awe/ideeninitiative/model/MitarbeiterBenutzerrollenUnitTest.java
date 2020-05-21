@@ -1,9 +1,9 @@
-package awe.ideeninitiative.security;
+package awe.ideeninitiative.model;
 
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
+import awe.ideeninitiative.security.BenutzerRollen;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
@@ -11,10 +11,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 @SpringBootTest
-public class UserDetailsServiceImplUnitTest {
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+public class MitarbeiterBenutzerrollenUnitTest {
 
     private Given given = new Given();
     private When when = new When();
@@ -55,7 +52,7 @@ public class UserDetailsServiceImplUnitTest {
 
     private class When {
         public void ermittleBenutzerrollenAlsStringAufgerufenWird() {
-            rollen = userDetailsServiceImpl.ermittleBenutzerrollenAlsString(tomRiddle);
+            rollen = tomRiddle.ermittleBenutzerrollenAlsString();
         }
     }
 

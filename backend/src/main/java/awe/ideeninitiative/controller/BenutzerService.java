@@ -4,8 +4,6 @@ import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.security.JwtUtil;
 import awe.ideeninitiative.security.UserDetailsServiceImpl;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

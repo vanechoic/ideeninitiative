@@ -103,6 +103,14 @@ public class JwtUtil implements Serializable {
         final String username = extrahiereBenutzernamenAusToken(token);
         return (username.equals(userDetails.getUsername()) && !istTokenAbgelaufen(token));
     }
+    
+    private String extrahiereJwtAusAuthorizationHeader(String authorizationHeader){
+        return authorizationHeader.substring(7);
+    }
+
+    public String extrahiereBenutzernamenAusAuthorizationHeader(String authorizationHeader){
+        return extrahiereBenutzernamenAusToken(extrahiereJwtAusAuthorizationHeader(authorizationHeader));
+    }
 
 
 }

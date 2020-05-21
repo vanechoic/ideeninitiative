@@ -28,7 +28,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Idee'
+                  $ref: '#/components/schemas/IdeeDTO'
         "500":
           description: Es gab einen unerwarteten internen Server-Fehler.
           content:
@@ -41,6 +41,12 @@ paths:
         - idee
       summary: Benutzerspezifische Ideen abrufen
       operationId: meineIdeen
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
       responses:
         "200":
           description: erfolgreich
@@ -49,7 +55,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Idee'
+                  $ref: '#/components/schemas/IdeeDTO'
         "500":
           description: Es gab einen unerwarteten internen Server-Fehler.
           content:
@@ -73,7 +79,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Benutzer"
+              $ref: "#/components/schemas/BenutzerDTO"
         description: Created user object
         required: true
       responses:
@@ -163,7 +169,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Benutzer"
+                $ref: "#/components/schemas/BenutzerDTO"
         "400":
           description: Invalid username supplied
         "404":
@@ -186,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Benutzer"
+              $ref: "#/components/schemas/BenutzerDTO"
         description: Updated user object
         required: true
       responses:
@@ -217,7 +223,7 @@ servers:
   - url: /v2
 components:
   schemas:
-    Benutzer:
+    BenutzerDTO:
       type: object
       required:
         - benutzername
@@ -242,7 +248,7 @@ components:
           minLength: 8
       xml:
         name: Mitarbeiter
-    Idee:
+    IdeeDTO:
       properties:
         bearbeitungsstatus:
           type: string

@@ -1,6 +1,6 @@
 package awe.ideeninitiative.controller;
 
-import awe.ideeninitiative.api.model.Benutzer;
+import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.api.model.InlineObject;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
@@ -27,7 +27,7 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<String> benutzerRegistrieren(Benutzer benutzer){
+    public ResponseEntity<String> benutzerRegistrieren(BenutzerDTO benutzer){
         logger.error(benutzer.getVorname());
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
@@ -53,7 +53,7 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<Void> benutzerdatenAktualisieren(String benutzername, Benutzer body) {
+    public ResponseEntity<Void> benutzerdatenAktualisieren(String benutzername, BenutzerDTO body) {
         logger.error("funzt");
         return new ResponseEntity<Void>(HttpStatus.I_AM_A_TEAPOT);
     }
