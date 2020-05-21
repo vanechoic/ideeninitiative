@@ -1,9 +1,9 @@
-package awe.ideeninitiative.controller;
+package awe.ideeninitiative.restapi.service;
 
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
-import awe.ideeninitiative.security.JwtUtil;
-import awe.ideeninitiative.security.UserDetailsServiceImpl;
+import awe.ideeninitiative.restapi.security.JwtUtil;
+import awe.ideeninitiative.restapi.security.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.Date;
 
 @Service
 public class BenutzerService {

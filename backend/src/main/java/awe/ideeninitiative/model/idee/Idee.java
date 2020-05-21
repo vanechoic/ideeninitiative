@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * Beinhaltet die gemeinsamen Attribute und Funktionen der Produktideen und internen Ideen.
  */
 @Entity
-public abstract class Idee extends AbstractEntity {
+public class Idee extends AbstractEntity {
 
     @NotNull
     private String bezeichnung;
