@@ -1,7 +1,6 @@
-package awe.ideeninitiative.security;
+package awe.ideeninitiative.restapi.security;
 
 
-import awe.ideeninitiative.exception.IdeeninitiativeExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

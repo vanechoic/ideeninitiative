@@ -1,7 +1,7 @@
-package awe.ideeninitiative.security;
+package awe.ideeninitiative.restapi.security;
 
-import awe.ideeninitiative.controller.IdeeController;
-import awe.ideeninitiative.controller.IdeeService;
+import awe.ideeninitiative.restapi.controller.IdeeController;
+import awe.ideeninitiative.restapi.service.IdeeService;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.repository.query.JpaQueryCreator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

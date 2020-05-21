@@ -1,4 +1,4 @@
-package awe.ideeninitiative.security;
+package awe.ideeninitiative.restapi.security;
 
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -1,6 +1,5 @@
-package awe.ideeninitiative.security;
+package awe.ideeninitiative.restapi.security;
 
-import awe.ideeninitiative.controller.IdeeController;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

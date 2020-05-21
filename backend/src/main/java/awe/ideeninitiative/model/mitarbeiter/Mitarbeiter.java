@@ -5,7 +5,7 @@ import awe.ideeninitiative.model.enums.Sparte;
 import awe.ideeninitiative.model.enums.Vertriebskanal;
 import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Zielgruppe;
-import awe.ideeninitiative.security.BenutzerRollen;
+import awe.ideeninitiative.restapi.security.BenutzerRollen;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

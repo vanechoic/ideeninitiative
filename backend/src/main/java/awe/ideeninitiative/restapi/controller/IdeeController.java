@@ -1,8 +1,10 @@
-package awe.ideeninitiative.controller;
+package awe.ideeninitiative.restapi.controller;
 
 import awe.ideeninitiative.api.IdeeApi;
 import awe.ideeninitiative.api.model.IdeeDTO;
-import awe.ideeninitiative.security.JwtUtil;
+import awe.ideeninitiative.restapi.mapper.IdeeMapper;
+import awe.ideeninitiative.restapi.security.JwtUtil;
+import awe.ideeninitiative.restapi.service.IdeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,14 @@ public class IdeeController implements IdeeApi {
     private IdeeService ideeService;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private IdeeMapper ideeMapper;
 
     @Override
     public ResponseEntity<List<IdeeDTO>> alleIdeenAbrufen() throws Exception {
         logger.error("alle Ideen abrufen");
-        ideeService.alleIdeenAbrufen();
-        return null;
+        List<IdeeDTO> geladeneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.alleIdeenAbrufen());
+        return ResponseEntity.ok(geladeneIdeeDTOs);
 
     }
 
@@ -35,8 +39,7 @@ public class IdeeController implements IdeeApi {
     public ResponseEntity<List<IdeeDTO>> meineIdeen(String authorization) throws Exception {
         logger.error("meine Ideen");
         String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
-        ideeService.meineIdeenAbrufen(benutzername);
-        //TODO: Mapper Idee->Idee
-        return null;
+        List<IdeeDTO> geladeneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.meineIdeenAbrufen(benutzername));
+        return ResponseEntity.ok(geladeneIdeeDTOs);
     }
 }

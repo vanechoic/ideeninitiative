@@ -1,9 +1,11 @@
-package awe.ideeninitiative.controller;
+package awe.ideeninitiative.restapi.controller;
 
+import awe.ideeninitiative.api.BenutzerApi;
 import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.api.model.InlineObject;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
+import awe.ideeninitiative.restapi.service.BenutzerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
+public class BenutzerController implements BenutzerApi {
 
     static final Logger logger = LoggerFactory.getLogger(BenutzerController.class);
 
