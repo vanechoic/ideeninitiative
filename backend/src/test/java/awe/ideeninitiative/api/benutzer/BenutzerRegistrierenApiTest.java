@@ -1,6 +1,6 @@
 package awe.ideeninitiative.api.benutzer;
 
-import awe.ideeninitiative.api.model.Benutzer;
+import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.controller.BenutzerController;
 import awe.ideeninitiative.controller.BenutzerService;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
@@ -53,7 +53,7 @@ public class BenutzerRegistrierenApiTest {
     @Captor
     private ArgumentCaptor<Mitarbeiter> benutzerServiceArgumentCaptor;
 
-    private Benutzer iroh;
+    private BenutzerDTO iroh;
     private String benutzername, email, vorname, nachname, passwort;
 
     @Before
@@ -97,7 +97,7 @@ public class BenutzerRegistrierenApiTest {
         }
 
         public void vollstaendigeBenutzereingaben() {
-            iroh = new Benutzer();
+            iroh = new BenutzerDTO();
             iroh.setBenutzername(benutzername);
             iroh.setVorname(vorname);
             iroh.setNachname(nachname);

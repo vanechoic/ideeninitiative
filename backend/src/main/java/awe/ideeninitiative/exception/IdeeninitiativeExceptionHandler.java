@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -50,6 +51,12 @@ public class IdeeninitiativeExceptionHandler{
     public ResponseEntity<ApiFehler> handleException(AuthenticationException e)  {
         logger.warn("AccessDeniedException");
         return erzeugeApiFehler("AuthenticationException", e.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<ApiFehler> handleException(InsufficientAuthenticationException e)  {
+        logger.warn("InsufficientAuthenticationException");
+        return erzeugeApiFehler("InsufficientAuthenticationException", e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     public static ResponseEntity<ApiFehler> erzeugeApiFehler(String fehlertyp, String fehlertext, HttpStatus httpStatus){

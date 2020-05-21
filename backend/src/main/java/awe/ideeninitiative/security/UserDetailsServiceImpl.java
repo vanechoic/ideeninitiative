@@ -49,23 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
         return User.withUsername(mitarbeiter.getBenutzername())
                 .password(mitarbeiter.getPasswort())
-                .roles(ermittleBenutzerrollenAlsString(mitarbeiter)).build();
+                .roles(mitarbeiter.ermittleBenutzerrollenAlsString()).build();
     }
 
-    /**
-     * Ermittelt alle zutreffenden Rollen für den gegebenen Mitarbeiter und gibt diese zurück.
-     * @param mitarbeiter
-     * @return Liste der zutreffenden Benutzerrollen
-     */
-    protected String[] ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
-        List<String> rollen = new ArrayList<String>();
-        rollen.add(BenutzerRollen.MITARBEITER.toString());
-        if(mitarbeiter.istFachspezialist()){
-            rollen.add(BenutzerRollen.FACHSPEZIALIST.toString());
-        }
-        if(mitarbeiter.istAdmin()){
-            rollen.add(BenutzerRollen.ADMIN.toString());
-        }
-        return rollen.toArray(new String[rollen.size()]);
-    }
 }
