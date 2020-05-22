@@ -120,171 +120,129 @@ import { Params } from "../services/params-service";
   }
 </script>
 
-<style lang="scss" scoped>
-.container {
-  position: absolute;
-  width: 100%;
-  height: calc(100% - 200px);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(to bottom, #efefef, #ccc);
-  left: 10%;
-  top: 10%;
-  right: 10%;
-}
-.links {
-  position: relative;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  padding: 2%;
-  width: calc(50% - 20px);
-  height: calc(100% - 30px);
-  text-align: left;
-
-  p {
-    margin: 8px 0 8px;
-    top: 0;
+<style lang="scss" scoped>  
+  .rechts,.hauptteil{
+    position: relative;
   }
-  .listeContainer {
-    width: 100%;
-    height: 400px;
-    border: 1px solid #000;
-    font-family: arial;
+  .container, .links, .modal-overlay,.fußzeile{
+    position: absolute;
   }
-  ul {
-    height: 400px;
-    list-style: none;
-    margin: 0;
-    overflow: auto;
-    padding: 0;
-    text-indent: 10px;
+  .hauptteil, .listeContainer, .filter, .fußzeile, #beschreibung{
+    width: 100%
   }
-  li {
-    line-height: 30px;
-    color: rgba(0, 0, 0, 9);
+  .rechts, .links, .erstellInfos, #beschreibung{
+    height: 100%;
+  }
+  .rechts, .links, .erstellInfos, .filter, #ideeName{
+    display: flex;
+    justify-content: space-around;
+  }
+  p, .container, .links, .rechts, .modal-overlay{
+    top:0;
+  }
+  .container, .links, .rechts{
+    width: 50%;
+  }
+  li, #beschreibung, #ersteller, #erstellDatum{
+    color: black;
+  }
+  li, .listeContainer, #beschreibung{
     border: 0.5px solid #000;
   }
-  li:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+  .links, .rechts, .modal-overlay{
+    padding: 2%;
   }
-  .filterElement {
-    float: left;
+  .container, .modal-overlay{
+    background: linear-gradient(to bottom, #efefef, #ccc);
   }
-  .filter {
-    float: left;
-    width: 100%;
-    margin-right: 3.33333%;
-    padding: 10px;
-    box-sizing: border-box;
-
-    #filter1,
-    #filter2 {
-      margin-right: 2px;
-    }
-  }
-}
-button {
-  border-radius: 20px;
-  border: 1px solid #00894d;
-  background-color: #00894d;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 2px 5px;
-  margin-left: 60%;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
-.rechts {
-  position: absolute;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  padding: 2%;
-  width: 50%;
-  height: 100%;
-  text-align: center;
-  background-color: #00894d;
-  margin-left: 52.5%;
-}
-.modal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 200;
-  padding: 3%;
-  background-color: #ccc;
-  .zurueckBtn {
-    background-color: #f80303;
-  }
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-.kopfzeile {
-  #ideeName {
-    font-size: 1.5rem;
-    display: flex;
+  .links, .rechts, #ideeName{
     align-items: center;
-    justify-content: space-around;
+  }
+  button, .container, #beschreibung{
+    border-radius: 20px;
+  }
+  button, .rechts{
+    background-color: #00894d;
+  }
+  .links, #ideeName{
     flex-direction: column;
+  }
+  .rechts, #ideeName{
     text-align: center;
   }
-  .erstellInfos {
-    justify-content: space-around;
-    #ersteller {
-      color: black;
+  ul, .listeContainer{
+    height: 300px;
+  }
+  #filter1, #filter2{
+    margin-right: 2px;
+  }
+  .fade-enter-active, .fade-leave-active{
+    transition: opacity 0.5;
+  }
+  .fade-enter, .fade-leave-to{
+    opacity: 0;
+  }
+  button{
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 2px 5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s ease-in;
+    &:active{
+      transform: scale(0.9);
     }
-    #erstellDatum {
-      color: black;
+    &:focus{
+      outline: none;
     }
   }
-}
-.hauptteil {
-  position: absolute;
-  width: 100%;
-  height: 70%;
-  align-items: center;
-  justify-content: space-around;
-  #beschreibung {
+  #beschreibung{
     display: block;
     background-color: #fff;
     word-wrap: break-word;
-    margin: 0 2%;
     padding: 0.2% 1%;
-    width: 90%;
-    height: 85%;
-    border: 1px solid rgba(0, 0, 0, 0.3);
     overflow: scroll;
-    color: black;
-    border-radius: 20px;
   }
-}
-.fußzeile {
-  position: absolute;
-  bottom: 0;
-  top: 95%;
-  left: 90%;
-}
+  .container{
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  }
+  .rechts{
+    margin-left: 52.5%;
+  }
+  .hauptteil{
+    height: 65%;
+  }
+  .zurueckBtn{
+    background-color: #f80303;
+    right: 5%;
+  }
+  .fußzeile{
+    bottom: 5%;
+  }
+  #ideeName{
+    font-size: 1.5rem;
+  }
+  .modal-overlay{
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  p{
+    margin: 8px 0 8px;
+  }
+  ul{
+    list-style: none;
+    overflow: auto;    text-indent: 10px;
+    padding: 0;
+  }
+  li{
+    line-height: 150%;
+  }
+  li:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 </style>

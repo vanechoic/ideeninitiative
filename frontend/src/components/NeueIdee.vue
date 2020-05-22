@@ -1,22 +1,22 @@
 <template>
   <article>
-    <b-container class="container" name="NeueIdeeContainer">
+    <div class="container-fluid" name="NeueIdeeContainer">
         <h1>Neue Idee</h1>
-        <b-row>
+        <div class="row">
             <!-- Beschreibungstext -->
             <div class="beschreibung">
                 <h2> Beschreibungstext </h2>
                 <textarea id="beschreibungsText"> </textarea>
             </div>
-        </b-row>
-        <b-row>
+        </div>
+        <div class="row">
             <!-- Datei Upload -->
             <div class="dateien">
                 <h2> Datei Upload </h2>
                 <input type="file">
             </div>
-        </b-row>
-        <b-row>
+        </div>
+        <div class="row">
             <!-- Vorteile -->
             <div class="vorteile">
                 <h2> Vorteile </h2>
@@ -25,15 +25,15 @@
                 <button class="ideeButton" id="entfernen"> - </button><br>
                 <textarea readonly id="vorteileAnzeigen"> </textarea>
             </div>
-        </b-row>
-        <b-row>
+        </div>
+        <div class="row">
             <!-- Existierende Idee - Checkbox -->
             <div class="existiert">
                 <label for="existiertBereits"> Existiert eine vergleichbare Idee? </label>
                 <input type="checkbox" id="existiertBereits">
             </div>
-        </b-row>
-        <b-row>
+        </div>
+        <div class="row">
         <!--Comboboxen zur Ideen-Spezifikation -->
         <div class="ideenDropdowns">
             <div class="combobox">
@@ -77,14 +77,14 @@
                 </select>
             </div>
         </div>
-        </b-row>
-        <b-row>
+        </div>
+        <div class="row">
             <div class="buttons">
                 <button id="entfernen" @click="goBack()"> Abbrechen </button>
                 <button id="hinzu"> Speichern </button>
             </div>
-        </b-row>
-    </b-container>
+        </div>
+    </div>
   </article>
 </template>
 
@@ -101,14 +101,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-*{
-    position: relative;
-}
-.container {
+
+.container-fluid{
     float: left;
     justify-content: space-around;
-    width: 900px;
     height: calc(100% - 20px);
+    width:800px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
@@ -120,48 +118,48 @@ export default Vue.extend({
     }
     h1{
         text-align: center;
-        margin: 2%;
+        margin: 1%;
     }
     label{
         font-size: 1.1em;
-        margin-right: 30px;
+       // margin-right: 30px;
     }
     .beschreibung{
         top:2%;
-        margin: auto;
+       // margin: auto;
         left:0;
         right: 0;
-        height: 300px;
+        height: 250px;
     }
     .beschreibung textarea{
-        resize: none;
+        //resize: none;
         width: 100%;
-        height: 90%;
+        height: 80%;
     }
     .ideeButton{
         width: 30px;
         height: 30px;
     }
     .dateien{
-        margin: 30px;
+       // margin: 20px;
     }
     .vorteile{
-        margin: 30px;
+        //margin: 20px;
     }
     #vorteileAnzeigen{
-        resize: none;
+        //resize: none;
         width: 30%;
     }
     #vorteile{
         width: 30%;
     }
     .existiert{
-        margin: 30px;
+        //margin: 30px;
         margin-bottom: 0px;
     }
     .buttons{
         float: right;
-        margin: 2%;
+        //margin: 2%;
     }
     #hinzu{
         background-color:#00894d;
@@ -196,6 +194,6 @@ p, label{
 }
 .combobox{
     float: left;
-    margin: 35px;
+    //margin: 35px;
 }
 </style>
