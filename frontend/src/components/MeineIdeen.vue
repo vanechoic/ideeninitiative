@@ -35,7 +35,7 @@
         </div>
         <div class="rechts">
             <button id="ideeVeroeffentlichen"> Idee veröffentlichen </button>
-            <button id="ideeBearbeiten"> Bearbeiten </button>
+            <router-link to="IdeeBearbeiten" tag="button" id="ideeBearbeiten"> Bearbeiten </router-link>
             <button id="ideeLoeschen"> Löschen </button>
             <router-link to="Startseite" tag="button" id="zurueck"> Zurück </router-link>
         </div>
