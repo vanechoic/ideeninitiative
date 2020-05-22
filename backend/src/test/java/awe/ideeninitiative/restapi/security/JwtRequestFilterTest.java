@@ -1,12 +1,10 @@
 package awe.ideeninitiative.restapi.security;
 
-import awe.ideeninitiative.api.AbstrakterApiTest;
+import awe.ideeninitiative.restapi.AbstrakterApiTest;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.restapi.controller.IdeeController;
 import awe.ideeninitiative.restapi.service.IdeeService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

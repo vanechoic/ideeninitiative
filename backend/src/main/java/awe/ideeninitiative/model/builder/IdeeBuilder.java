@@ -6,7 +6,7 @@ import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 
 public final class IdeeBuilder {
-    private String bezeichnung;
+    private String titel;
     private String beschreibung;
     private String begruendung;
     private Ideenstatus bearbeitungsstatus;
@@ -21,8 +21,8 @@ public final class IdeeBuilder {
         return new IdeeBuilder();
     }
 
-    public IdeeBuilder withBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
+    public IdeeBuilder withTitel(String titel) {
+        this.titel = titel;
         return this;
     }
 
@@ -58,7 +58,7 @@ public final class IdeeBuilder {
 
     public Idee build() {
         Idee idee = new Idee();
-        idee.setBezeichnung(bezeichnung);
+        idee.setTitel(titel);
         idee.setBeschreibung(beschreibung);
         idee.setBegruendung(begruendung);
         idee.setBearbeitungsstatus(bearbeitungsstatus);

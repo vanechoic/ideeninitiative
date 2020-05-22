@@ -1,8 +1,7 @@
-package awe.ideeninitiative.api.benutzer;
+package awe.ideeninitiative.restapi.controller;
 
-import awe.ideeninitiative.api.AbstrakterApiTest;
+import awe.ideeninitiative.restapi.AbstrakterApiTest;
 import awe.ideeninitiative.api.model.BenutzerDTO;
-import awe.ideeninitiative.restapi.controller.BenutzerController;
 import awe.ideeninitiative.restapi.service.BenutzerService;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import com.fasterxml.jackson.databind.ObjectMapper;

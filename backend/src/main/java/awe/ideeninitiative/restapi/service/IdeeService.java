@@ -27,7 +27,7 @@ public class IdeeService {
         return ideeRepository.findAll();
     }
 
-    public Idee ideeAnlegen(Idee idee){
+    public Idee neueIdeeAnlegen(Idee idee){
         return ideeRepository.save(idee);
     }
 }
