@@ -56,6 +56,7 @@ import axios from "axios";
 import Vue from "vue";
 import HauptseiteVue from "./Hauptseite.vue";
 import { Params } from "../services/params-service";
+import { Helper } from "../services/helper"
 
 export default Vue.extend({
   data: () => ({
@@ -71,17 +72,7 @@ export default Vue.extend({
   methods: {
     registrieren: function (event: Event) {
       console.log("REGISTRIEREN BUTTON");
-      var axiosInstance = axios.create({
-        baseURL: "http://localhost:9090/benutzer",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS, DELETE",
-          "Access-Control-Allow-Headers":
-            "Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type",
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer", {
           benutzername: this.benutzernameReg,
@@ -96,24 +87,13 @@ export default Vue.extend({
     },
     anmelden: function (event: Event) {
       console.log("ANMELDEN BUTTON");
-      var axiosInstance = axios.create({
-        baseURL: "http://localhost:9090/benutzer",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS, DELETE",
-          "Access-Control-Allow-Headers":
-            "Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type",
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer/login", {
           benutzername: this.benutzernameAn,
           passwort: this.passwortAn,
         })
         .then((resp) => {
-          console.log(resp.data);
           const token = resp.data;
           localStorage.setItem("token", token);
           axiosInstance.defaults.headers.common["Authorization"] = token;
@@ -126,11 +106,11 @@ export default Vue.extend({
           Params.getInstance().tokenSubject.next(decode);
             this.$router.push("Startseite");
         });
-    },
-    routing: function (e: Event) {
-      //this.$router.push("/Home")
-    },
+    }
   },
+  beforeCreate() {
+    window.localStorage.clear();
+  }
 });
 </script>
 
