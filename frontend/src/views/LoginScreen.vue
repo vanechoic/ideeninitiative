@@ -6,7 +6,6 @@
 
 <script>
 import Login from '@/components/Login.vue'
-
 export default {
   name: 'LoginScreen',
   components: {
@@ -14,4 +13,3 @@ export default {
   }
 }
 </script>
-

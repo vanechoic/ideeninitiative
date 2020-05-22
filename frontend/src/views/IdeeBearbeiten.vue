@@ -1,5 +1,5 @@
 <template>
-  <div class="loginScreen">
+  <div class="Ideebearbeiten">
     <IdeeBearbeiten msg=""/>
   </div>
 </template>

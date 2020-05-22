@@ -182,23 +182,6 @@ import { Params } from "../services/params-service";
   .fade-enter, .fade-leave-to{
     opacity: 0;
   }
-  button{
-    border: 1px solid #fff;
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: bold;
-    padding: 2px 5px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.1s ease-in;
-    &:active{
-      transform: scale(0.9);
-    }
-    &:focus{
-      outline: none;
-    }
-  }
   #beschreibung{
     display: block;
     background-color: #fff;
@@ -245,4 +228,21 @@ import { Params } from "../services/params-service";
   li:hover{
     background-color: rgba(0, 0, 0, 0.1);
   }
+  button{
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active{
+    transform: scale(0.9);
+  }
+  &:focus{
+    outline: none;
+  }
+}
 </style>

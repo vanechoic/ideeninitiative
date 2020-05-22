@@ -70,8 +70,8 @@ export default {
   cursor: pointer;
   }
   .profilbild-upload-wrapper input[type=file] {
-  font-size: 100px;
   position: absolute;
+  font-size: 100px;
   left: 0;
   top: 0;
   opacity: 0;
