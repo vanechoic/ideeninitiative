@@ -112,6 +112,7 @@ paths:
               properties:
                 benutzername:
                   type: string
+                  pattern: '^\w+$'
                   minLength: 1
                 passwort:
                   type: string
@@ -162,6 +163,7 @@ paths:
           required: true
           schema:
             type: string
+            pattern: '^\w+$'
             minLength: 1
       responses:
         "200":
@@ -187,6 +189,7 @@ paths:
           required: true
           schema:
             type: string
+            pattern: '^\w+$'
             minLength: 1
       requestBody:
         content:
@@ -213,6 +216,7 @@ paths:
           required: true
           schema:
             type: string
+            pattern: '^\w+$'
             minLength: 1
       responses:
         "400":
@@ -233,15 +237,19 @@ components:
       properties:
         benutzername:
           type: string
+          pattern: '^\w+$'
           minLength: 1
         vorname:
           type: string
+          pattern: '^\w+[\s\w]*$'
           minLength: 1
         nachname:
           type: string
+          pattern: '^\w+[\s\w]*$'
           minLength: 1
         email:
           type: string
+          pattern:  '^[\w.@-]+$'
           minLength: 6
         passwort:
           type: string
@@ -258,12 +266,15 @@ components:
           type: string
         bezeichnung:
           type: string
+          pattern: '^\w+[\s\w]*$'
         typ:
           type: string
         erfasser:
           type: string
+          pattern: '^\w+$'
         fachspezialist:
           type: string
+          pattern: '^\w+$'
     ApiFehler:
       type: object
       properties:

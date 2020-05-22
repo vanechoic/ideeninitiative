@@ -7,6 +7,7 @@ import awe.ideeninitiative.model.enums.Ideentyp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * Beinhaltet die gemeinsamen Attribute und Funktionen der Produktideen und internen Ideen.
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Idee extends AbstractEntity {
 
     @NotNull
+    @Pattern(regexp = "\\w+[\\s\\w]*")
     private String bezeichnung;
 
     private String beschreibung;

@@ -6,9 +6,11 @@ import awe.ideeninitiative.model.enums.Vertriebskanal;
 import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Zielgruppe;
 import awe.ideeninitiative.restapi.security.BenutzerRollen;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +20,17 @@ import java.util.Set;
 public class Mitarbeiter extends AbstractEntity {
 
     @NotNull
+    @Pattern(regexp="\\w+")
     private String benutzername;
 
+    @Pattern(regexp = "[\\w.]+[\\s\\w.]*")
     private String vorname;
 
+    @Pattern(regexp = "[\\w.]+[\\s\\w.]*")
     private String nachname;
 
     @NotNull
+    @Email
     private String email;
 
     @NotNull

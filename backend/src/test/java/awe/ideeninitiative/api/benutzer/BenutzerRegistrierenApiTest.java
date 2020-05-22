@@ -1,5 +1,6 @@
 package awe.ideeninitiative.api.benutzer;
 
+import awe.ideeninitiative.api.AbstrakterApiTest;
 import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.restapi.controller.BenutzerController;
 import awe.ideeninitiative.restapi.service.BenutzerService;
@@ -7,21 +8,12 @@ import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.Assert.assertEquals;
@@ -32,18 +24,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@ExtendWith(MockitoExtension.class)
-public class BenutzerRegistrierenApiTest {
+public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
 
-    @Autowired
-    private MockMvc mockMvc;
     private Given given = new Given();
     private When when = new When();
     private Then then = new Then();
-    private MvcResult aufrufergebnis;
 
     @InjectMocks
     private BenutzerController benutzerController;

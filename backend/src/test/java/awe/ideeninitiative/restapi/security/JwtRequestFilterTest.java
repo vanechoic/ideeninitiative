@@ -1,58 +1,47 @@
 package awe.ideeninitiative.restapi.security;
 
-import awe.ideeninitiative.restapi.controller.IdeeController;
-import awe.ideeninitiative.restapi.service.IdeeService;
+import awe.ideeninitiative.api.AbstrakterApiTest;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
-import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
+import awe.ideeninitiative.restapi.controller.IdeeController;
+import awe.ideeninitiative.restapi.service.IdeeService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 /**
  * Prüft, dass die in der WebSecurityConfig definierten Filter passen und der JWT bei benötigten Endpunkten korrekt geprüft wird.
  * Beispiel: /idee/meineideen
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@ExtendWith(MockitoExtension.class)
-public class JwtRequestFilterTest {
+public class JwtRequestFilterTest extends AbstrakterApiTest {
 
     static final Logger logger = LoggerFactory.getLogger(JwtRequestFilterTest.class);
-    @Autowired
-    private MockMvc mockMvc;
-    private MvcResult aufrufergebnis;
     private Given given = new Given();
     private When when = new When();
     private Then then = new Then();
     private Mitarbeiter sheldon;
-    private String jwt;
+    private String jwt, sheldonBenutzername;
 
     @InjectMocks
     private IdeeController ideeController;
@@ -62,10 +51,17 @@ public class JwtRequestFilterTest {
     @Captor
     private ArgumentCaptor<String> ideeServiceArgumentCaptor;
 
-    @Autowired
-    private MitarbeiterRepository mitarbeiterRepository;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Before
+    public void setup(){
+        sheldonBenutzername = "planktonn";
+        given.einRegistrierterMitarbeiter();
+        given.einGemockterUserDetailsServiceFuerSheldon();
+    }
 
     @Test
     public void alleIdeenAbrufenOhneJwt() throws Exception {
@@ -75,7 +71,6 @@ public class JwtRequestFilterTest {
 
     @Test
     public void meineIdeenOhneAuthentifizierungAufrufen() throws Exception {
-        given.einRegistrierterMitarbeiter();
         when.meineIdeenOhneBesondereAuthentifizierungAufgerufenWird();
         then.werdenMeineIdeenNichtGeladen();
         then.dasAufrufergebnisHatHttpStatusCode(HttpStatus.FORBIDDEN);
@@ -83,26 +78,44 @@ public class JwtRequestFilterTest {
 
     @Test
     public void meineIdeenMitGueltigemJwtAufrufen() throws Exception {
-        given.einRegistrierterMitarbeiter();
         given.einGueltigerJwtZumMitarbeiter();
-        when.meineIdeenMitEinemGueltigenJwtAufgerufenWird();
+        when.meineIdeenMitDemErstelltenJwtAufgerufenWird();
         then.werdenMeineIdeenGeladen();
+    }
+
+    @Test
+    public void meineIdeenMitAbgelaufenemJwtAufrufen() throws Exception{
+        given.einAbgelaufenerJwtZumMitarbeiter();
+        when.meineIdeenMitDemErstelltenJwtAufgerufenWird();
+        then.werdenMeineIdeenNichtGeladen();
     }
 
     private class Given{
 
         public void einRegistrierterMitarbeiter() {
-            sheldon = MitarbeiterBuilder.aMitarbeiter().withBenutzername("planktonn")//
+            sheldon = MitarbeiterBuilder.aMitarbeiter().withBenutzername(sheldonBenutzername)//
                     .withEmail("sheldon.j@plankton.de").withVorname("Sheldon J.")//
                     .withNachname("Plankton").withPasswort("Karen")
                     .build();
-            sheldon = mitarbeiterRepository.save(sheldon);
+            //sheldon = mitarbeiterRepository.save(sheldon);
         }
 
         public void einGueltigerJwtZumMitarbeiter() {
             List<String> sheldonsRollen = Arrays.asList(sheldon.ermittleBenutzerrollenAlsString());
             jwt = jwtUtil.generiereEinzelnenToken(sheldonsRollen, sheldon.getBenutzername());
-            logger.error(jwt);
+        }
+
+        public void einGemockterUserDetailsServiceFuerSheldon() {
+            when(userDetailsService.formeMitarbeiterZuUserDetailsUm(any())).thenCallRealMethod();
+            UserDetails userDetails = userDetailsService.formeMitarbeiterZuUserDetailsUm(sheldon);
+            when(userDetailsService.loadUserByUsername(sheldonBenutzername)).thenReturn(userDetails);
+        }
+
+        public void einAbgelaufenerJwtZumMitarbeiter() {
+            List<String> sheldonsRollen = Arrays.asList(sheldon.ermittleBenutzerrollenAlsString());
+            jwt = jwtUtil.generiereEinzelnenTokenMitAblaufzeitpunkt(sheldonsRollen, sheldon.getBenutzername(), new Date(System.currentTimeMillis() - 10000));
+
+
         }
     }
 
@@ -124,7 +137,7 @@ public class JwtRequestFilterTest {
                     .andReturn();
         }
 
-        public void meineIdeenMitEinemGueltigenJwtAufgerufenWird() throws Exception {
+        public void meineIdeenMitDemErstelltenJwtAufgerufenWird() throws Exception {
             aufrufergebnis = mockMvc.perform(MockMvcRequestBuilders.get("/idee/meineideen")
                     .with(csrf())
                     .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))

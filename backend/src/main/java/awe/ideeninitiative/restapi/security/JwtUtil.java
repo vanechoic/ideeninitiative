@@ -81,10 +81,28 @@ public class JwtUtil implements Serializable {
      * @return Generierter JWT
      */
     protected String generiereEinzelnenToken(List<String> rollen, String benutzername) {
-        return Jwts.builder()
+        return generiereEinzelnenTokenMitAblaufzeitpunkt(rollen, benutzername, new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000));
+        /*return Jwts.builder()
                 .setSubject(benutzername)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .claim("rollen", rollen)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();*/
+    }
+
+    /**
+     *  Generiert einen neuen JWT für den gegebenen Benutzer mit seinen Rollen. Dabei verwendet wird der definierte Verschlüsselungsalgorithmus,
+     *  sowie der konfigurierte secret key. Gesetzt werden das Subject, das Ablaufdatum, das Erstelldatum und die Rollen.
+     * @param rollen
+     * @param benutzername
+     * @return Generierter JWT
+     */
+    protected String generiereEinzelnenTokenMitAblaufzeitpunkt(List<String> rollen, String benutzername, Date ablaufzeitpunkt) {
+        return Jwts.builder()
+                .setSubject(benutzername)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(ablaufzeitpunkt)
                 .claim("rollen", rollen)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
