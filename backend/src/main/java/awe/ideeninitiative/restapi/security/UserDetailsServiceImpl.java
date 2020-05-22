@@ -35,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     private void pruefeObRegistrierterMitarbeiterExistiert(String benutzername, Optional<Mitarbeiter> mitarbeiter) throws UsernameNotFoundException{
         if(mitarbeiter == null || mitarbeiter.isEmpty()){
-            throw new UsernameNotFoundException(String.format("Für den Benutzernamen {0} existiert kein Konto.", benutzername));
+            throw new UsernameNotFoundException(String.format("Für den Benutzernamen %s existiert kein Konto.", benutzername));
         }
     }
 
@@ -44,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @param mitarbeiter
      * @return Mitarbeiter als UserDetails
      */
-    private UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
+    protected UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
         return User.withUsername(mitarbeiter.getBenutzername())
                 .password(mitarbeiter.getPasswort())
                 .roles(mitarbeiter.ermittleBenutzerrollenAlsString()).build();
