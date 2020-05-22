@@ -20,10 +20,12 @@
             <!-- Vorteile -->
             <div class="vorteile">
                 <h2> Vorteile </h2>
-                <input id="vorteile" type="text">
-                <button class="ideeButton" id="hinzu"> + </button>
+                <input id="vorteile" type="text" v-model="vorteilText">
+                <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()"> + </button>
                 <button class="ideeButton" id="entfernen"> - </button><br>
-                <textarea readonly id="vorteileAnzeigen"> </textarea>
+                <ul id="vorteile-liste">
+                    <li v-for="vorteil in Vorteile" :key="vorteil.vorteil" v-on:click="selectVorteil()">{{ vorteil.vorteil }}</li>
+                </ul>
             </div>
         </b-row>
         <b-row>
@@ -39,41 +41,50 @@
             <div class="combobox">
                 <p> Ideen-Typ </p>
                 <select>
-                    <option value="Sparte 1">Sparte 1</option>
-                    <option value="Sparte 2">Sparte 2</option>
-                    <option value="Sparte 3">Sparte 3</option>
-                    <option value="Sparte 3">Sparte 4</option>
+                    <option value="Produktidee">Produktidee</option>
+                    <option value="Interne Idee">Interne Idee</option>
                 </select>
             </div>
             <div class="combobox">
                 <p> Sparte </p>
                 <select>
-                    <option value="Sparte 1">Sparte 1</option>
-                    <option value="Sparte 2">Sparte 2</option>
+                    <option value="Sparte 1">KFZ</option>
+                    <option value="Sparte 2">Unfall</option>
+                    <option value="Sparte 2">Krankenversicherung</option>
+                    <option value="Sparte 1">Rechtsschutz</option>
+                    <option value="Sparte 2">Lebensversicherung</option>
+                    <option value="Sparte 2">Rentenversicherung</option>
+                    <option value="Sparte 1">Haftpflicht</option>
+                    <option value="Sparte 2">Hausrat</option>
+                    <option value="Sparte 2">Wohngebäudeversicherung</option>
                 </select>
             </div>
             <div class="combobox">
                 <p> Vertriebskanal </p>
                 <select>
-                    <option value="Sparte 1">Sparte 1</option>
-                    <option value="Sparte 2">Sparte 2</option>
-                    <option value="Sparte 3">Sparte 3</option>
+                    <option value="Vertriebskanal 1">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+                    <option value="Vertriebskanal 2">Versicherungsmakler</option>
+                    <option value="Vertriebskanal 3">Kooperation mit Kreditinstituten</option>
+                    <option value="Vertriebskanal 4">Direktversicherung</option>
                 </select>
             </div>
             <div class="combobox">
                 <p> Zielgruppen </p>
                 <select>
-                    <option value="Sparte 1">Sparte 1</option>
-                    <option value="Sparte 2">Sparte 2</option>
-                    <option value="Sparte 3">Sparte 3</option>
+                    <option value="Zielgruppe 1">Kinder/Jugendliche</option>
+                    <option value="Zielgruppe 2">Familien</option>
+                    <option value="Zielgruppe 3">Singles</option>
+                    <option value="Zielgruppe 4">Paare</option>
+                    <option value="Zielgruppe 5">Personen 50+</option>
+                    <option value="Zielgruppe 6">Gewerbetreibende</option>
                 </select>
             </div>
             <div class="combobox">
                 <p> Handlungsfelder </p>
                 <select>
-                    <option value="Sparte 1">Sparte 1</option>
-                    <option value="Sparte 2">Sparte 2</option>
-                    <option value="Sparte 3">Sparte 3</option>
+                    <option value="Handlungsfelder 1">Kostensenkung</option>
+                    <option value="Handlungsfelder 2">Ertragssteigerung</option>
+                    <option value="Handlungsfelder 3">Zukunftsfähigkeit</option>
                 </select>
             </div>
         </div>
@@ -91,12 +102,34 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+    data: () => ({
+        counter: 0,
+        vorteilText: '',
+        Vorteile: [
+            { id: 1, vorteil: 'Vorteil'}
+        ]
+    }),
     methods: {
-    goBack() {
-      if (window.history.length > 1)
-        this.$router.go(-1)
+        goBack() {
+        if (window.history.length > 1)
+            this.$router.go(-1)
+        },
+        vorteilHinzufuegen() {
+            if (this.counter == 0)
+            {
+                this.$delete(this.Vorteile, 0);
+                this.Vorteile.push( { id: this.counter, vorteil: this.vorteilText } );
+                this.counter++;
+            }
+            else if (this.counter < 3)
+            {
+                this.Vorteile.push( { id: this.counter, vorteil: this.vorteilText } );
+                this.counter++;
+            }
+            else
+                alert("Pro Idee können nur 3 Ideen hinzugefügt werden");
+        }
     }
-  }
   })
 </script>
 
@@ -197,5 +230,8 @@ p, label{
 .combobox{
     float: left;
     margin: 35px;
+}
+select{
+    width: 5em;
 }
 </style>
