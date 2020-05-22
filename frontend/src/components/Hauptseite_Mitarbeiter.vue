@@ -121,10 +121,10 @@ import { Params } from "../services/params-service";
 </script>
 
 <style lang="scss" scoped>  
-  .rechts,.hauptteil{
+  .container, .rechts, .hauptteil{
     position: relative;
   }
-  .container, .links, .modal-overlay,.fußzeile{
+  .links, .modal-overlay,.fußzeile{
     position: absolute;
   }
   .hauptteil, .listeContainer, .filter, .fußzeile, #beschreibung{
@@ -137,10 +137,10 @@ import { Params } from "../services/params-service";
     display: flex;
     justify-content: space-around;
   }
-  p, .container, .links, .rechts, .modal-overlay{
+  p, .links, .rechts, .modal-overlay{
     top:0;
   }
-  .container, .links, .rechts{
+  .links, .rechts{
     width: 50%;
   }
   li, #beschreibung, #ersteller, #erstellDatum{
@@ -208,6 +208,8 @@ import { Params } from "../services/params-service";
   }
   .container{
     overflow: hidden;
+    height: 500px;
+    width: 800px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   }
   .rechts{
