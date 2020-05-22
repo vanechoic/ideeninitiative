@@ -1,4 +1,4 @@
-package awe.ideeninitiative.api;
+package awe.ideeninitiative.restapi;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;

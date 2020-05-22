@@ -35,6 +35,73 @@ paths:
             application/json:
               schema:
                 type: string
+    post:
+      tags:
+        - idee
+      summary: Neue Idee anlegen
+      operationId: neueIdeeAnlegen
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdeeDTO"
+        description: Neu angelegte Idee
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+    delete:
+      tags:
+        - idee
+      summary: Löschen einer Idee
+      operationId: ideeLoeschen
+      parameters:
+        - name: titel
+          in: path
+          description: Titel der zu loeschenden Idee
+          required: true
+          schema:
+            type: string
+            pattern: '^\w+[\s\w]*$'
+            minLength: 1
+        - name: erfasser
+          in: path
+          description: Benutzername des Erfassers der zu loeschenden Idee
+          required: true
+          schema:
+            type: string
+            pattern: '^\w+[\s\w]*$'
+            minLength: 1
+        - name: erstelldatum
+          in: path
+          description: Erstelldatum der zu loeschenden Idee
+          required: true
+          schema:
+            type: string
+            pattern: '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$'
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Fehlerhafte Eingabe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
   /idee/meineideen:
     get:
       tags:
@@ -264,7 +331,7 @@ components:
           type: string
         beschreibung:
           type: string
-        bezeichnung:
+        titel:
           type: string
           pattern: '^\w+[\s\w]*$'
         typ:
@@ -275,6 +342,28 @@ components:
         fachspezialist:
           type: string
           pattern: '^\w+$'
+        existiertBereits:
+          type: boolean
+        unternehmensbezeichnung:
+          type: String
+        artDerUmsetzung:
+          type: String
+        sparten:
+          type: string
+        vertriebsweg:
+          type: array
+          items:
+            type: string
+        zielgruppe:
+          type: array
+          items:
+            type: string
+        vorteile:
+          type: array
+          items:
+            type: string
+        handlungsfeld:
+          type: string
     ApiFehler:
       type: object
       properties:

@@ -2,6 +2,7 @@ package awe.ideeninitiative.restapi.controller;
 
 import awe.ideeninitiative.api.IdeeApi;
 import awe.ideeninitiative.api.model.IdeeDTO;
+import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.restapi.mapper.IdeeMapper;
 import awe.ideeninitiative.restapi.security.JwtUtil;
 import awe.ideeninitiative.restapi.service.IdeeService;
@@ -32,7 +33,11 @@ public class IdeeController implements IdeeApi {
         logger.error("alle Ideen abrufen");
         List<IdeeDTO> geladeneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.alleIdeenAbrufen());
         return ResponseEntity.ok(geladeneIdeeDTOs);
+    }
 
+    @Override
+    public ResponseEntity<String> ideeLoeschen(String titel, String erfasser, String erstelldatum) throws Exception {
+        return null;
     }
 
     @Override
@@ -41,5 +46,12 @@ public class IdeeController implements IdeeApi {
         String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
         List<IdeeDTO> geladeneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.meineIdeenAbrufen(benutzername));
         return ResponseEntity.ok(geladeneIdeeDTOs);
+    }
+
+    @Override
+    public ResponseEntity<String> neueIdeeAnlegen(IdeeDTO ideeDTO) throws Exception {
+        Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
+        ideeService.neueIdeeAnlegen(idee);
+        return ResponseEntity.ok("Idee wurde angelegt");
     }
 }
