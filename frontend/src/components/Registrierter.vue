@@ -2,18 +2,30 @@
   <article>
     <div class="container">
         <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild">
-        <button id="profilbildHochladen">Profilbild hochladen</button>
-        <button id="ideen">Meine Ideen</button>
-        <button id="ideeErstellen">Idee erstellen</button>
-        <button id="zurSystemnachricht">Systemnachricht verfassen</button>
+        <div class="profilbild-upload-wrapper">
+          <!-- form und action für das submit hinzufügen !-->
+          <input type="file" name="profilbild">
+          <button class="profilbildHochladen">Profilbild hochladen</button>
+        </div>
+        <router-link id="ideen" to="/Meineideen" tag="button">Meine Ideen</router-link>
+        <router-link id="ideeErstellen" to="/Ideeanlegen" tag="button">Idee erstellen</router-link>
+        <router-link id="zurSystemnachricht" to="/Systemnachricht" tag="button">Systemnachricht verfassen</router-link>
+        <router-link id="abmelden" :to="{ path: '/' }" replace tag="button" @click="logout()">Abmelden</router-link>
     </div>
   </article>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'Registrierter'
+  name: 'Registrierter',
+  methods: {
+    logout: function(){
+      localStorage.clear();
+    }
+  }
 }
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -36,10 +48,13 @@ export default {
       outline: none;
     }
   }
-  #zurSystemnachricht, #profilbildHochladen{
+  #zurSystemnachricht, .profilbildHochladen{
     background-color:#0a0404;
+    width: 80%;
+    left:0;
+    right: 0;
   }
-  #zurückZurAnmeldung{
+  #abmelden{
     background-color:#f80303;
   }
   #ideen{
@@ -47,5 +62,18 @@ export default {
   }
   #ideen, #ideeErstellen{
     color: #000;
+    background-color:#ccc;
   } 
+  .profilbild-upload-wrapper {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  }
+  .profilbild-upload-wrapper input[type=file] {
+  position: absolute;
+  font-size: 100px;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  }
 </style>

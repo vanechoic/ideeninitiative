@@ -8,7 +8,7 @@
               <label for="nachricht">Nachricht:</label>
               <textarea id="nachricht" rows="20" cols="50"></textarea>
               <!-- Beachten ob ein Nutzer eingeloggt ist! !-->
-              <router-link to="Startseite" tag="button" id="abbrechenButton">Abbrechen</router-link>
+              <button id="abbrechenButton" @click="goBack()">Abbrechen</button>
               <button id="sendenButton">Senden</button> 
           </form>
     </div>
@@ -16,19 +16,31 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Systemnachricht'
-}
+import Vue from 'vue'
+export default Vue.extend({
+  name: 'Systemnachricht',
+  methods: {
+    goBack() {
+      if (window.history.length > 1)
+        this.$router.go(-1)
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
   .container {
-    position: relative;
+    position: absolute;
     align-items: center;
-    width: 768px;
+    width: calc(100% - 50px);
     height: 100%;
     border-radius: 10px;
+    top:2%;
+    left: 2%;
+    right: 2%;
+    bottom: 2%;
     overflow: hidden;
+    align-items: center;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
@@ -37,8 +49,11 @@ export default {
     margin: 0;
   }
   p {
-    margin: 10px 12.5%;
+    margin: 10px 16.5%;
     width: 80%;
+    left:0;
+    right: 0;
+    font-size: 2rem;
   }
   button {
     border-radius: 20px;
@@ -81,7 +96,7 @@ export default {
       border: none;
       padding: 5px 15px;
       margin: 6px 0;
-      width: calc(40%);
+      width: 100%;
       border-radius: 15px;
       border-bottom: 1px solid #ddd;
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4), 
@@ -104,8 +119,11 @@ export default {
   #abbrechenButton{
     background-color:#ec0b0b;
     border-color: #fff;
+    width: 100%;
   }
-  #nachricht{
+  textarea{
     resize: none;
+    width:100%;
+    height: 100%;
   }
 </style>
