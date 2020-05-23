@@ -1,12 +1,9 @@
-package awe.ideeninitiative.controller;
+package awe.ideeninitiative.restapi.service;
 
-import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
-import awe.ideeninitiative.security.JwtUtil;
-import awe.ideeninitiative.security.UserDetailsServiceImpl;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import awe.ideeninitiative.restapi.security.JwtUtil;
+import awe.ideeninitiative.restapi.security.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.Date;
 
 @Service
 public class BenutzerService {
@@ -37,7 +31,7 @@ public class BenutzerService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Mitarbeiter mitarbeiterAnlegen(Mitarbeiter mitarbeiter){
+    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter mitarbeiter){
         pruefeObMitarbeiterExistiert(mitarbeiter);
         mitarbeiter.setPasswort(bCryptPasswordEncoder.encode(mitarbeiter.getPasswort()));
         mitarbeiterRepository.save(mitarbeiter);
@@ -49,18 +43,9 @@ public class BenutzerService {
     }
 
     public String mitarbeiterAnmelden(String benutzername, String passwort) throws Exception {
-        logger.error("BenutzerService - anmelden: " + benutzername + " mit "+ passwort);
         pruefeBenutzernamenUndPasswort(benutzername, passwort);
         final UserDetails anmeldedaten = userDetailsService.loadUserByUsername(benutzername);
-       /* return jwtUtil.generiereToken(anmeldedaten);
-*/      String[] rollen = {"ROLE_MITARBEITER", "ROLE_FACHSPEZIALIST"};
-        return Jwts.builder()
-                .setSubject(anmeldedaten.getUsername())
-                .setIssuedAt(Date.from(Instant.ofEpochSecond(1589629653)))
-                .setExpiration(Date.from(Instant.ofEpochSecond(1589633253)))
-                .claim("rollen", rollen)
-                .signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
-                .compact();
+       return jwtUtil.generiereToken(anmeldedaten);
     }
 
     /** authenticate!
@@ -72,9 +57,9 @@ public class BenutzerService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(benutzername, passwort));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new Exception(String.format("Der Benutzer {0} ist deaktiviert.", benutzername), e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new Exception("Die Kombination aus Benutzername und Passwort stimmt nicht überein.", e);
         }
     }
 }

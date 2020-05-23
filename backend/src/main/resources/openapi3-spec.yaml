@@ -1,0 +1,379 @@
+openapi: 3.0.0
+info:
+  description: "This is a sample server Petstore server.  You can find out more
+    about     Swagger at [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample,
+    you can use the api key `special-key` to test the
+    authorization     filters."
+  version: 1.0.0
+  title: Ideeninitiative
+tags:
+  - name: benutzer
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+paths:
+  /idee:
+    get:
+      tags:
+        - idee
+      summary: Alle Ideen abrufen
+      operationId: alleIdeenAbrufen
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdeeDTO'
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      tags:
+        - idee
+      summary: Neue Idee anlegen
+      operationId: neueIdeeAnlegen
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/IdeeDTO"
+        description: Neu angelegte Idee
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+    delete:
+      tags:
+        - idee
+      summary: Löschen einer Idee
+      operationId: ideeLoeschen
+      parameters:
+        - name: titel
+          in: path
+          description: Titel der zu loeschenden Idee
+          required: true
+          schema:
+            type: string
+            pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
+            minLength: 1
+        - name: erfasser
+          in: path
+          description: Benutzername des Erfassers der zu loeschenden Idee
+          required: true
+          schema:
+            type: string
+            pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
+            minLength: 1
+        - name: erstelldatum
+          in: path
+          description: Erstelldatum der zu loeschenden Idee
+          required: true
+          schema:
+            type: string
+            pattern: '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$'
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Fehlerhafte Eingabe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+  /idee/meineideen:
+    get:
+      tags:
+        - idee
+      summary: Benutzerspezifische Ideen abrufen
+      operationId: meineIdeen
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdeeDTO'
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: Nicht autorisiert. Sind Sie angemeldet?
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+  /benutzer:
+    post:
+      tags:
+        - benutzer
+      summary: Benutzer registrieren
+      description: This can only be done by the logged in user.
+      operationId: benutzerRegistrieren
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerDTO"
+        description: Created user object
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+  /benutzer/login:
+    post:
+      tags:
+        - benutzer
+      summary: Logs user into the system
+      description: ""
+      operationId: benutzerAnmelden
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+              properties:
+                benutzername:
+                  type: string
+                  pattern: '^[\wäüöÄÜÖß]+$'
+                  minLength: 1
+                passwort:
+                  type: string
+                  minLength: 8
+        description: Der Benutzername des einzuloggenden Benutzers
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Ungültige Benutzerdaten
+  /benutzer/logout:
+    get:
+      tags:
+        - benutzer
+      summary: Meldet den aktuellen Benutzer ab
+      description: ""
+      operationId: benutzerAbmelden
+      responses:
+        default:
+          description: erfolgreich
+  "/benutzer/{benutzername}":
+    get:
+      tags:
+        - benutzername
+      summary: Benutzerdaten zu Benutzernamen laden
+      description: ""
+      operationId: benutzerdatenAusgeben
+      parameters:
+        - name: benutzername
+          in: path
+          description: "The name that needs to be fetched. Use user1 for testing. "
+          required: true
+          schema:
+            type: string
+            pattern: '^[\wäüöÄÜÖß]+$'
+            minLength: 1
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenutzerDTO"
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+    put:
+      tags:
+        - benutzer
+      summary: Benutzerdaten aktualisieren
+      description: This can only be done by the logged in user.
+      operationId: benutzerdatenAktualisieren
+      parameters:
+        - name: benutzername
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+            pattern: '^[\wäüöÄÜÖß]+$'
+            minLength: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BenutzerDTO"
+        description: Updated user object
+        required: true
+      responses:
+        "400":
+          description: Invalid user supplied
+        "404":
+          description: User not found
+    delete:
+      tags:
+        - benutzer
+      summary: Benutzer löschen
+      description: This can only be done by the logged in user.
+      operationId: benutzerdatenLoeschen
+      parameters:
+        - name: benutzername
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+            pattern: '^[\wäüöÄÜÖß]+$'
+            minLength: 1
+      responses:
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+servers:
+  - url: /v2
+components:
+  schemas:
+    BenutzerDTO:
+      type: object
+      required:
+        - benutzername
+        - vorname
+        - nachname
+        - email
+      properties:
+        benutzername:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+$'
+          minLength: 1
+        vorname:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
+          minLength: 1
+        nachname:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
+          minLength: 1
+        email:
+          type: string
+          pattern:  '^[\w.@-]+$'
+          minLength: 6
+        passwort:
+          type: string
+          minLength: 8
+      xml:
+        name: Mitarbeiter
+    IdeeDTO:
+      properties:
+        bearbeitungsstatus:
+          type: string
+        begruendung:
+          type: string
+        beschreibung:
+          type: string
+        titel:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
+        typ:
+          type: string
+        erfasser:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+$'
+        fachspezialist:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+$'
+        existiertBereits:
+          type: boolean
+        unternehmensbezeichnung:
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
+        artDerUmsetzung:
+          type: string
+          pattern: '^[\wäüöÄÜÖß,.]+[,.\s\wäüöÄÜÖß]*$'
+        sparten:
+          type: string
+        vertriebsweg:
+          type: array
+          items:
+            type: string
+        zielgruppe:
+          type: array
+          items:
+            type: string
+        vorteile:
+          type: array
+          items:
+            type: string
+            pattern: '^[\wäüöÄÜÖß,.]+[,.\s\wäüöÄÜÖß]*$'
+        handlungsfeld:
+          type: string
+    ApiFehler:
+      type: object
+      properties:
+        httpStatusCode:
+          type: integer
+          format: int32
+        fehlertyp:
+          type: string
+        fehlertext:
+          type: string

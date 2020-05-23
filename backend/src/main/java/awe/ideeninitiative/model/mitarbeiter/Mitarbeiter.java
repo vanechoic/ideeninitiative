@@ -5,23 +5,32 @@ import awe.ideeninitiative.model.enums.Sparte;
 import awe.ideeninitiative.model.enums.Vertriebskanal;
 import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Zielgruppe;
+import awe.ideeninitiative.restapi.security.BenutzerRollen;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Mitarbeiter extends AbstractEntity {
 
     @NotNull
+    @Pattern(regexp="\\w+")
     private String benutzername;
 
+    @Pattern(regexp = "[\\w.]+[\\s\\w.]*")
     private String vorname;
 
+    @Pattern(regexp = "[\\w.]+[\\s\\w.]*")
     private String nachname;
 
     @NotNull
+    @Email
     private String email;
 
     @NotNull
@@ -164,5 +173,21 @@ public class Mitarbeiter extends AbstractEntity {
 
     public void setIstAdmin(boolean istAdmin) {
         this.istAdmin = istAdmin;
+    }
+
+    /**
+     * Ermittelt alle zutreffenden Rollen für den gegebenen Mitarbeiter und gibt diese zurück.
+     * @return Liste der zutreffenden Benutzerrollen
+     */
+    public String[] ermittleBenutzerrollenAlsString() {
+        List<String> rollen = new ArrayList<String>();
+        rollen.add(BenutzerRollen.MITARBEITER.toString());
+        if(istFachspezialist()){
+            rollen.add(BenutzerRollen.FACHSPEZIALIST.toString());
+        }
+        if(istAdmin()){
+            rollen.add(BenutzerRollen.ADMIN.toString());
+        }
+        return rollen.toArray(new String[rollen.size()]);
     }
 }
