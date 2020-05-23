@@ -8,6 +8,7 @@ import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -73,7 +74,8 @@ public class IdeeMapper {
     private void mappeIdeeDTOZuInterneIdeeHandlungsfeld(IdeeDTO ideeDTO, Idee idee) {
         if(ideeDTO.getHandlungsfeld() != null && !StringUtils.isEmpty(ideeDTO.getHandlungsfeld())){
             InterneIdeeHandlungsfeld interneIdeeHandlungsfeld = InterneIdeeHandlungsfeldBuilder.anInterneIdeeHandlungsfeld()//
-                    .withIdee(idee).withHandlungsfeld(Handlungsfeld.valueOf(ideeDTO.getHandlungsfeld().toUpperCase())).build();
+                    .withIdee(idee)
+                    .withHandlungsfeld(Handlungsfeld.valueOf(ideeDTO.getHandlungsfeld().toUpperCase())).build();
             idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld);
         }
     }

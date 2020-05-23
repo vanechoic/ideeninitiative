@@ -78,9 +78,9 @@ public class JwtUtil implements Serializable {
      *  sowie der konfigurierte secret key. Gesetzt werden das Subject, das Ablaufdatum, das Erstelldatum und die Rollen.
      * @param rollen
      * @param benutzername
-     * @return Generierter JWT
+     * @return Generierter JWT //TODO: protected?
      */
-    protected String generiereEinzelnenToken(List<String> rollen, String benutzername) {
+    public String generiereEinzelnenToken(List<String> rollen, String benutzername) {
         return generiereEinzelnenTokenMitAblaufzeitpunkt(rollen, benutzername, new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000));
         /*return Jwts.builder()
                 .setSubject(benutzername)

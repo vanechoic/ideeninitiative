@@ -17,7 +17,7 @@ import java.util.List;
 public class Idee extends AbstractEntity {
 
     @NotNull
-    @Pattern(regexp = "\\w+[\\s\\w]*")
+    //@Pattern(regexp = "\\w+[\\s\\w]*")
     private String titel;
 
     private String beschreibung;
@@ -30,27 +30,27 @@ public class Idee extends AbstractEntity {
     @NotNull
     private Ideentyp typ;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="erfasser_id", referencedColumnName = "id")
     private Mitarbeiter erfasser;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="fachspezialist_id", referencedColumnName = "id")
     private Mitarbeiter fachspezialist;
 
-    @OneToOne(mappedBy = "idee")
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL)
     private InterneIdeeHandlungsfeld interneIdeeHandlungsfeld;
 
-    @OneToOne(mappedBy = "idee")
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL)
     private ProduktideeSparte produktideeSparte;
 
-    @OneToMany(mappedBy = "idee")
+    @OneToMany(mappedBy = "idee", cascade=CascadeType.ALL)
     private List<ProduktideeVertriebsweg> produktideeVertriebsweg;
 
-    @OneToMany(mappedBy = "idee")
+    @OneToMany(mappedBy = "idee",cascade=CascadeType.ALL)
     private List<ProduktideeZielgruppe> produktideeZielgruppe;
 
-    @OneToOne(mappedBy = "idee")
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL)
     private ProduktideeZusatzinformation produktideeZusatzinformation;
 
     public String getTitel() {

@@ -33,8 +33,7 @@ public interface {{classname}} {
       @ApiResponses(value = {
       {{#responses}} @ApiResponse(code = {{code}}, message = "{{message}}"){{^-last}}, {{/-last}}{{/responses}}
       })
-      @RequestMapping(value = "{{path}}",
-      method = RequestMethod.{{httpMethod}})
+      @RequestMapping(value = "{{path}}", method = RequestMethod.{{httpMethod}}, produces = "application/json;charset=UTF-8")
       {{#java8}}public {{/java8}}{{#async}}{{^java8}}Callable{{/java8}}{{#java8}}CompletableFuture<{{/java8}}{{/async}}ResponseEntity<{{>returnTypes}}>{{#async}}>{{/async}} {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) throws Exception;{{#java8}} {{/java8}}
 
 {{/operation}}
