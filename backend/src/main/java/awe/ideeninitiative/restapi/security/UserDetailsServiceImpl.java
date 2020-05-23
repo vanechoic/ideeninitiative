@@ -1,6 +1,5 @@
-package awe.ideeninitiative.security;
+package awe.ideeninitiative.restapi.security;
 
-import awe.ideeninitiative.controller.BenutzerService;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import org.slf4j.Logger;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,29 +22,32 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.error("UserDetailsService - username: " + username);
         Optional<Mitarbeiter> mitarbeiter = mitarbeiterRepository.findFirstByBenutzername(username);
+        pruefeObRegistrierterMitarbeiterExistiert(username, mitarbeiter);
+        return formeMitarbeiterZuUserDetailsUm(mitarbeiter.get());
+    }
+
+    /**
+     * Stellt sicher, dass ein Mitarbeiter zum gegebenen Benutzernamen gefunden wurde. Wurde kein Mitarbeiter gefunden,
+     * wird eine UsernameNotFoundException geworfen.
+     * @param benutzername
+     * @param mitarbeiter
+     */
+    private void pruefeObRegistrierterMitarbeiterExistiert(String benutzername, Optional<Mitarbeiter> mitarbeiter) throws UsernameNotFoundException{
         if(mitarbeiter == null || mitarbeiter.isEmpty()){
-            throw new UsernameNotFoundException("Für den Benutzernamen "+username+" existiert kein Konto.");
+            throw new UsernameNotFoundException(String.format("Für den Benutzernamen %s existiert kein Konto.", benutzername));
         }
-        return benutzerDatenAlsUserDetailsVerpacken(mitarbeiter.get());
     }
 
-    private UserDetails benutzerDatenAlsUserDetailsVerpacken(Mitarbeiter mitarbeiter) {
+    /**
+     * Erstellt UserDetails aus den Mitarbeiterdaten.
+     * @param mitarbeiter
+     * @return Mitarbeiter als UserDetails
+     */
+    public UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
         return User.withUsername(mitarbeiter.getBenutzername())
-                .password(mitarbeiter.getPasswort()) //TODO: Passwort entschlüsseln!
-                .roles(ermittleBenutzerrollenAlsString(mitarbeiter)).build();
+                .password(mitarbeiter.getPasswort())
+                .roles(mitarbeiter.ermittleBenutzerrollenAlsString()).build();
     }
 
-    private String ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
-        List<String> rollen = new ArrayList<String>();
-        rollen.add(BenutzerRollen.MITARBEITER.toString()); //TODO: Sauber: Wie wird der Admin gekennzeichnet?
-        if(mitarbeiter.istFachspezialist()){
-            rollen.add(BenutzerRollen.FACHSPEZIALIST.toString());
-        }
-        if(mitarbeiter.istAdmin()){
-            rollen.add(BenutzerRollen.ADMIN.toString());
-        }
-        return rollen.toString();
-    }
 }

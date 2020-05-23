@@ -13,11 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 {{#async}}
@@ -37,8 +33,7 @@ public interface {{classname}} {
       @ApiResponses(value = {
       {{#responses}} @ApiResponse(code = {{code}}, message = "{{message}}"){{^-last}}, {{/-last}}{{/responses}}
       })
-      @RequestMapping(value = "{{path}}",
-      method = RequestMethod.{{httpMethod}})
+      @RequestMapping(value = "{{path}}", method = RequestMethod.{{httpMethod}}, produces = "application/json;charset=UTF-8")
       {{#java8}}public {{/java8}}{{#async}}{{^java8}}Callable{{/java8}}{{#java8}}CompletableFuture<{{/java8}}{{/async}}ResponseEntity<{{>returnTypes}}>{{#async}}>{{/async}} {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) throws Exception;{{#java8}} {{/java8}}
 
 {{/operation}}

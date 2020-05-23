@@ -1,9 +1,8 @@
-package awe.ideeninitiative.model.builder;
+package awe.ideeninitiative.model.mitarbeiter;
 
-import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
+import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Sparte;
 import awe.ideeninitiative.model.enums.Vertriebskanal;
-import awe.ideeninitiative.model.enums.Handlungsfeld;
 
 import java.io.File;
 import java.util.Set;
@@ -16,6 +15,7 @@ public final class MitarbeiterBuilder {
     private String passwort;
     private File profilbild;
     private boolean istFachspezialist;
+    private boolean istAdmin;
     private Set<Vertriebskanal> vertriebswege;
     private Set<Sparte> sparten;
     private Set<Handlungsfeld> zielgruppen;
@@ -63,6 +63,11 @@ public final class MitarbeiterBuilder {
         return this;
     }
 
+    public MitarbeiterBuilder withIstAdmin(boolean istAdmin) {
+        this.istAdmin = istAdmin;
+        return this;
+    }
+
     public MitarbeiterBuilder withVertriebswege(Set<Vertriebskanal> vertriebswege) {
         this.vertriebswege = vertriebswege;
         return this;
@@ -92,6 +97,7 @@ public final class MitarbeiterBuilder {
         mitarbeiter.setPasswort(passwort);
         mitarbeiter.setProfilbild(profilbild);
         mitarbeiter.setIstFachspezialist(istFachspezialist);
+        mitarbeiter.setIstAdmin(istAdmin);
         mitarbeiter.setVertriebswege(vertriebswege);
         mitarbeiter.setSparten(sparten);
         mitarbeiter.setZielgruppen(zielgruppen);

@@ -1,24 +1,22 @@
-package awe.ideeninitiative.controller;
+package awe.ideeninitiative.restapi.controller;
 
-import awe.ideeninitiative.api.model.Benutzer;
+import awe.ideeninitiative.api.BenutzerApi;
+import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.api.model.InlineObject;
-import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
+import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
+import awe.ideeninitiative.restapi.service.BenutzerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
+public class BenutzerController implements BenutzerApi {
 
     static final Logger logger = LoggerFactory.getLogger(BenutzerController.class);
 
@@ -31,7 +29,7 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<String> benutzerAnlegen(Benutzer benutzer){
+    public ResponseEntity<String> benutzerRegistrieren(BenutzerDTO benutzer){
         logger.error(benutzer.getVorname());
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
@@ -39,7 +37,7 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
                 .withNachname(benutzer.getNachname())//
                 .withEmail(benutzer.getEmail())//
                 .withPasswort(benutzer.getPasswort()).build(); //TODO: Passwort verschlüsseln!
-        benutzerService.mitarbeiterAnlegen(neuerMitarbeiter);
+        benutzerService.mitarbeiterRegistrieren(neuerMitarbeiter);
         return ResponseEntity.ok(neuerMitarbeiter.toString());
     }
 
@@ -57,7 +55,7 @@ public class BenutzerController implements awe.ideeninitiative.api.BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<Void> benutzerdatenAktualisieren(String benutzername, Benutzer body) {
+    public ResponseEntity<Void> benutzerdatenAktualisieren(String benutzername, BenutzerDTO body) {
         logger.error("funzt");
         return new ResponseEntity<Void>(HttpStatus.I_AM_A_TEAPOT);
     }
