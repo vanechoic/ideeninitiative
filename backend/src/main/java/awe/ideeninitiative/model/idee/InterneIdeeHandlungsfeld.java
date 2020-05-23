@@ -17,6 +17,7 @@ public class InterneIdeeHandlungsfeld extends AbstractEntity {
     @JoinColumn(name = "idee_id", referencedColumnName = "id")
     private Idee idee;
 
+    @Enumerated(EnumType.STRING)
     private Handlungsfeld handlungsfeld;
 
     public Idee getIdee() {

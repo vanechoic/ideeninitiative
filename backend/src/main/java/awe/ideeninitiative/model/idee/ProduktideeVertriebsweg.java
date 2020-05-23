@@ -12,6 +12,7 @@ public class ProduktideeVertriebsweg extends AbstractEntity {
     @JoinColumn(name="idee_id", referencedColumnName = "id")
     private Idee idee;
 
+    @Enumerated(EnumType.STRING)
     private Vertriebskanal vertriebsweg;
 
     public Idee getIdee() {

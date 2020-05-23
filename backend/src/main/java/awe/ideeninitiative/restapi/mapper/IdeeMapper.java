@@ -8,12 +8,12 @@ import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class IdeeMapper {
@@ -22,14 +22,41 @@ public class IdeeMapper {
     private MitarbeiterRepository mitarbeiterRepository;
 
     public IdeeDTO mappeIdeeZuIdeeDTO(Idee idee){
-        return IdeeDTOBuilder.anIdeeDTO().withBearbeitungsstatus(idee.getBearbeitungsstatus().toString())//
+        IdeeDTO ideeDTO = IdeeDTOBuilder.anIdeeDTO().withBearbeitungsstatus(idee.getBearbeitungsstatus().toString())//
                 .withBegruendung(idee.getBegruendung())
                 .withBeschreibung(idee.getBeschreibung())
                 .withTitel(idee.getTitel())
                 .withErfasser(idee.getErfasser().getBenutzername())
                 .withFachspezialist(idee.getFachspezialist() != null ? idee.getFachspezialist().getBenutzername() : null)
                 .withTyp(idee.getTyp().toString())
+                .withHandlungsfeld(idee.getInterneIdeeHandlungsfeld() != null ? idee.getInterneIdeeHandlungsfeld().getHandlungsfeld().toString() : null)
+                .withSparten(idee.getProduktideeSparte() != null ? idee.getProduktideeSparte().getSparte().toString() : null)
                 .build();
+        if(idee.getProduktideeVertriebsweg() != null && !idee.getProduktideeVertriebsweg().isEmpty()){
+            ideeDTO.setVertriebsweg(mappeProduktideeVertriebswegeZuStringListe(idee.getProduktideeVertriebsweg()));
+        }
+        if(idee.getProduktideeZielgruppe() != null && !idee.getProduktideeZielgruppe().isEmpty()){
+            ideeDTO.setZielgruppe(mappeProduktideeZielgruppenZuStringListe(idee.getProduktideeZielgruppe()));
+        }
+        return ideeDTO;
+    }
+
+    private List<String> mappeProduktideeZielgruppenZuStringListe(List<ProduktideeZielgruppe> zielgruppen) {
+        if(zielgruppen == null || zielgruppen.isEmpty()){
+            return null;
+        }
+        return zielgruppen.stream()
+                .map(zg -> zg.getZielgruppe().toString())
+                .collect(Collectors.toList());
+    }
+
+    private List<String> mappeProduktideeVertriebswegeZuStringListe(List<ProduktideeVertriebsweg> vertriebswege) {
+        if(vertriebswege == null || vertriebswege.isEmpty()){
+            return null;
+        }
+        return vertriebswege.stream()
+                .map(vw -> vw.getVertriebsweg().toString())
+                .collect(Collectors.toList());
     }
 
     public List<IdeeDTO> mappeIdeeZuIdeeDTO(List<Idee> ideen){
@@ -137,4 +164,5 @@ public class IdeeMapper {
         }
         return null;
     }
+
 }

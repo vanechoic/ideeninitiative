@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class ProduktideeZusatzinformation extends AbstractEntity {
@@ -18,6 +19,7 @@ public class ProduktideeZusatzinformation extends AbstractEntity {
 
     private boolean existiertBereits;
 
+    @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
     private String unternehmensbezeichnung;
 
     private String artDerUmsetzung;

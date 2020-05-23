@@ -3,10 +3,7 @@ package awe.ideeninitiative.model.idee;
 import awe.ideeninitiative.model.AbstractEntity;
 import awe.ideeninitiative.model.enums.Zielgruppe;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class ProduktideeZielgruppe extends AbstractEntity {
@@ -15,6 +12,7 @@ public class ProduktideeZielgruppe extends AbstractEntity {
     @JoinColumn(name="idee_id", referencedColumnName = "id")
     private Idee idee;
 
+    @Enumerated(EnumType.STRING)
     private Zielgruppe zielgruppe;
 
     public Zielgruppe getZielgruppe() {
