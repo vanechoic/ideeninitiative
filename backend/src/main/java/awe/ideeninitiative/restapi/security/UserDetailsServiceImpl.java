@@ -44,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @param mitarbeiter
      * @return Mitarbeiter als UserDetails
      */
-    protected UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
+    public UserDetails formeMitarbeiterZuUserDetailsUm(Mitarbeiter mitarbeiter) {
         return User.withUsername(mitarbeiter.getBenutzername())
                 .password(mitarbeiter.getPasswort())
                 .roles(mitarbeiter.ermittleBenutzerrollenAlsString()).build();

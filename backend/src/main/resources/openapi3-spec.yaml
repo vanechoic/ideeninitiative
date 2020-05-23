@@ -42,7 +42,7 @@ paths:
       operationId: neueIdeeAnlegen
       requestBody:
         content:
-          application/json:
+          application/json; charset=utf-8:
             schema:
               $ref: "#/components/schemas/IdeeDTO"
         description: Neu angelegte Idee
@@ -51,13 +51,13 @@ paths:
         "200":
           description: erfolgreich
           content:
-            application/json:
+            application/json; charset=utf-8:
               schema:
                 type: string
         "400":
           description: Fehlende Eingabe
           content:
-            application/json:
+            application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
     delete:
@@ -72,7 +72,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^\w+[\s\w]*$'
+            pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
             minLength: 1
         - name: erfasser
           in: path
@@ -80,7 +80,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^\w+[\s\w]*$'
+            pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
             minLength: 1
         - name: erstelldatum
           in: path
@@ -179,7 +179,7 @@ paths:
               properties:
                 benutzername:
                   type: string
-                  pattern: '^\w+$'
+                  pattern: '^[\wäüöÄÜÖß]+$'
                   minLength: 1
                 passwort:
                   type: string
@@ -230,7 +230,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^\w+$'
+            pattern: '^[\wäüöÄÜÖß]+$'
             minLength: 1
       responses:
         "200":
@@ -256,7 +256,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^\w+$'
+            pattern: '^[\wäüöÄÜÖß]+$'
             minLength: 1
       requestBody:
         content:
@@ -283,7 +283,7 @@ paths:
           required: true
           schema:
             type: string
-            pattern: '^\w+$'
+            pattern: '^[\wäüöÄÜÖß]+$'
             minLength: 1
       responses:
         "400":
@@ -304,15 +304,15 @@ components:
       properties:
         benutzername:
           type: string
-          pattern: '^\w+$'
+          pattern: '^[\wäüöÄÜÖß]+$'
           minLength: 1
         vorname:
           type: string
-          pattern: '^\w+[\s\w]*$'
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
           minLength: 1
         nachname:
           type: string
-          pattern: '^\w+[\s\w]*$'
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
           minLength: 1
         email:
           type: string
@@ -333,21 +333,23 @@ components:
           type: string
         titel:
           type: string
-          pattern: '^\w+[\s\w]*$'
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
         typ:
           type: string
         erfasser:
           type: string
-          pattern: '^\w+$'
+          pattern: '^[\wäüöÄÜÖß]+$'
         fachspezialist:
           type: string
-          pattern: '^\w+$'
+          pattern: '^[\wäüöÄÜÖß]+$'
         existiertBereits:
           type: boolean
         unternehmensbezeichnung:
-          type: String
+          type: string
+          pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
         artDerUmsetzung:
-          type: String
+          type: string
+          pattern: '^[\wäüöÄÜÖß,.]+[,.\s\wäüöÄÜÖß]*$'
         sparten:
           type: string
         vertriebsweg:
@@ -362,6 +364,7 @@ components:
           type: array
           items:
             type: string
+            pattern: '^[\wäüöÄÜÖß,.]+[,.\s\wäüöÄÜÖß]*$'
         handlungsfeld:
           type: string
     ApiFehler:

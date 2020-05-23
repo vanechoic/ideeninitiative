@@ -49,8 +49,6 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
     @Captor
     private ArgumentCaptor<String> ideeServiceArgumentCaptor;
 
-    @MockBean
-    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -95,7 +93,6 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
                     .withEmail("sheldon.j@plankton.de").withVorname("Sheldon J.")//
                     .withNachname("Plankton").withPasswort("Karen")
                     .build();
-            //sheldon = mitarbeiterRepository.save(sheldon);
         }
 
         public void einGueltigerJwtZumMitarbeiter() {

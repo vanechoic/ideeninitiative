@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Arrays;
 
 
 @ControllerAdvice
@@ -30,8 +31,9 @@ public class IdeeninitiativeExceptionHandler{
 
     @ExceptionHandler({TransactionSystemException.class})
     public ResponseEntity<ApiFehler> handlePersistenceException(TransactionSystemException e){
-        logger.error("ICH BIN DER EXCEPTION HANDLERR!!");
-        return erzeugeApiFehler("ConstraintViolation", e.getMessage(), HttpStatus.BAD_REQUEST);
+        logger.error("TransactionSystemException");
+        logger.error(e.getMessage(), e.getMostSpecificCause().getMessage(), e.getCause().getMessage());
+        return erzeugeApiFehler("TransactionSystemException", e.getCause().getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
