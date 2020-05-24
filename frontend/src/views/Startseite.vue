@@ -13,10 +13,7 @@ import IdeeBearbeiten from '@/components/IdeeBearbeiten.vue'
 export default {
   name: 'Startseite',
   components: {
-    "hs": Hauptseite,
-    //"mi": MeineIdeen,
-    //"ni": NeueIdee,
-    //"ib": IdeeBearbeiten 
+    "hs": Hauptseite
   },
   data(){
     return{

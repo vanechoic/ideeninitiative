@@ -76,19 +76,19 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
-import Registrierter from '@/components/Registrierter.vue'
+import Mitarbeiter from './Mitarbeiter.vue'
 import { properties } from '@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dropdownlist.component'
 import { Params } from "../services/params-service";
 
   export default {
-    name:'Hauptseite',
+    name:'Hauptseite_Mitarbeiter',
     components: {
-        'registrierter': Registrierter
+        'mitarbeiter': Mitarbeiter
     },
     data: ()=> {
       return {
         showModal: false,
-        component:'registrierter',
+        component:'mitarbeiter',
         Ideen:[
             {Id:'i1', Idee:'Idee1'},
             {Id:'i2', Idee:'Idee als Beispiel für Liste '},
@@ -121,16 +121,16 @@ import { Params } from "../services/params-service";
 </script>
 
 <style lang="scss" scoped>  
-  .container, .rechts,.hauptteil{
+  .container, .rechts, .hauptteil{
     position: relative;
   }
   .links, .modal-overlay,.fußzeile{
     position: absolute;
   }
-  .container,.hauptteil, .listeContainer, .filter, .fußzeile, #beschreibung{
+  .hauptteil, .listeContainer, .filter, .fußzeile, #beschreibung{
     width: 100%
   }
-  .container, .rechts, .links, .erstellInfos, #beschreibung{
+  .rechts, .links, .erstellInfos, #beschreibung{
     height: 100%;
   }
   .rechts, .links, .erstellInfos, .filter, #ideeName{
@@ -182,6 +182,23 @@ import { Params } from "../services/params-service";
   .fade-enter, .fade-leave-to{
     opacity: 0;
   }
+  button{
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 2px 5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s ease-in;
+    &:active{
+      transform: scale(0.9);
+    }
+    &:focus{
+      outline: none;
+    }
+  }
   #beschreibung{
     display: block;
     background-color: #fff;
@@ -191,6 +208,8 @@ import { Params } from "../services/params-service";
   }
   .container{
     overflow: hidden;
+    height: 500px;
+    width: 800px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   }
   .rechts{
@@ -228,21 +247,4 @@ import { Params } from "../services/params-service";
   li:hover{
     background-color: rgba(0, 0, 0, 0.1);
   }
-  button{
-  border: 1px solid #fff;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 2px 5px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active{
-    transform: scale(0.9);
-  }
-  &:focus{
-    outline: none;
-  }
-}
 </style>

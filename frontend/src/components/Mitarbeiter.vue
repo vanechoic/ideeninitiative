@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- button {
+  button {
     border-radius: 20px;
     border: 1px solid #fff;
     color: #fff;

@@ -89,10 +89,15 @@
 </template>
 
 <script lang="ts">
-
-  export default {
-    
+import Vue from 'vue'
+export default Vue.extend({
+    methods: {
+    goBack() {
+      if (window.history.length > 1)
+        this.$router.go(-1)
+    }
   }
+  })
 </script>
 
 <style lang="scss" scoped>
