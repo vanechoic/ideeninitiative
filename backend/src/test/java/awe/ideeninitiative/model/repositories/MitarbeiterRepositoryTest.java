@@ -31,7 +31,7 @@ class MitarbeiterRepositoryTest {
             String vorname = "Bob";
             String nachname = "Baumeister";
             String email = "bob.der@baumeister.de";
-            String passwort = "Passwort im Klartext"; //TODO: MUSS AUF JEDEN FALL NOCH VERSCHLUESSELT WERDEN!!!
+            String passwort = "Passwort";
             bob = MitarbeiterBuilder.aMitarbeiter().withEmail(email).withBenutzername(username).withVorname(vorname)//
             .withNachname(nachname).withPasswort(passwort).build();
         }

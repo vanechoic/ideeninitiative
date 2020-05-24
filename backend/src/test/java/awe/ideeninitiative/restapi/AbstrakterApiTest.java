@@ -1,5 +1,6 @@
 package awe.ideeninitiative.restapi;
 
+import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
@@ -55,7 +56,7 @@ public abstract class AbstrakterApiTest {
     protected MitarbeiterRepository mitarbeiterRepository;
 
     @Before
-    public void setup(){
+    public void setup() throws Exception {
         einRegistrierterMitarbeiterAlsErfasser();
         einRegistrierterMitarbeiterAlsFachspezialist();
         einGemockterUserDetailsService();

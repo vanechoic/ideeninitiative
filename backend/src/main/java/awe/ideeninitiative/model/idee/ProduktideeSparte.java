@@ -3,10 +3,7 @@ package awe.ideeninitiative.model.idee;
 import awe.ideeninitiative.model.AbstractEntity;
 import awe.ideeninitiative.model.enums.Sparte;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -17,6 +14,7 @@ public class ProduktideeSparte extends AbstractEntity {
     @JoinColumn(name = "idee_id", referencedColumnName = "id")
     private Idee idee;
 
+    @Enumerated(EnumType.STRING)
     private Sparte sparte;
 
     public Idee getIdee() {

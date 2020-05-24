@@ -1,5 +1,6 @@
 package awe.ideeninitiative.restapi.controller;
 
+import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
 import awe.ideeninitiative.restapi.AbstrakterApiTest;
 import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.restapi.service.BenutzerService;
@@ -41,7 +42,7 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
     private String benutzername, email, vorname, nachname, passwort;
 
     @Before
-    public void setup(){
+    public void setup() throws Exception {
         when(benutzerServiceMock.mitarbeiterRegistrieren(any())).then(returnsFirstArg());
     }
 
@@ -115,7 +116,7 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
 
     private class Then{
 
-        public void derBenutzerServiceMitarbeiterAnlegenWurdeAufgerufen() {
+        public void derBenutzerServiceMitarbeiterAnlegenWurdeAufgerufen() throws MitarbeiterExistiertBereitsException {
             verify(benutzerServiceMock).mitarbeiterRegistrieren(benutzerServiceArgumentCaptor.capture());
             assertNotNull(benutzerServiceArgumentCaptor.getValue());
             dieMitarbeiterdatenStimmenMitDenBenutzerdatenUberein(benutzerServiceArgumentCaptor.getValue());
