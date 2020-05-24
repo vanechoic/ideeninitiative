@@ -123,7 +123,7 @@ export default Vue.extend({
     idee: {
       titel: "String",
       beschreibung: "String",
-      vorteile: [{ }],
+      vorteile: [{}],
       existiert: false,
       ideenTyp: "String",
       sparte: "String",
@@ -138,7 +138,7 @@ export default Vue.extend({
     // Data für Vorteile und Vorteilslogik
     counter: 0,
     vorteilText: "",
-    vorteile: [{ }],
+    vorteile: [{}],
     selected: "",
     selectedIndex: 0,
     // Data für Comboboxen und Comboboxlogik
@@ -177,7 +177,7 @@ export default Vue.extend({
         if (this.counter < 0) this.counter = 0;
       }
     },
-    vorteilSelection(selected: { }) {
+    vorteilSelection(selected: {}) {
       this.selectedIndex = this.vorteile.indexOf(selected);
     },
     // Logik für das Auswählen/Ausblenden von Comboboxen
@@ -221,12 +221,13 @@ export default Vue.extend({
         console.log(this.idee);
 
         var axiosInstance = Helper.getInstance().createAxiosInstance();
-        
+
         const config = {
-            headers: { Authorization: `Bearer ${this.token}` }
+          headers: { Authorization: `Bearer ${this.token}` },
         };
-        axiosInstance
-          .post("http://localhost:9090/idee", {
+        axiosInstance.post(
+          "http://localhost:9090/idee",
+          {
             titel: this.titel,
             beschreibung: this.beschreibung,
             bearbeitungsstatus: "ANGELEGT",
@@ -239,7 +240,8 @@ export default Vue.extend({
             vertriebsweg: this.vertriebsweg,
             zielgruppe: this.zielgruppe,
           },
-          config)
+          config
+        );
       }
     },
   },
