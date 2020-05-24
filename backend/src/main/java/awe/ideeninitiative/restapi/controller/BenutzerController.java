@@ -3,6 +3,7 @@ package awe.ideeninitiative.restapi.controller;
 import awe.ideeninitiative.api.BenutzerApi;
 import awe.ideeninitiative.api.model.BenutzerDTO;
 import awe.ideeninitiative.api.model.InlineObject;
+import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.restapi.service.BenutzerService;
@@ -29,7 +30,7 @@ public class BenutzerController implements BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<String> benutzerRegistrieren(BenutzerDTO benutzer){
+    public ResponseEntity<String> benutzerRegistrieren(BenutzerDTO benutzer) throws MitarbeiterExistiertBereitsException {
         logger.error(benutzer.getVorname());
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
