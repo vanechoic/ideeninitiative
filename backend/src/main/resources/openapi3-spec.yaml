@@ -67,7 +67,7 @@ paths:
       operationId: ideeLoeschen
       parameters:
         - name: titel
-          in: path
+          in: query
           description: Titel der zu loeschenden Idee
           required: true
           schema:
@@ -75,7 +75,7 @@ paths:
             pattern: '^[^\^°=*#~,;:(){}§$%<>|''`´\/\\]*$'
             minLength: 1
         - name: erfasser
-          in: path
+          in: query
           description: Benutzername des Erfassers der zu loeschenden Idee
           required: true
           schema:
@@ -83,12 +83,12 @@ paths:
             pattern: '^[\wäüöÄÜÖß]+[\s\wäüöÄÜÖß]*$'
             minLength: 1
         - name: erstelldatum
-          in: path
+          in: query
           description: Erstelldatum der zu loeschenden Idee
           required: true
           schema:
             type: string
-            pattern: '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$'
+            pattern: '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s([01][0-9]|2[0-3]):([012345][0-9]):([012345][0-9])$'
       responses:
         "200":
           description: erfolgreich
