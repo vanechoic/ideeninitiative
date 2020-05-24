@@ -29,38 +29,34 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+  textarea, #abbrechenButton, input, form, p{
+    width:100%
+  }
+  button, .container, input{
+    border-radius: 20px;
+  }
+  input, .container{
+    overflow: hidden;
+  }
+  button, div{
+    font-size: 1rem;
+  }
   .container {
     position: absolute;
-    align-items: center;
-    width: calc(100% - 50px);
-    height: 100%;
-    border-radius: 10px;
+    height: calc(100% - 25px);
     top:2%;
     left: 2%;
     right: 2%;
     bottom: 2%;
-    overflow: hidden;
     align-items: center;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
                 0 10px 10px rgba(0, 0, 0, .2);
     background: linear-gradient(to bottom, #efefef, #ccc);
   }
-  h2 {
-    margin: 0;
-  }
-  p {
-    margin: 10px 16.5%;
-    width: 80%;
-    left:0;
-    right: 0;
-    font-size: 2rem;
-  }
   button {
-    border-radius: 20px;
-    border: 1px solid #00894d;
+    border: 1px solid #fff;
     background-color:#00894d;
     color: #fff;
-    font-size: 1rem;
     font-weight: bold;
     padding: 10px 40px;
     letter-spacing: 1px;
@@ -75,55 +71,39 @@ export default Vue.extend({
       outline: none;
     }
   }
-  form {
-    top: 0;
-    display: flex;
-    align-items: left;
-    justify-content: space-around;
-    flex-direction: column;
-    padding: 10px 60px;
-    width: calc(80% - 120px);
-    height: calc(100% - 100px);
-    text-align: center;
-    background: linear-gradient(to bottom, #efefef, #ccc);
-    transition: all .5s ease-in-out;
-    margin: auto;
-    div {
-      font-size: 1rem;
-    }
-    input {
+  input {
       background-color: #eee;
       border: none;
       padding: 5px 15px;
-      margin: 6px 0;
-      width: 100%;
-      border-radius: 15px;
       border-bottom: 1px solid #ddd;
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4), 
                         0 -1px 1px #fff, 
                         0 1px 0 #fff;
-      overflow: hidden;
       &:focus {
         outline: none;
         background-color: #fff;
       }
     }
+  form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 60px;
+    height: calc(100% - 100px);
+    background: linear-gradient(to bottom, #efefef, #ccc);
+    transition: all .5s ease-in-out;
   }
-  label{
-    position: relative;
-    font-size: 1rem;
-    float: left;
-    width: 5em;
-    margin-bottom: 5px;
+  p {
+    margin: 10px 16.5%;
+    font-size: 2rem;
+  }
+  textarea{
+    height: 100%;
   }
   #abbrechenButton{
     background-color:#ec0b0b;
-    border-color: #fff;
-    width: 100%;
   }
-  textarea{
-    resize: none;
-    width:100%;
-    height: 100%;
+  label{
+    font-size: 1rem;
+    width: 5em;
   }
 </style>

@@ -17,16 +17,20 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = "benutzername", name = "eindeutigerBenutzername"),
+        @UniqueConstraint(columnNames = "email", name = "eindeutigeEmail")}
+)
 public class Mitarbeiter extends AbstractEntity {
 
     @NotNull
-    @Pattern(regexp="\\w+")
+    @Pattern(regexp="[\\wäüöÄÜÖß]+")
     private String benutzername;
 
-    @Pattern(regexp = "[\\w.]+[\\s\\w.]*")
+    @Pattern(regexp = "[^\\^°=*#~,;:(){}§$%<>|'`´\\/\\\\]*")
     private String vorname;
 
-    @Pattern(regexp = "[\\w.]+[\\s\\w.]*")
+    @Pattern(regexp = "[^\\^°=*#~,;:(){}§$%<>|'`´\\/\\\\]*")
     private String nachname;
 
     @NotNull
@@ -34,6 +38,7 @@ public class Mitarbeiter extends AbstractEntity {
     private String email;
 
     @NotNull
+    @Pattern(regexp = "[^\\s]*")
     private String passwort;
 
     private File profilbild;

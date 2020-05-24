@@ -17,11 +17,13 @@ import java.util.List;
 public class Idee extends AbstractEntity {
 
     @NotNull
-    //@Pattern(regexp = "\\w+[\\s\\w]*")
+    @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
     private String titel;
 
+    @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
     private String beschreibung;
 
+    @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
     private String begruendung;
 
     @NotNull

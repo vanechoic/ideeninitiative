@@ -51,7 +51,7 @@ export default {
   #zurSystemnachricht, .profilbildHochladen{
     background-color:#0a0404;
     width: 80%;
-    left:0;
+    left: 0;
     right: 0;
   }
   #abmelden{

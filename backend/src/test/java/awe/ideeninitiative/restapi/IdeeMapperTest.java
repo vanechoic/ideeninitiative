@@ -1,9 +1,9 @@
 package awe.ideeninitiative.restapi;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
-import awe.ideeninitiative.model.builder.IdeeDTOBuilder;
+import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
-import awe.ideeninitiative.model.idee.Idee;
+import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
@@ -13,8 +13,9 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -28,6 +29,11 @@ public class IdeeMapperTest {
     private Then then = new Then();
     private IdeeDTO ideeDTO;
     private Idee idee;
+    private InterneIdeeHandlungsfeld interneIdeeHandlungsfeld;
+    private ProduktideeZusatzinformation produktideeZusatzinformation;
+    private List<ProduktideeZielgruppe> produktideeZielgruppen;
+    private List<ProduktideeVertriebsweg> produktideeVertriebswege;
+    private ProduktideeSparte produktideeSparte;
     private Mitarbeiter erfasser, fachspezialist;
 
     @InjectMocks
@@ -39,6 +45,8 @@ public class IdeeMapperTest {
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
+        ideeDTO = null;
+        idee = null;
         given.einMitarbeiterAlsErfasser();
         given.einMitarbeiterAlsFachspezialist();
         given.einGemocktesMitarbeiterRepository();
@@ -47,23 +55,37 @@ public class IdeeMapperTest {
     @Test
     public void mappeIdeeDTOZuInternerIdee(){
         given.vollstaendigeEingabenFuerEineInterneIdee();
-        when.derMapperMitDenEingabenAufgerufenWird();
+        when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdEineIdeeMitDenWertenDerInternenIdeeZurueckgegeben();
     }
 
     @Test
     public void mappeIdeeDTOZuProduktidee(){
         given.vollstaendigeEingabenFuerEineProduktidee();
-        when.derMapperMitDenEingabenAufgerufenWird();
+        when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdEineIdeeMitDenWertenDerProduktideeZurueckgegeben();
     }
 
     @Test
     public void mappeIdeeDTOOhneTyp(){
         given.eingabenOhneIdeentyp();
-        when.derMapperMitDenEingabenAufgerufenWird();
+        when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdKeineIdeeZurueckGegeben();
+    }
+    
+    @Test
+    public void mappeInterneIdeeZuIdeeDTO(){
+        given.eineInterneIdeeMitHandlungsfeld();
+        when.derMapperIdeeZuIdeeDTOAufgerufenWird();
+        then.wirdEinIdeeDTOMitDenWertenDerInternenIdeeZurueckgegeben();
+        then.enthaeltDieIdeeEinHandlungsfeld();
+    }
 
+    @Test
+    public void mappeProduktdeeZuIdeeDTO(){
+        given.eineBereitsExistierendeProduktideeMitSparteVertriebswegenUndZielgruppen();
+        when.derMapperIdeeZuIdeeDTOAufgerufenWird();
+        then.wirdEinIdeeDTOMitDenWertenDerProduktideeZurueckgegeben();
     }
 
     private class Given{
@@ -131,12 +153,80 @@ public class IdeeMapperTest {
             vollstaendigeEingabenFuerEineInterneIdee();
             ideeDTO.setTyp(null);
         }
+
+        public void eineInterneIdeeMitHandlungsfeld() {
+            idee = IdeeBuilder.anIdee()
+                    .withTitel("Eine Katze pro Mitarbeiter")
+                    .withBeschreibung("Alternativ ein Katzenplüschtier bei Tierhaarallergie oder ein Fisch bei Phobien.")
+                    .withTyp(Ideentyp.INTERNE_IDEE)
+                    .withErfasser(erfasser)
+                    .withFachspezialist(fachspezialist)
+                    .withBegruendung("Es wurde an alles gedacht!")
+                    .withBearbeitungsstatus(Ideenstatus.AKZEPTIERT)
+                    .build();
+            interneIdeeHandlungsfeld = InterneIdeeHandlungsfeldBuilder.anInterneIdeeHandlungsfeld()
+                    .withHandlungsfeld(Handlungsfeld.ZUKUNFTSFAEHIGKEIT).withIdee(idee).build();
+            idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld); //TODO: Brauchen wir hier einen Setter?
+        }
+
+        public void eineBereitsExistierendeProduktideeMitSparteVertriebswegenUndZielgruppen() {
+            idee = IdeeBuilder.anIdee()
+                    .withTitel("Teleportationsmaschine")
+                    .withBeschreibung("Für den schnellen Abflug nach dem Feierabend.")
+                    .withTyp(Ideentyp.PRODUKTIDEE)
+                    .withErfasser(erfasser)
+                    .withFachspezialist(fachspezialist)
+                    .withBegruendung("Unmöglich...")
+                    .withBearbeitungsstatus(Ideenstatus.ABGELEHNT)
+                    .build();
+            eineSparteZurProduktidee();
+            zusatzinformationZurProduktidee();
+            zweiZielgruppenZurProduktidee();
+            zweiVertriebswegeZurProduktidee();
+
+        }
+
+        private void eineSparteZurProduktidee() {
+            produktideeSparte = ProduktideeSparteBuilder.aProduktideeSparte().withSparte(Sparte.UNFALL).build();
+            idee.setProduktideeSparte(produktideeSparte);
+        }
+
+        private void zusatzinformationZurProduktidee() {
+            produktideeZusatzinformation = ProduktideeZusatzinformationBuilder.aProduktideeZusatzinformation()
+                    .withExistiertBereits(true)
+                    .withUnternehmensbezeichnung("BBC")
+                    .withArtDerUmsetzung("Tardis")
+                    .build();
+            idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
+        }
+
+        private void zweiVertriebswegeZurProduktidee() {
+            produktideeVertriebswege = new ArrayList<>();
+            ProduktideeVertriebsweg produktideeVertriebsweg1 = ProduktideeVertriebswegBuilder.aProduktideeVertriebsweg().withIdee(idee).withVertriebsweg(Vertriebskanal.DIREKTVERSICHERUNG).build();
+            produktideeVertriebswege.add(produktideeVertriebsweg1);
+            ProduktideeVertriebsweg produktideeVertriebsweg2 = ProduktideeVertriebswegBuilder.aProduktideeVertriebsweg().withIdee(idee).withVertriebsweg(Vertriebskanal.KOOPERATION_MIT_KREDITINSTITUTEN).build();
+            produktideeVertriebswege.add(produktideeVertriebsweg2);
+            idee.setProduktideeVertriebsweg(produktideeVertriebswege);
+        }
+
+        private void zweiZielgruppenZurProduktidee() {
+            produktideeZielgruppen = new ArrayList<>();
+            ProduktideeZielgruppe produktideeZielgruppe1 = ProduktideeZielgruppeBuilder.aProduktideeZielgruppe().withIdee(idee).withZielgruppe(Zielgruppe.SINGLES).build();
+            produktideeZielgruppen.add(produktideeZielgruppe1);
+            ProduktideeZielgruppe produktideeZielgruppe2 = ProduktideeZielgruppeBuilder.aProduktideeZielgruppe().withIdee(idee).withZielgruppe(Zielgruppe.FAMILIEN).build();
+            produktideeZielgruppen.add(produktideeZielgruppe2);
+            idee.setProduktideeZielgruppe(produktideeZielgruppen);
+        }
     }
 
     private class When{
 
-        public void derMapperMitDenEingabenAufgerufenWird() {
+        public void derMapperIdeeDTOZuIdeeAufgerufenWird() {
             idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
+        }
+
+        public void derMapperIdeeZuIdeeDTOAufgerufenWird() {
+            ideeDTO = ideeMapper.mappeIdeeZuIdeeDTO(idee);
         }
     }
 
@@ -185,6 +275,25 @@ public class IdeeMapperTest {
 
         public void wirdKeineIdeeZurueckGegeben() {
             assertNull(idee);
+        }
+
+        public void wirdEinIdeeDTOMitDenWertenDerInternenIdeeZurueckgegeben() {
+            assertNotNull(ideeDTO);
+            dieAllgemeinenWerteDerIdeeStimmenUeberein();
+                   }
+
+        public void enthaeltDieIdeeEinHandlungsfeld() {
+            assertNotNull(idee.getInterneIdeeHandlungsfeld());
+            assertEquals(idee.getInterneIdeeHandlungsfeld().getHandlungsfeld().toString(), ideeDTO.getHandlungsfeld().toUpperCase());
+
+        }
+
+        public void wirdEinIdeeDTOMitDenWertenDerProduktideeZurueckgegeben() {
+            assertNotNull(ideeDTO);
+            dieAllgemeinenWerteDerIdeeStimmenUeberein();
+            assertEquals(produktideeSparte.getSparte().toString(), ideeDTO.getSparten());
+            dieProduktideeVertriebswegeStimmenUeberein();
+            dieProduktideeZielgruppenStimmenUeberein();
         }
     }
 }
