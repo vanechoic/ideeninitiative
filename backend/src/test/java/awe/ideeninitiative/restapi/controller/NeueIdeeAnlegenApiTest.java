@@ -54,7 +54,7 @@ public class NeueIdeeAnlegenApiTest extends AbstrakterApiTest {
     private InterneIdeeHandlungsfeld interneIdeeHandlungsfeld;
 
     @Before
-    public void setup(){
+    public void setup() throws Exception {
         super.setup();
         when(ideeServiceMock.neueIdeeAnlegen(any())).then(returnsFirstArg());
     }

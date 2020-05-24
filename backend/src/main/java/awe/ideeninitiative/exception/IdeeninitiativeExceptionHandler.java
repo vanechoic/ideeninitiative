@@ -83,6 +83,11 @@ public class IdeeninitiativeExceptionHandler{
         return erzeugeApiFehler("InsufficientAuthenticationException", e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler({ApiException.class})
+    public ResponseEntity<ApiFehler> handlePersistenceException(ApiException e){
+        return erzeugeApiFehler(e.getClass().getSimpleName(), e.getMessage(), e.getHttpStatus());
+    }
+
     public static ResponseEntity<ApiFehler> erzeugeApiFehler(String fehlertyp, String fehlertext, HttpStatus httpStatus){
         ApiFehler apiFehler = new ApiFehler();
         apiFehler.setFehlertext(fehlertext);

@@ -1,5 +1,6 @@
 package awe.ideeninitiative.restapi.service;
 
+import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.restapi.security.JwtUtil;
@@ -14,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class BenutzerService {
@@ -31,15 +34,20 @@ public class BenutzerService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter mitarbeiter){
+    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter mitarbeiter) throws MitarbeiterExistiertBereitsException {
         pruefeObMitarbeiterExistiert(mitarbeiter);
         mitarbeiter.setPasswort(bCryptPasswordEncoder.encode(mitarbeiter.getPasswort()));
         mitarbeiterRepository.save(mitarbeiter);
         return mitarbeiter;
     }
 
-    private void pruefeObMitarbeiterExistiert(Mitarbeiter mitarbeiter) {
-        mitarbeiterRepository.findFirstByEmailOrBenutzername(mitarbeiter.getEmail(), mitarbeiter.getBenutzername());
+    private void pruefeObMitarbeiterExistiert(Mitarbeiter mitarbeiter) throws MitarbeiterExistiertBereitsException {
+        Optional<Mitarbeiter> bereitsVorhandenerMitarbeiter = mitarbeiterRepository.findFirstByEmailOrBenutzername(mitarbeiter.getEmail(), mitarbeiter.getBenutzername());
+        if(bereitsVorhandenerMitarbeiter.isPresent()){
+            boolean gleicherBenutzername = mitarbeiter.getBenutzername().equalsIgnoreCase(bereitsVorhandenerMitarbeiter.get().getBenutzername());
+            boolean gleicheEmail = mitarbeiter.getEmail().equalsIgnoreCase(bereitsVorhandenerMitarbeiter.get().getEmail());
+            throw new MitarbeiterExistiertBereitsException(gleicherBenutzername, gleicheEmail);
+        }
     }
 
     public String mitarbeiterAnmelden(String benutzername, String passwort) throws Exception {
