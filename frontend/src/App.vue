@@ -8,19 +8,22 @@
 
 <style lang="scss">
 body {
-    margin: 0;
-    padding: 0;
-  }
-  #app {
-    font-family: Tahoma;
-    font-size: 1.2rem;
-    color: #00894d;
-    background-color: #104227;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  margin: 0;
+  padding: 0;
+}
+#app {
+  position: absolute;
+  font-family: Tahoma;
+  font-size: 1.2rem;
+  color: #00894d;
+  background-color: #104227;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .selector-for-some-widget {
   box-sizing: content-box;
 }
