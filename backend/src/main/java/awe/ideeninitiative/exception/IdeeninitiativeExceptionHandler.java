@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @ControllerAdvice
@@ -23,10 +25,17 @@ public class IdeeninitiativeExceptionHandler{
 
     static final Logger logger = LoggerFactory.getLogger(IdeeninitiativeExceptionHandler.class);
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, DataIntegrityViolationException.class, BadCredentialsException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, BadCredentialsException.class})
     public ResponseEntity<ApiFehler> handleException(Exception e){
         logger.error("ICH BIN DER EXCEPTION HANDLERR!!");
         return erzeugeApiFehler(e.getClass().getName(), e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ApiFehler> DataIntegrityViolationException(DataIntegrityViolationException e){
+        boolean istEindeutigerBenutzernameConstraint = e.getMessage().contains("eindeutigerBenutzername");
+        String fehlertext = String.format("%s existiert bereits. Bitte wählen Sie eine%s", istEindeutigerBenutzernameConstraint ? "Der Benutzername" : "Die E-Mail-Adresse", istEindeutigerBenutzernameConstraint ? "n anderen Benutzernamen." : " andere E-Mail-Adresse.");
+        return erzeugeApiFehler("DataIntegrityViolationException", fehlertext, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({TransactionSystemException.class})

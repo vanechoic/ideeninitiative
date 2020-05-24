@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = "benutzername", name = "eindeutigerBenutzername"),
+        @UniqueConstraint(columnNames = "email", name = "eindeutigeEmail")}
+)
 public class Mitarbeiter extends AbstractEntity {
 
     @NotNull
