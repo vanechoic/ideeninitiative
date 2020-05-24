@@ -56,8 +56,6 @@ public class NeueIdeeAnlegenApiTest extends AbstrakterApiTest {
     @Before
     public void setup(){
         super.setup();
-        //mitarbeiterRepository.save(erfasser);
-        //mitarbeiterRepository.save(fachspezialist);
         when(ideeServiceMock.neueIdeeAnlegen(any())).then(returnsFirstArg());
     }
 
