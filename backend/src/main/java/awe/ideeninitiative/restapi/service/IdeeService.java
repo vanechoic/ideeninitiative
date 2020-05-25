@@ -1,8 +1,10 @@
 package awe.ideeninitiative.restapi.service;
 
+import awe.ideeninitiative.api.model.IdeeDTO;
 import awe.ideeninitiative.exception.IdeeExistiertNichtException;
 import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
+import awe.ideeninitiative.restapi.mapper.IdeeMapper;
 import awe.ideeninitiative.util.DatumUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,4 +62,13 @@ public class IdeeService {
     }
 
 
+    public void ideeBearbeiten(IdeeDTO ideeDTO, Idee idee) throws IdeeExistiertNichtException {
+        //Idee suchen
+        List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(ideeDTO.getTitel(), DatumUtil.formeStringZuDatumUm(ideeDTO.getErstellzeitpunkt()), ideeDTO.getErfasser());
+        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, ideeDTO.getTitel(), ideeDTO.getErfasser());
+        //Idee aktualisieren
+        Idee zuAktualisierendeIdee = zutreffendeIdeen.get(0);
+        //TODO: Idee aktualisiern okay, aber die IDs müssen noch an Handlungsfeld, Sparte und Co. gesetzt werden
+        //ideeRepository.save(idee);
+    }
 }

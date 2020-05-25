@@ -37,6 +37,13 @@ public class IdeeController implements IdeeApi {
     }
 
     @Override
+    public ResponseEntity<String> ideeBearbeiten(IdeeDTO ideeDTO) throws Exception {
+        Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
+        ideeService.ideeBearbeiten(ideeDTO,  idee);
+        return ResponseEntity.ok("Idee erfolgreich bearbeitet.");
+    }
+
+    @Override
     public ResponseEntity<String> ideeLoeschen(String titel, String erfasser, String erstelldatum) throws Exception {
         logger.error("titel: "+titel);
         logger.error("erfasser: "+erfasser);
