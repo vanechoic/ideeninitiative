@@ -4,39 +4,39 @@
       <h1>Neue Idee</h1>
       <div class="row">
         <!-- Ideen Titel/Name -->
+        <h2>Titel</h2>
         <div class="titel">
-          <h2>Titel</h2>
           <input type="text" id="titel" v-model="titel" />
         </div>
       </div>
       <div class="row">
         <!-- Beschreibungstext -->
+        <h2>Beschreibungstext</h2>
         <div class="beschreibung">
-          <h2>Beschreibungstext</h2>
           <textarea id="beschreibungsText" v-model="beschreibung"></textarea>
         </div>
       </div>
       <div class="row">
         <!-- Datei Upload -->
+        <h2>Datei Upload</h2>
         <div class="dateien">
-          <h2>Datei Upload</h2>
           <input type="file" />
         </div>
       </div>
       <div class="row">
         <!-- Vorteile -->
+        <h2>Vorteile</h2>
         <div class="vorteile">
-          <h2>Vorteile</h2>
           <input id="vorteile" type="text" v-model="vorteilText" />
-          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+</button>
           <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">-</button>
+          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+</button>
           <br />
           <select v-model="selected" multiple id="selectVorteile">
             <option
-              v-for="vorteil in Vorteile"
-              :key="vorteil.vorteil"
+              v-for="vorteil in vorteile"
+              :key="vorteil"
               @click="vorteilSelection(vorteil)"
-            >{{ vorteil.vorteil }}</option>
+            >{{ vorteil }}</option>
           </select>
         </div>
       </div>
@@ -53,50 +53,50 @@
           <div class="combobox">
             <p>Ideen-Typ</p>
             <select v-model="ideenTyp" @click="ideeSelection()">
-              <option value="Produktidee" selected>Produktidee</option>
-              <option value="Interne Idee">Interne Idee</option>
+              <option value="PRODUKTIDEE" selected>Produktidee</option>
+              <option value="INTERNE_IDEE">Interne Idee</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[ sparteAktiv ]">
             <p>Sparte</p>
             <select v-model="sparte">
-              <option>KFZ</option>
-              <option>Unfall</option>
-              <option>Krankenversicherung</option>
-              <option>Rechtsschutz</option>
-              <option>Lebensversicherung</option>
-              <option>Rentenversicherung</option>
-              <option>Haftpflicht</option>
-              <option>Hausrat</option>
-              <option>Wohngebäudeversicherung</option>
+              <option value="KFZ">KFZ</option>
+              <option value="UNFALL">Unfall</option>
+              <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
+              <option value="RECHTSSCHUTZ">Rechtsschutz</option>
+              <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
+              <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
+              <option value="HAFTPFLICHT">Haftpflicht</option>
+              <option value="HAUSRAT">Hausrat</option>
+              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[ vertriebswegAktiv ]">
             <p>Vertriebsweg</p>
             <select v-model="vertriebsweg" multiple>
-              <option>Stationärer Vertrieb in eigenen Geschäftsstelle</option>
-              <option>Versicherungsmakler</option>
-              <option>Kooperation mit Kreditinstituten</option>
-              <option>Direktversicherung</option>
+              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+              <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
+              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+              <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[ zielgruppeAktiv ]">
             <p>Zielgruppen</p>
             <select v-model="zielgruppe" multiple>
-              <option selected>Kinder/Jugendliche</option>
-              <option>Familien</option>
-              <option>Singles</option>
-              <option>Paare</option>
-              <option>Personen 50+</option>
-              <option>Gewerbetreibende</option>
+              <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+              <option value="FAMILIEN">Familien</option>
+              <option value="SINGLES">Singles</option>
+              <option value="PAARE">Paare</option>
+              <option value="PERSONEN_50PLUS">Personen 50+</option>
+              <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[ handlungsfelderAktiv ]">
             <p>Handlungsfelder</p>
             <select v-model="handlungsfeld">
-              <option>Kostensenkung</option>
-              <option>Ertragssteigerung</option>
-              <option>Zukunftsfähigkeit</option>
+              <option value="KOSTENSENKUNG">Kostensenkung</option>
+              <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
+              <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
             </select>
           </div>
         </div>
@@ -113,18 +113,22 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { Helper } from "../services/helper";
+import { Params } from "../services/params-service";
 export default Vue.extend({
   data: () => ({
+    // Auth Token
+    token: localStorage.getItem("token"),
     // Idee-Objekt
     idee: {
       titel: "String",
       beschreibung: "String",
-      vorteile: [{ vorteil: "" }],
+      vorteile: [{}],
       existiert: false,
       ideenTyp: "String",
       sparte: "String",
-      vertriebsweg: [{ id: 0, value: "" }],
-      zielgruppe: [{ id: 0, value: "" }],
+      vertriebsweg: [{ value: "" }],
+      zielgruppe: [{ value: "" }],
       handlungsfeld: "String",
     },
     // Beschreibende Attribute
@@ -134,14 +138,14 @@ export default Vue.extend({
     // Data für Vorteile und Vorteilslogik
     counter: 0,
     vorteilText: "",
-    Vorteile: [{ vorteil: "Vorteil" }],
+    vorteile: [{}],
     selected: "",
     selectedIndex: 0,
     // Data für Comboboxen und Comboboxlogik
     ideenTyp: "",
     sparte: "",
-    vertriebsweg: [{ id: 1, value: "" }],
-    zielgruppe: [{ id: 1, value: "" }],
+    vertriebsweg: [{ value: "" }],
+    zielgruppe: [{ value: "" }],
     handlungsfeld: "",
     // Aktivieren/Deaktivieren
     sparteAktiv: "aktiv",
@@ -150,7 +154,7 @@ export default Vue.extend({
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
     // Bootstrap Alert Variablen
-    showSuccess: false
+    showSuccess: false,
   }),
   methods: {
     // Methode für Abbrechen-Button => Zurück im Browser
@@ -160,7 +164,7 @@ export default Vue.extend({
     // Logik für das Hinzufügen/Entfernen von Vorteilen
     vorteilHinzufuegen() {
       if (this.counter < 3 && this.vorteilText != "") {
-        this.Vorteile.push({ vorteil: this.vorteilText });
+        this.vorteile.push(this.vorteilText);
         this.counter++;
       } else if (this.counter > 2)
         alert("Pro Idee können nur 3 Ideen hinzugefügt werden");
@@ -168,46 +172,46 @@ export default Vue.extend({
     },
     vorteilEntfernen() {
       if (this.counter) {
-        this.$delete(this.Vorteile, this.selectedIndex);
+        this.$delete(this.vorteile, this.selectedIndex);
         this.counter--;
         if (this.counter < 0) this.counter = 0;
       }
     },
-    vorteilSelection(selected: { id: number; vorteil: string }) {
-      this.selectedIndex = this.Vorteile.indexOf(selected);
+    vorteilSelection(selected: {}) {
+      this.selectedIndex = this.vorteile.indexOf(selected);
     },
     // Logik für das Auswählen/Ausblenden von Comboboxen
     ideeSelection() {
-      if (this.ideenTyp == "Produktidee") {
+      if (this.ideenTyp == "PRODUKTIDEE") {
         this.handlungsfelderAktiv = "inaktiv";
-        (this.sparteAktiv = "aktiv"),
-          (this.vertriebswegAktiv = "aktiv"),
-          (this.zielgruppeAktiv = "aktiv"),
-          (this.existiertAktiv = "aktiv");
+        this.sparteAktiv = "aktiv";
+        this.vertriebswegAktiv = "aktiv";
+        this.zielgruppeAktiv = "aktiv";
+        this.existiertAktiv = "aktiv";
       } else {
         this.handlungsfelderAktiv = "aktiv";
-        (this.sparteAktiv = "inaktiv"),
-          (this.vertriebswegAktiv = "inaktiv"),
-          (this.zielgruppeAktiv = "inaktiv"),
-          (this.existiertAktiv = "inaktiv");
+        this.sparteAktiv = "inaktiv";
+        this.vertriebswegAktiv = "inaktiv";
+        this.zielgruppeAktiv = "inaktiv";
+        this.existiertAktiv = "inaktiv";
       }
     },
     // Eingaben überprüfen und Idee speichern
     validiereEingaben(): boolean {
       // NOCH NICHT FERTIG
       var errorMessage = "Angaben ungültig: ";
-      var error = true;
-      if (this.ideenTyp == "Interne Idee" && this.handlungsfeld.length == 0) {
+      var error = false;
+      if (this.ideenTyp == "INTERNE_IDEE" && this.handlungsfeld.length == 0) {
         errorMessage += "Mindestens eine Zielgruppe auswählen \n";
         error = true;
       }
       return error;
     },
     ideeSpeichern() {
-      if (this.validiereEingaben()) {
+      if (!this.validiereEingaben()) {
         this.idee.titel = this.titel;
         this.idee.beschreibung = this.beschreibung;
-        this.idee.vorteile = this.Vorteile;
+        this.idee.vorteile = this.vorteile;
         this.idee.existiert = this.existiert;
         this.idee.ideenTyp = this.ideenTyp;
         this.idee.sparte = this.sparte;
@@ -215,123 +219,128 @@ export default Vue.extend({
         this.idee.zielgruppe = this.zielgruppe;
         this.idee.handlungsfeld = this.handlungsfeld;
         console.log(this.idee);
+
+        var axiosInstance = Helper.getInstance().createAxiosInstance();
+
+        const config = {
+          headers: { Authorization: `Bearer ${this.token}` },
+        };
+        axiosInstance.post(
+          "http://localhost:9090/idee",
+          {
+            titel: this.titel,
+            beschreibung: this.beschreibung,
+            bearbeitungsstatus: "ANGELEGT",
+            typ: this.ideenTyp,
+            // <- erfasser
+            vorteile: this.vorteile,
+            existiertBereits: this.existiert,
+            handlungsfeld: this.handlungsfeld,
+            sparten: this.sparte,
+            vertriebsweg: this.vertriebsweg,
+            zielgruppe: this.zielgruppe,
+          },
+          config
+        );
       }
-    }
+    },
   },
   mounted() {
-    this.$delete(this.Vorteile, 0);
+    this.$delete(this.vorteile, 0);
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.container-fluid {
-  float: left;
-  justify-content: space-around;
-  height: calc(100% - 20px);
-  width: 800px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(to bottom, #efefef, #ccc);
+  .beschreibung, .beschreibung textarea, .dateien, .row, .titel, .ideenDropdowns, #selectVorteile, select{
+    width: 100%;
+  }
+  .ideeButton, #vorteile, #titel{
+    height: 30px;
+  }
+  p, label, button{
+    font-size: 1rem;
+  } 
+  .container-fluid, .beschreibung{
+    height: 100%;
+  }
+  .container-fluid, button{
+    border-radius: 20px;
+  }
+  .container-fluid, #selectVorteile{
+    overflow: hidden;
+  }
+  #vorteile, #titel{
+    width: 88%;
+    margin-bottom: 2px;
+  }
+  #entfernen, #hinzu{
+    color: #fff;
+  }
+  .combobox, #entfernen{
+    margin-right: 2px;
+  }
+  .container-fluid{
+    width: 800px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to bottom, #efefef, #ccc);
+  }
   .vorteile button {
     padding: 5px;
-    margin: 5px;
   }
   h1 {
     text-align: center;
-    margin: 1%;
-  }
-  label {
-    font-size: 1.1em;
-    // margin-right: 30px;
-  }
-  .beschreibung {
-    top: 2%;
-    // margin: auto;
-    left: 0;
-    right: 0;
-    height: 250px;
   }
   .beschreibung textarea {
-    //resize: none;
-    width: 100%;
-    height: 80%;
+    height: 200px;
   }
   .ideeButton {
     width: 30px;
-    height: 30px;
-  }
-  .dateien {
-    // margin: 20px;
   }
   .vorteile {
-    //margin: 20px;
+    width: 650px;
   }
-  #vorteileAnzeigen {
-    //resize: none;
-    width: 30%;
+  .row{
+    padding-left: 3%;
   }
-  #vorteile {
-    width: 30%;
+  .ideenDropdowns{
+    display: flex;
+    justify-content: space-between;
   }
-  #selectVorteile {
-    overflow: hidden;
-  }
-  #titel {
-    width: 30%;
-  }
-  .existiert {
-    //margin: 30px;
-    margin-bottom: 0px;
+  #existiertBereits{
+    height: 15px;
+    width: 15px;
+    margin-left: 20px;
   }
   .buttons {
-    float: right;
-    //margin: 2%;
+    padding: 1%;
+    margin: auto;
   }
   #hinzu {
     background-color: #00894d;
-    color: #fff;
   }
   #entfernen {
     background-color: #f80303;
-    color: #fff;
-    margin-right: 2px;
   }
-}
-button {
-  border-radius: 20px;
-  border: 1px solid #fff;
-  color: rgb(0, 0, 0);
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 10px 40px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
+  button {
+    border: 1px solid #fff;
+    font-weight: bold;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s ease-in;
+    &:active {
+      transform: scale(0.9);
+    }
+    &:focus {
+      outline: none;
+    }
   }
-  &:focus {
-    outline: none;
+  select {
+    font-size: .80rem;
   }
-}
-p,
-label {
-  font-size: 0.75em;
-}
-.combobox {
-  float: left;
-  //margin: 35px;
-}
-select {
-  width: 5em;
-}
-.inaktiv {
-  display: none;
-}
-.aktiv {
-  display: inline;
-}
+  .inaktiv {
+    display: none;
+  }
 </style>
