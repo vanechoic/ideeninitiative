@@ -1,5 +1,9 @@
 export class Idee {
     
+    artDerUmsetzung: null
+    bearbeitungsstatus: null
+    begruendung: null
+    unternehmensbezeichnung: null
     titel: string
     beschreibung: string
     verfasser: string
@@ -10,7 +14,7 @@ export class Idee {
     sparte: string
     vertriebsweg: [{ value: string }]
     zielgruppe: [{ value: string }]
-    handlungsfeld: string;
+    handlungsfeld: string
 
     constructor(titel: string, beschreibung: string, verfasser: string, erstellt: string, vorteile: [{}],
         existiert: boolean, ideenTyp: string, sparte: string, vertriebsweg: [{ value: string }],
@@ -32,7 +36,7 @@ export class Idee {
         return "'"+ this.titel + "' von: " + this.verfasser + " erstellt: " + this.erstellt + " " + this.ideenTyp;
     }
 
-    get IdeenTyp () {
+    get IdeenTyp() {
         return this.ideenTyp
     }
 }
