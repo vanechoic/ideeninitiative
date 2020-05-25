@@ -31,7 +31,6 @@ public class IdeeController implements IdeeApi {
 
     @Override
     public ResponseEntity<List<IdeeDTO>> alleIdeenAbrufen() throws Exception {
-        logger.error("alle Ideen abrufen");
         List<IdeeDTO> geladeneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.alleIdeenAbrufen());
         return ResponseEntity.ok(geladeneIdeeDTOs);
     }
@@ -39,22 +38,18 @@ public class IdeeController implements IdeeApi {
     @Override
     public ResponseEntity<String> ideeBearbeiten(IdeeDTO ideeDTO) throws Exception {
         Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
-        ideeService.ideeBearbeiten(ideeDTO,  idee);
+        ideeService.ideeBearbeiten(idee);
         return ResponseEntity.ok("Idee erfolgreich bearbeitet.");
     }
 
     @Override
     public ResponseEntity<String> ideeLoeschen(String titel, String erfasser, String erstelldatum) throws Exception {
-        logger.error("titel: "+titel);
-        logger.error("erfasser: "+erfasser);
-        logger.error("erstelldatum: "+erstelldatum);
         ideeService.ideeLoeschen(titel, erfasser, erstelldatum);
         return ResponseEntity.ok(String.format("Die Idee %s von %s wurde erfolgreich gelöscht.", titel, erfasser));
     }
 
     @Override
     public ResponseEntity<List<IdeeDTO>> meineIdeen(String authorization) throws Exception {
-        logger.error("meine Ideen");
         String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
         List<IdeeDTO> geladeneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.meineIdeenAbrufen(benutzername));
         return ResponseEntity.ok(geladeneIdeeDTOs);

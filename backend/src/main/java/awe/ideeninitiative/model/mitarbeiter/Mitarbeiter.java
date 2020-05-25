@@ -5,6 +5,7 @@ import awe.ideeninitiative.model.enums.Sparte;
 import awe.ideeninitiative.model.enums.Vertriebskanal;
 import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Zielgruppe;
+import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.restapi.security.BenutzerRollen;
 import org.hibernate.validator.constraints.Email;
 
@@ -47,6 +48,15 @@ public class Mitarbeiter extends AbstractEntity {
 
     private boolean istAdmin;
 
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "erfasser", orphanRemoval = true)
+    private List<Idee> erstellteIdeen;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "fachspezialist", orphanRemoval = true)
+    private List<Idee> zugewieseneIdeen;
+
     /**
      * Speichert die Fachkenntnisse über Vertriebskanäle.
      */
@@ -83,6 +93,11 @@ public class Mitarbeiter extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "handlungsfeld")
     private Set<Handlungsfeld> handlungsfelder;
+
+    public Mitarbeiter() {
+        erstellteIdeen = new ArrayList<>();
+        zugewieseneIdeen = new ArrayList<>();
+    }
 
     public String getEmail() {
         return email;

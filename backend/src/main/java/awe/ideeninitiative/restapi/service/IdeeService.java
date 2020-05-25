@@ -2,6 +2,7 @@ package awe.ideeninitiative.restapi.service;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
 import awe.ideeninitiative.exception.IdeeExistiertNichtException;
+import awe.ideeninitiative.model.enums.Ideentyp;
 import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
 import awe.ideeninitiative.restapi.mapper.IdeeMapper;
@@ -62,13 +63,27 @@ public class IdeeService {
     }
 
 
-    public void ideeBearbeiten(IdeeDTO ideeDTO, Idee idee) throws IdeeExistiertNichtException {
+    public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException {
         //Idee suchen
-        List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(ideeDTO.getTitel(), DatumUtil.formeStringZuDatumUm(ideeDTO.getErstellzeitpunkt()), ideeDTO.getErfasser());
-        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, ideeDTO.getTitel(), ideeDTO.getErfasser());
-        //Idee aktualisieren
+        List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(idee.getTitel(), idee.getErstellzeitpunkt(), idee.getErfasser().getBenutzername());
+        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, idee.getTitel(), idee.getErfasser().getBenutzername());
+        //Idee aktualisieren - ID und Erstellzeitpunkt werden beibehalten
         Idee zuAktualisierendeIdee = zutreffendeIdeen.get(0);
-        //TODO: Idee aktualisiern okay, aber die IDs müssen noch an Handlungsfeld, Sparte und Co. gesetzt werden
-        //ideeRepository.save(idee);
+        zuAktualisierendeIdee.setTitel(idee.getTitel());
+        zuAktualisierendeIdee.setBeschreibung(idee.getBeschreibung());
+        zuAktualisierendeIdee.setBearbeitungsstatus(idee.getBearbeitungsstatus());
+        zuAktualisierendeIdee.setBegruendung(idee.getBegruendung());
+        zuAktualisierendeIdee.setErfasser(idee.getErfasser());
+        zuAktualisierendeIdee.setFachspezialist(idee.getFachspezialist());
+        zuAktualisierendeIdee.setTyp(idee.getTyp());
+        if(Ideentyp.INTERNE_IDEE == idee.getTyp()){
+            zuAktualisierendeIdee.setInterneIdeeHandlungsfeld(idee.getInterneIdeeHandlungsfeld());
+        } else{
+            zuAktualisierendeIdee.setProduktideeVertriebsweg(idee.getProduktideeVertriebsweg());
+            zuAktualisierendeIdee.setProduktideeZielgruppe(idee.getProduktideeZielgruppe());
+            zuAktualisierendeIdee.setProduktideeZusatzinformation(idee.getProduktideeZusatzinformation());
+            zuAktualisierendeIdee.setProduktideeSparte(idee.getProduktideeSparte());
+        }
+        ideeRepository.save(zuAktualisierendeIdee);
     }
 }

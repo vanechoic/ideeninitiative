@@ -8,6 +8,7 @@ import awe.ideeninitiative.model.enums.Ideentyp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,28 +33,33 @@ public class Idee extends AbstractEntity {
     @NotNull
     private Ideentyp typ;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="erfasser_id", referencedColumnName = "id")
     private Mitarbeiter erfasser;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="fachspezialist_id", referencedColumnName = "id")
     private Mitarbeiter fachspezialist;
 
-    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL)
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
     private InterneIdeeHandlungsfeld interneIdeeHandlungsfeld;
 
-    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL)
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
     private ProduktideeSparte produktideeSparte;
 
-    @OneToMany(mappedBy = "idee", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<ProduktideeVertriebsweg> produktideeVertriebsweg;
 
-    @OneToMany(mappedBy = "idee",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "idee",cascade=CascadeType.ALL, orphanRemoval = true)
     private List<ProduktideeZielgruppe> produktideeZielgruppe;
 
-    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL)
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
     private ProduktideeZusatzinformation produktideeZusatzinformation;
+
+    public Idee() {
+        produktideeZielgruppe = new ArrayList<>();
+        produktideeVertriebsweg = new ArrayList<>();
+    }
 
     public String getTitel() {
         return titel;
@@ -116,6 +122,9 @@ public class Idee extends AbstractEntity {
     }
 
     public void setInterneIdeeHandlungsfeld(InterneIdeeHandlungsfeld interneIdeeHandlungsfeld) {
+        if(interneIdeeHandlungsfeld != null){
+            interneIdeeHandlungsfeld.setIdee(this);
+        }
         this.interneIdeeHandlungsfeld = interneIdeeHandlungsfeld;
     }
 
@@ -124,6 +133,9 @@ public class Idee extends AbstractEntity {
     }
 
     public void setProduktideeSparte(ProduktideeSparte produktideeSparte) {
+        if(produktideeSparte != null){
+            produktideeSparte.setIdee(this);
+        }
         this.produktideeSparte = produktideeSparte;
     }
 
@@ -132,6 +144,9 @@ public class Idee extends AbstractEntity {
     }
 
     public void setProduktideeZusatzinformation(ProduktideeZusatzinformation produktideeZusatzinformation) {
+        if(produktideeZusatzinformation != null){
+            produktideeZusatzinformation.setIdee(this);
+        }
         this.produktideeZusatzinformation = produktideeZusatzinformation;
     }
 
@@ -140,7 +155,11 @@ public class Idee extends AbstractEntity {
     }
 
     public void setProduktideeVertriebsweg(List<ProduktideeVertriebsweg> produktideeVertriebsweg) {
-        this.produktideeVertriebsweg = produktideeVertriebsweg;
+        if(produktideeVertriebsweg != null && !produktideeVertriebsweg.isEmpty()){
+            produktideeVertriebsweg.forEach(vw -> vw.setIdee(this));
+            this.produktideeVertriebsweg.clear();
+            this.produktideeVertriebsweg.addAll(produktideeVertriebsweg);
+        }
     }
 
     public List<ProduktideeZielgruppe> getProduktideeZielgruppe() {
@@ -148,6 +167,10 @@ public class Idee extends AbstractEntity {
     }
 
     public void setProduktideeZielgruppe(List<ProduktideeZielgruppe> produktideeZielgruppe) {
-        this.produktideeZielgruppe = produktideeZielgruppe;
+        if(produktideeZielgruppe != null && !produktideeZielgruppe.isEmpty()){
+            produktideeZielgruppe.forEach(zg -> zg.setIdee(this));
+            this.produktideeZielgruppe.clear();
+            this.produktideeZielgruppe.addAll(produktideeZielgruppe);
+        }
     }
 }
