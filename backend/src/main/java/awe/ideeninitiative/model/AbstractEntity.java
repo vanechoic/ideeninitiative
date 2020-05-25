@@ -16,12 +16,20 @@ public class AbstractEntity {
     private Integer id;
 
     @CreationTimestamp
-    private LocalDateTime createDateTime;
+    private LocalDateTime erstellzeitpunkt;
 
     @UpdateTimestamp
-    private LocalDateTime updateDateTime;
+    private LocalDateTime aktualisierungszeitpunkt;
 
     public Integer getId(){
         return id;
+    }
+
+    public LocalDateTime getErstellzeitpunkt() {
+        return erstellzeitpunkt;
+    }
+
+    public LocalDateTime getAktualisierungszeitpunkt() {
+        return aktualisierungszeitpunkt;
     }
 }
