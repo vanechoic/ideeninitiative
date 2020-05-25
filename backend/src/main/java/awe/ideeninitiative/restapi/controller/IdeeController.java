@@ -38,7 +38,11 @@ public class IdeeController implements IdeeApi {
 
     @Override
     public ResponseEntity<String> ideeLoeschen(String titel, String erfasser, String erstelldatum) throws Exception {
-        return null;
+        logger.error("titel: "+titel);
+        logger.error("erfasser: "+erfasser);
+        logger.error("erstelldatum: "+erstelldatum);
+        ideeService.ideeLoeschen(titel, erfasser, erstelldatum);
+        return ResponseEntity.ok(String.format("Die Idee %s von %s wurde erfolgreich gelöscht.", titel, erfasser));
     }
 
     @Override
