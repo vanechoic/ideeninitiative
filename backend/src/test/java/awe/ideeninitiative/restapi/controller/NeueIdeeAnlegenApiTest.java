@@ -68,6 +68,8 @@ public class NeueIdeeAnlegenApiTest extends AbstrakterApiTest {
         then.zuDerInternenIdeeWurdeEinHandlungsfeldGespeichert();
     }
 
+    //TODO: neue Produktidee anlegen Test
+
     private class Given{
         public void vollstaendigeEingabenFuerEineInterneIdee() {
             ideeDTO = IdeeDTOBuilder.anIdeeDTO()//

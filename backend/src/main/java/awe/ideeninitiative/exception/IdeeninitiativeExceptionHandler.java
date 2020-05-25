@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -88,6 +89,11 @@ public class IdeeninitiativeExceptionHandler{
         return erzeugeApiFehler(e.getClass().getSimpleName(), e.getMessage(), e.getHttpStatus());
     }
 
+    @ExceptionHandler({DateTimeParseException.class})
+    public ResponseEntity<ApiFehler> handleException(DateTimeParseException e){
+        return erzeugeApiFehler("DatumFormatierung", e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  
     public static ResponseEntity<ApiFehler> erzeugeApiFehler(String fehlertyp, String fehlertext, HttpStatus httpStatus){
         ApiFehler apiFehler = new ApiFehler();
         apiFehler.setFehlertext(fehlertext);
