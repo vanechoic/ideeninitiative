@@ -249,6 +249,8 @@ export default Vue.extend({
         console.log(this.idee);
 
         var axiosInstance = Helper.getInstance().createAxiosInstance();
+        var jwt = require("jsonwebtoken");
+        var decode = jwt.decode(this.token);
 
         const config = {
           headers: { Authorization: `Bearer ${this.token}` },
@@ -260,7 +262,7 @@ export default Vue.extend({
             beschreibung: this.beschreibung,
             bearbeitungsstatus: "ANGELEGT",
             typ: this.ideenTyp,
-            // <- erfasser
+            erfasser: decode["sub"],
             vorteile: this.vorteile,
             existiertBereits: this.existiert,
             handlungsfeld: this.handlungsfeld,
