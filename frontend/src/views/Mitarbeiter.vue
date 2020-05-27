@@ -14,3 +14,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.mitarbeiter{
+  position: fixed;
+}
+</style>

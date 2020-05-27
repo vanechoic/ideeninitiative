@@ -28,23 +28,43 @@
         <h2>Vorteile</h2>
         <div class="vorteile">
           <input id="vorteile" type="text" v-model="vorteilText" />
-          <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">-</button>
-          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+</button>
+          <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">
+            -
+          </button>
+          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">
+            +
+          </button>
           <br />
           <select v-model="selected" multiple id="selectVorteile">
             <option
               v-for="vorteil in vorteile"
               :key="vorteil"
               @click="vorteilSelection(vorteil)"
-            >{{ vorteil }}</option>
+              >{{ vorteil }}</option
+            >
           </select>
         </div>
       </div>
       <div class="row">
         <!-- Existierende Idee - Checkbox -->
-        <div class="existiert" v-bind:class="[ existiertAktiv ]">
-          <label for="existiertBereits">Existiert eine vergleichbare Idee?</label>
-          <input type="checkbox" v-model="existiert" id="existiertBereits" />
+        <div class="existiert" v-bind:class="[existiertAktiv]">
+          <p for="existiertBereits">Existiert eine vergleichbare Idee?</p>
+          <input
+            type="checkbox"
+            v-model="existiert"
+            id="existiertBereits"
+            v-on:click="existiert = true"
+          />
+          <div class="existiertInfo" v-if="existiert">
+            <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
+            <input type="text" id="unternehmen" v-model="titel" />
+            <label
+              id="beschreibungsTextExistiertLbl"
+              for="beschreibungsTextExistiert"
+              >Beschreibung wie die diese Idee schon umgesetzt ist:</label
+            >
+            <textarea id="beschreibungsTextExistiert"></textarea>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -57,7 +77,7 @@
               <option value="INTERNE_IDEE">Interne Idee</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ sparteAktiv ]">
+          <div class="combobox" v-bind:class="[sparteAktiv]">
             <p>Sparte</p>
             <select v-model="sparte">
               <option value="KFZ">KFZ</option>
@@ -68,22 +88,30 @@
               <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
               <option value="HAFTPFLICHT">Haftpflicht</option>
               <option value="HAUSRAT">Hausrat</option>
-              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+              <option value="WOHNGEBAUEDEVERSICHERUNG"
+                >Wohngebäudeversicherung</option
+              >
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ vertriebswegAktiv ]">
+          <div class="combobox" v-bind:class="[vertriebswegAktiv]">
             <p>Vertriebsweg</p>
             <select v-model="vertriebsweg" multiple>
-              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+              <option value="STATIONAERER_VERTRIEB"
+                >Stationärer Vertrieb in eigenen Geschäftsstelle</option
+              >
               <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+              <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
+                >Kooperation mit Kreditinstituten</option
+              >
               <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ zielgruppeAktiv ]">
+          <div class="combobox" v-bind:class="[zielgruppeAktiv]">
             <p>Zielgruppen</p>
             <select v-model="zielgruppe" multiple>
-              <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+              <option selected value="KINDER_JUGENDLICHE"
+                >Kinder/Jugendliche</option
+              >
               <option value="FAMILIEN">Familien</option>
               <option value="SINGLES">Singles</option>
               <option value="PAARE">Paare</option>
@@ -91,7 +119,7 @@
               <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ handlungsfelderAktiv ]">
+          <div class="combobox" v-bind:class="[handlungsfelderAktiv]">
             <p>Handlungsfelder</p>
             <select v-model="handlungsfeld">
               <option value="KOSTENSENKUNG">Kostensenkung</option>
@@ -254,95 +282,117 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-  .beschreibung, .beschreibung textarea, .dateien, .row, .titel, .ideenDropdowns, #selectVorteile, select{
-    width: 100%;
+.beschreibung,
+.beschreibung textarea,
+.dateien,
+.row,
+.titel,
+.ideenDropdowns,
+#selectVorteile,
+select,
+.existiertInfo,
+#beschreibungsTextExistiert,
+#unternehmen {
+  width: 100%;
+}
+.ideeButton,
+#vorteile,
+#titel {
+  height: 30px;
+}
+p,
+label,
+button {
+  font-size: 1rem;
+}
+.container-fluid,
+.beschreibung,
+#existiert {
+  height: 100%;
+}
+.container-fluid,
+button {
+  border-radius: 20px;
+}
+.container-fluid,
+#selectVorteile {
+  overflow: hidden;
+}
+#vorteile,
+#titel {
+  width: 88%;
+  margin-bottom: 2px;
+}
+#entfernen,
+#hinzu {
+  color: #fff;
+}
+.combobox,
+#entfernen {
+  margin-right: 2px;
+}
+.container-fluid {
+  width: 800px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #efefef, #ccc);
+}
+.vorteile button {
+  padding: 5px;
+}
+h1 {
+  text-align: center;
+}
+.beschreibung textarea,
+#beschreibungsTextExistiert {
+  height: 200px;
+}
+.ideeButton {
+  width: 30px;
+}
+.vorteile {
+  width: 650px;
+}
+.row {
+  padding-left: 3%;
+}
+.ideenDropdowns {
+  display: flex;
+  justify-content: space-between;
+}
+#existiertBereits {
+  height: 15px;
+  width: 15px;
+  margin-left: 20px;
+}
+.buttons {
+  padding: 1%;
+  margin: auto;
+}
+#hinzu {
+  background-color: #00894d;
+}
+#entfernen {
+  background-color: #f80303;
+}
+button {
+  border: 1px solid #fff;
+  font-weight: bold;
+  padding: 2px 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
   }
-  .ideeButton, #vorteile, #titel{
-    height: 30px;
+  &:focus {
+    outline: none;
   }
-  p, label, button{
-    font-size: 1rem;
-  } 
-  .container-fluid, .beschreibung{
-    height: 100%;
-  }
-  .container-fluid, button{
-    border-radius: 20px;
-  }
-  .container-fluid, #selectVorteile{
-    overflow: hidden;
-  }
-  #vorteile, #titel{
-    width: 88%;
-    margin-bottom: 2px;
-  }
-  #entfernen, #hinzu{
-    color: #fff;
-  }
-  .combobox, #entfernen{
-    margin-right: 2px;
-  }
-  .container-fluid{
-    width: 800px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(to bottom, #efefef, #ccc);
-  }
-  .vorteile button {
-    padding: 5px;
-  }
-  h1 {
-    text-align: center;
-  }
-  .beschreibung textarea {
-    height: 200px;
-  }
-  .ideeButton {
-    width: 30px;
-  }
-  .vorteile {
-    width: 650px;
-  }
-  .row{
-    padding-left: 3%;
-  }
-  .ideenDropdowns{
-    display: flex;
-    justify-content: space-between;
-  }
-  #existiertBereits{
-    height: 15px;
-    width: 15px;
-    margin-left: 20px;
-  }
-  .buttons {
-    padding: 1%;
-    margin: auto;
-  }
-  #hinzu {
-    background-color: #00894d;
-  }
-  #entfernen {
-    background-color: #f80303;
-  }
-  button {
-    border: 1px solid #fff;
-    font-weight: bold;
-    padding: 2px 8px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.1s ease-in;
-    &:active {
-      transform: scale(0.9);
-    }
-    &:focus {
-      outline: none;
-    }
-  }
-  select {
-    font-size: .80rem;
-  }
-  .inaktiv {
-    display: none;
-  }
+}
+select {
+  font-size: 0.8rem;
+}
+.inaktiv {
+  display: none;
+}
 </style>
