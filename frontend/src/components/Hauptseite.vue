@@ -4,24 +4,18 @@
       <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <!-- ALTER STAND
-          <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
-            {{idee.titel}} von {{idee.erfasser}} -
-            {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
-          </li>
-          !-->
           <li v-for="idee in ideenFiltern()" :key="idee">{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
       <div class="filter">
         <div class="filterElement">
-          <select id="filter1" v-model="ideenTyp" @click="selectFilter()">
+          <select id="filter1" v-model="ideenTyp">
             <option value disabled selected>Ideentyp</option>
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
-          <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
+          <select id="filter2" v-model="sparte" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Sparte</option>
             <option value="KFZ">KFZ</option>
             <option value="UNFALL">Unfall</option>
@@ -33,14 +27,14 @@
             <option value="HAUSRAT">Hausrat</option>
             <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
           </select>
-          <select id="filter3" v-model="vertriebsweg" v-bind:class="[ vertriebswegAktiv ]">
+          <select id="filter3" v-model="vertriebsweg" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Vertriebsweg</option>
             <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
             <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
             <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
             <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
-          <select id="filter4" v-model="zielgruppe" v-bind:class="[ zielgruppeAktiv ]">
+          <select id="filter4" v-model="zielgruppe" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Zielgruppe</option>
             <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
             <option value="FAMILIEN">Familien</option>
@@ -49,7 +43,7 @@
             <option value="PERSONEN_50PLUS">Personen 50+</option>
             <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
           </select>
-          <select id="filter5" v-model="handlungsfeld" v-bind:class="[ handlungsfelderAktiv ]">
+          <select id="filter5" v-model="handlungsfeld" v-if="ideenTyp == 'INTERNE_IDEE'">
             <option value disabled selected>Handlungsfeld</option>
             <option value="KOSTENSENKUNG">Kostensenkung</option>
             <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
@@ -58,7 +52,6 @@
         </div>
         <div class="filterElement">
           <!--Filter Button -->
-          <button id="filterButton" @click="ideenFiltern()">Filter</button>
         </div>
       </div>
     </div>
@@ -126,7 +119,8 @@ export default Vue.extend({
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
-    ideenTyp: "",
+    ideenTyp: '',
+    selektierterTyp: '',
     // Modalfenster und Componentenlogik
     showModal: false,
     component: "registrierter",
@@ -135,19 +129,6 @@ export default Vue.extend({
     gefilterteIdeen: [],
   }),
   methods: {
-    selectFilter() {
-      if (this.ideenTyp == "PRODUKTIDEE") {
-        this.handlungsfelderAktiv = "inaktiv";
-        this.sparteAktiv = "aktiv";
-        this.vertriebswegAktiv = "aktiv";
-        this.zielgruppeAktiv = "aktiv";
-      } else {
-        this.handlungsfelderAktiv = "aktiv";
-        this.sparteAktiv = "inaktiv";
-        this.vertriebswegAktiv = "inaktiv";
-        this.zielgruppeAktiv = "inaktiv";
-      }
-    },
     selectIdee() {
       // Platzhalter für später
     },
@@ -157,13 +138,17 @@ export default Vue.extend({
       var vw = this.vertriebsweg;
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
-
+      console.log("Ideen.length ", this.Ideen.length);
       return this.Ideen.filter(function (idee) {
-        if ((idee as any).typ == it) return true;
-        else if ((idee as any).sparten == sp) return true;
-        else if ((idee as any).vertriebsweg == vw) return true;
-        else if ((idee as any).zielgruppe == zg) return true;
-        else if ((idee as any).handlungsfeld == hf) return true;
+        return it == '' || it == null || (idee as any).typ == it
+      }).filter(function(idee){
+        return sp == '' || sp == null || (idee as any).sparte == sp
+      }).filter(function(idee){
+        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
+      }).filter(function(idee){
+        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
+      }).filter(function(idee){
+        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
       });
     },
     alleIdeenladen() {
@@ -172,7 +157,7 @@ export default Vue.extend({
       });
     },
   },
-  created() {
+  mounted() {
     this.alleIdeenladen();
   },
 });
