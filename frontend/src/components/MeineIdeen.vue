@@ -4,12 +4,16 @@
       <div class="links">
         <p>Meine Ideen</p>
         <div class="listeContainer">
-          <ul class="liste">
-            <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
-              {{idee.titel}} von {{idee.erfasser}} -
-              {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
-            </li>
-          </ul>
+        <ul class="liste">
+          <!-- ALTER STAND
+          <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
+            {{idee.titel}} von {{idee.erfasser}} -
+            {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
+          </li>
+          !-->
+          <li v-for="idee in ideenFiltern()" :key="idee"
+          v-on:click="showModal = true, selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
+        </ul>
         </div>
         <!--3 Filter Dropdowns -->
         <div class="filter">
@@ -53,10 +57,6 @@
               <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
               <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
             </select>
-          </div>
-          <div class="filterElement">
-            <!--Filter Button -->
-            <button id="filterButton" @click="ideenFiltern()">Filter</button>
           </div>
         </div>
       </div>
@@ -118,22 +118,19 @@ export default Vue.extend({
       // Platzhalter für später
     },
     ideenFiltern() {
-      //this.alleIdeenladen();
-      this.Ideen.forEach((idee) => {
-        if ((idee as any).typ == this.ideenTyp) {
-          if ((idee as any).sparten == this.sparte)
-            this.gefilterteIdeen.push(idee);
-          else if ((idee as any).vertriebsweg == this.vertriebsweg)
-            this.gefilterteIdeen.push(idee);
-          else if ((idee as any).zielgruppe == this.zielgruppe)
-            this.gefilterteIdeen.push(idee);
-          else if ((idee as any).handlungsfeld == this.handlungsfeld)
-            this.gefilterteIdeen.push(idee);
-          else this.gefilterteIdeen.push(idee);
-        }
+      var it = this.ideenTyp;
+      var sp = this.sparte;
+      var vw = this.vertriebsweg;
+      var zg = this.zielgruppe;
+      var hf = this.handlungsfeld;
+
+      return this.Ideen.filter(function (idee) {
+        if ((idee as any).typ == it) return true;
+        else if ((idee as any).sparten == sp) return true;
+        else if ((idee as any).vertriebsweg == vw) return true;
+        else if ((idee as any).zielgruppe == zg) return true;
+        else if ((idee as any).handlungsfeld == hf) return true;
       });
-      this.Ideen = this.gefilterteIdeen;
-      this.gefilterteIdeen = [];
     },
     meineIdeenladen() {
       var jwt = require("jsonwebtoken");
@@ -197,6 +194,14 @@ button,
 .filter,
 .filterElement {
   float: left;
+}
+#filter1,
+#filter2,
+#filter3,
+#filter4,
+#filter5 {
+  margin-right: 2px;
+  width: 6em;
 }
 button,
 #filterButton {

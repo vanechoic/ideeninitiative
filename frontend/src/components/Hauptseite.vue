@@ -10,7 +10,8 @@
             {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
           </li>
           !-->
-          <li v-for="idee in ideenFiltern()" :key="idee">{{idee.titel}} von {{idee.erfasser}}</li>
+          <li v-for="idee in ideenFiltern()" :key="idee"
+          v-on:click="showModal = true, selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
@@ -55,10 +56,6 @@
             <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
             <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
           </select>
-        </div>
-        <div class="filterElement">
-          <!--Filter Button -->
-          <button id="filterButton" @click="ideenFiltern()">Filter</button>
         </div>
       </div>
     </div>
@@ -110,7 +107,7 @@ import { Helper } from "../services/helper";
 export default Vue.extend({
   name: "Hauptseite",
   components: {
-    registrierter: Registrierter,
+    registrierter: Registrierter
   },
   data: () => ({
     // Auth Token
@@ -189,7 +186,6 @@ export default Vue.extend({
 .fußzeile {
   position: absolute;
 }
-.container,
 .hauptteil,
 .listeContainer,
 .filter,
@@ -197,7 +193,6 @@ export default Vue.extend({
 #beschreibung {
   width: 100%;
 }
-.container,
 .rechts,
 .links,
 .erstellInfos,
@@ -273,8 +268,8 @@ ul,
 #filter3,
 #filter4,
 #filter5 {
-  margin: 2px;
-  width: 5.5em;
+  margin-right: 2px;
+  width: 6em;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -283,6 +278,23 @@ ul,
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+button {
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
+  }
+  &:focus {
+    outline: none;
+  }
 }
 #beschreibung {
   display: block;
@@ -293,6 +305,8 @@ ul,
 }
 .container {
   overflow: hidden;
+  height: 500px;
+  width: 800px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 .rechts {
@@ -330,28 +344,5 @@ li {
 }
 li:hover {
   background-color: rgba(0, 0, 0, 0.1);
-}
-button {
-  border: 1px solid #fff;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 2px 5px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
-.inaktiv {
-  display: none;
-}
-.aktiv {
-  display: inline;
 }
 </style>

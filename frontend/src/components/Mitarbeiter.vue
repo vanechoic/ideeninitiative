@@ -20,6 +20,7 @@ export default {
     color: #fff;
     font-size: .75rem;
     font-weight: bold;
+    margin: 5px;
     padding: 10px 40px;
     letter-spacing: 1px;
     text-transform: uppercase;

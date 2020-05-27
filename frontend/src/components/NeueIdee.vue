@@ -127,8 +127,8 @@ export default Vue.extend({
       existiert: false,
       ideenTyp: "String",
       sparte: "String",
-      vertriebsweg: [{ value: "" }],
-      zielgruppe: [{ value: "" }],
+      vertriebsweg: [{}],
+      zielgruppe: [{}],
       handlungsfeld: "String",
     },
     // Beschreibende Attribute
@@ -218,7 +218,6 @@ export default Vue.extend({
         this.idee.vertriebsweg = this.vertriebsweg;
         this.idee.zielgruppe = this.zielgruppe;
         this.idee.handlungsfeld = this.handlungsfeld;
-        console.log(this.idee);
 
         var axiosInstance = Helper.getInstance().createAxiosInstance();
         var jwt = require("jsonwebtoken");
@@ -227,23 +226,38 @@ export default Vue.extend({
         const config = {
           headers: { Authorization: `Bearer ${this.token}` },
         };
-        axiosInstance.post(
-          "http://localhost:9090/idee",
-          {
-            titel: this.titel,
-            beschreibung: this.beschreibung,
-            bearbeitungsstatus: "ANGELEGT",
-            typ: this.ideenTyp,
-            erfasser: decode["sub"],
-            vorteile: this.vorteile,
-            existiertBereits: this.existiert,
-            handlungsfeld: this.handlungsfeld,
-            sparten: this.sparte,
-            vertriebsweg: this.vertriebsweg,
-            zielgruppe: this.zielgruppe,
-          },
-          config
-        );
+        if (this.ideenTyp == "PRODUKTIDEE") {
+          axiosInstance.post(
+            "http://localhost:9090/idee",
+            {
+              titel: this.titel,
+              beschreibung: this.beschreibung,
+              bearbeitungsstatus: "ANGELEGT",
+              typ: this.ideenTyp,
+              erfasser: decode["sub"],
+              vorteile: this.vorteile,
+              existiertBereits: this.existiert,
+              sparten: this.sparte,
+              vertriebsweg: this.vertriebsweg,
+              zielgruppe: this.zielgruppe
+            },
+            config
+          );
+        } else {
+          axiosInstance.post(
+            "http://localhost:9090/idee",
+            {
+              titel: this.titel,
+              beschreibung: this.beschreibung,
+              bearbeitungsstatus: "ANGELEGT",
+              typ: this.ideenTyp,
+              erfasser: decode["sub"],
+              vorteile: this.vorteile,
+              handlungsfeld: this.handlungsfeld
+            },
+            config
+          );
+        }
       }
     },
   },
@@ -254,95 +268,112 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-  .beschreibung, .beschreibung textarea, .dateien, .row, .titel, .ideenDropdowns, #selectVorteile, select{
-    width: 100%;
+.beschreibung,
+.beschreibung textarea,
+.dateien,
+.row,
+.titel,
+.ideenDropdowns,
+#selectVorteile,
+select {
+  width: 100%;
+}
+.ideeButton,
+#vorteile,
+#titel {
+  height: 30px;
+}
+p,
+label,
+button {
+  font-size: 1rem;
+}
+.container-fluid,
+.beschreibung {
+  height: 100%;
+}
+.container-fluid,
+button {
+  border-radius: 20px;
+}
+.container-fluid,
+#selectVorteile {
+  overflow: hidden;
+}
+#vorteile,
+#titel {
+  width: 88%;
+  margin-bottom: 2px;
+}
+#entfernen,
+#hinzu {
+  color: #fff;
+}
+.combobox,
+#entfernen {
+  margin-right: 2px;
+}
+.container-fluid {
+  width: 800px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #efefef, #ccc);
+}
+.vorteile button {
+  padding: 5px;
+}
+h1 {
+  text-align: center;
+}
+.beschreibung textarea {
+  height: 200px;
+}
+.ideeButton {
+  width: 30px;
+}
+.vorteile {
+  width: 650px;
+}
+.row {
+  padding-left: 3%;
+}
+.ideenDropdowns {
+  display: flex;
+  justify-content: space-between;
+}
+#existiertBereits {
+  height: 15px;
+  width: 15px;
+  margin-left: 20px;
+}
+.buttons {
+  padding: 1%;
+  margin: auto;
+}
+#hinzu {
+  background-color: #00894d;
+}
+#entfernen {
+  background-color: #f80303;
+}
+button {
+  border: 1px solid #fff;
+  font-weight: bold;
+  padding: 2px 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
   }
-  .ideeButton, #vorteile, #titel{
-    height: 30px;
+  &:focus {
+    outline: none;
   }
-  p, label, button{
-    font-size: 1rem;
-  } 
-  .container-fluid, .beschreibung{
-    height: 100%;
-  }
-  .container-fluid, button{
-    border-radius: 20px;
-  }
-  .container-fluid, #selectVorteile{
-    overflow: hidden;
-  }
-  #vorteile, #titel{
-    width: 88%;
-    margin-bottom: 2px;
-  }
-  #entfernen, #hinzu{
-    color: #fff;
-  }
-  .combobox, #entfernen{
-    margin-right: 2px;
-  }
-  .container-fluid{
-    width: 800px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(to bottom, #efefef, #ccc);
-  }
-  .vorteile button {
-    padding: 5px;
-  }
-  h1 {
-    text-align: center;
-  }
-  .beschreibung textarea {
-    height: 200px;
-  }
-  .ideeButton {
-    width: 30px;
-  }
-  .vorteile {
-    width: 650px;
-  }
-  .row{
-    padding-left: 3%;
-  }
-  .ideenDropdowns{
-    display: flex;
-    justify-content: space-between;
-  }
-  #existiertBereits{
-    height: 15px;
-    width: 15px;
-    margin-left: 20px;
-  }
-  .buttons {
-    padding: 1%;
-    margin: auto;
-  }
-  #hinzu {
-    background-color: #00894d;
-  }
-  #entfernen {
-    background-color: #f80303;
-  }
-  button {
-    border: 1px solid #fff;
-    font-weight: bold;
-    padding: 2px 8px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.1s ease-in;
-    &:active {
-      transform: scale(0.9);
-    }
-    &:focus {
-      outline: none;
-    }
-  }
-  select {
-    font-size: .80rem;
-  }
-  .inaktiv {
-    display: none;
-  }
+}
+select {
+  font-size: 0.8rem;
+}
+.inaktiv {
+  display: none;
+}
 </style>
