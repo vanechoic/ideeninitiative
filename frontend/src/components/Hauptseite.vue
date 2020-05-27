@@ -7,8 +7,10 @@
           <li
             v-for="idee in Ideen"
             :key="idee"
-            v-on:click="showModal = true, selectIdee(idee)"
-          >{{idee}}</li>
+            v-on:click="push(), selectIdee(idee)"
+          >
+            {{ idee }}
+          </li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
@@ -19,7 +21,7 @@
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
-          <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
+          <select id="filter2" v-model="sparte" v-bind:class="[sparteAktiv]">
             <option value disabled selected>Sparte</option>
             <option value="KFZ">KFZ</option>
             <option value="UNFALL">Unfall</option>
@@ -29,16 +31,30 @@
             <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
             <option value="HAFTPFLICHT">Haftpflicht</option>
             <option value="HAUSRAT">Hausrat</option>
-            <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+            <option value="WOHNGEBAUEDEVERSICHERUNG"
+              >Wohngebäudeversicherung</option
+            >
           </select>
-          <select id="filter3" v-model="vertriebsweg" v-bind:class="[ vertriebswegAktiv ]">
+          <select
+            id="filter3"
+            v-model="vertriebsweg"
+            v-bind:class="[vertriebswegAktiv]"
+          >
             <option value disabled selected>Vertriebsweg</option>
-            <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+            <option value="STATIONAERER_VERTRIEB"
+              >Stationärer Vertrieb in eigenen Geschäftsstelle</option
+            >
             <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-            <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+            <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
+              >Kooperation mit Kreditinstituten</option
+            >
             <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
-          <select id="filter4" v-model="zielgruppe" v-bind:class="[ zielgruppeAktiv ]">
+          <select
+            id="filter4"
+            v-model="zielgruppe"
+            v-bind:class="[zielgruppeAktiv]"
+          >
             <option value disabled selected>Zielgruppe</option>
             <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
             <option value="FAMILIEN">Familien</option>
@@ -47,7 +63,11 @@
             <option value="PERSONEN_50PLUS">Personen 50+</option>
             <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
           </select>
-          <select id="filter5" v-model="handlungsfeld" v-bind:class="[ handlungsfelderAktiv ]">
+          <select
+            id="filter5"
+            v-model="handlungsfeld"
+            v-bind:class="[handlungsfelderAktiv]"
+          >
             <option value disabled selected>Handlungsfeld</option>
             <option value="KOSTENSENKUNG">Kostensenkung</option>
             <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
@@ -63,38 +83,6 @@
     <div class="rechts">
       <component v-bind:is="component"></component>
     </div>
-    <transition name="fade" appear>
-      <div class="modal-overlay" v-if="showModal">
-        <div class="kopfzeile">
-          <label id="ideeName">
-            Idee Name
-            <!--{{}}-->
-          </label>
-          <div class="erstellInfos">
-            <label class="erstellerLbl" for="ersteller">Ersteller:</label>
-            <div id="ersteller">
-              <!--{{}}-->
-              gggg
-            </div>
-            <label id="erstellDatumLbl">Erstellt am:</label>
-            <div id="erstellDatum">
-              <!--{{}}-->
-              20.12.20
-            </div>
-          </div>
-        </div>
-        <div class="hauptteil">
-          <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
-          <div id="beschreibung">
-            <!--{{}}-->
-            adadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-          </div>
-        </div>
-        <div class="fußzeile">
-          <button class="zurueckBtn" v-on:click="showModal =false">Zurück</button>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -145,107 +133,88 @@ export default Vue.extend({
         this.zielgruppeAktiv = "inaktiv";
       }
     },
-    selectIdee(){
-      console.log(this.Ideen[0].IdeenTyp)
+    selectIdee() {
+      console.log(this.Ideen[0].IdeenTyp);
     },
     ideenFiltern() {
       // TODO: Wenn erneut gefiltert wird muss die Liste vorher resetted werden #############
       var ideeArray = new Array();
       this.Ideen.forEach((idee) => {
         if (idee.IdeenTyp === this.ideenTyp) ideeArray.push(idee);
-        console.log(idee.IdeenTyp)
-        console.log(idee)
+        console.log(idee.IdeenTyp);
+        console.log(idee);
       });
       this.Ideen = ideeArray;
-    }
-  }
+    },
+    push: function () {
+      this.$router.push({ path: "/Idee" });
+    },
+  },
 });
 </script>
 
 <style lang="scss" scoped>
-.container,
 .rechts,
-.hauptteil {
+.container {
   position: relative;
 }
-.links,
-.modal-overlay,
-.fußzeile {
+.links {
   position: absolute;
 }
 .container,
-.hauptteil,
 .listeContainer,
-.filter,
-.fußzeile,
-#beschreibung {
+.filter {
   width: 100%;
 }
-.container,
 .rechts,
-.links,
-.erstellInfos,
-#beschreibung {
+.links {
   height: 100%;
 }
 .rechts,
 .links,
-.erstellInfos,
-.filter,
-#ideeName {
+.filter {
   display: flex;
   justify-content: space-around;
 }
 p,
 .links,
-.rechts,
-.modal-overlay {
+.rechts {
   top: 0;
 }
 .links,
 .rechts {
   width: 50%;
 }
-li,
-#beschreibung,
-#ersteller,
-#erstellDatum {
+li {
   color: black;
 }
 li,
-.listeContainer,
-#beschreibung {
+.listeContainer {
   border: 0.5px solid #000;
 }
 .links,
-.rechts,
-.modal-overlay {
+.rechts {
   padding: 2%;
 }
-.container,
-.modal-overlay {
+.container {
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
 .links,
-.rechts,
-#ideeName {
+.rechts {
   align-items: center;
 }
 button,
-.container,
-#beschreibung {
+.container {
   border-radius: 20px;
 }
 button,
 .rechts {
   background-color: #00894d;
 }
-.links,
-#ideeName {
+.links {
   flex-direction: column;
 }
-.rechts,
-#ideeName {
+.rechts {
   text-align: center;
 }
 ul,
@@ -259,14 +228,6 @@ ul,
 #filter5 {
   margin: 2px;
   width: 5.5em;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 #beschreibung {
   display: block;
@@ -284,21 +245,6 @@ ul,
 }
 .hauptteil {
   height: 65%;
-}
-.zurueckBtn {
-  background-color: #f80303;
-  right: 5%;
-}
-.fußzeile {
-  bottom: 5%;
-}
-#ideeName {
-  font-size: 1.5rem;
-}
-.modal-overlay {
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 p {
   margin: 8px 0 8px;
