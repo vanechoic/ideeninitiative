@@ -4,11 +4,13 @@
       <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li
-            v-for="idee in Ideen"
-            :key="idee"
-            v-on:click="showModal = true, selectIdee(idee)"
-          >{{idee}}</li>
+          <!-- ALTER STAND
+          <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
+            {{idee.titel}} von {{idee.erfasser}} -
+            {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
+          </li>
+          !-->
+          <li v-for="idee in ideenFiltern()" :key="idee">{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
@@ -102,9 +104,7 @@
 import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
-import { properties } from "@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dropdownlist.component";
 import { Params } from "../services/params-service";
-import { Idee } from "../classes/idea";
 import { Helper } from "../services/helper";
 
 export default Vue.extend({
@@ -113,6 +113,8 @@ export default Vue.extend({
     registrierter: Registrierter,
   },
   data: () => ({
+    // Auth Token
+    token: localStorage.getItem("token"),
     // Filterwerte
     sparte: "",
     vertriebsweg: "",
@@ -128,8 +130,9 @@ export default Vue.extend({
     // Modalfenster und Componentenlogik
     showModal: false,
     component: "registrierter",
-    // Demodaten anlegen
-    Ideen: Helper.getInstance().erzeugeDemoDaten(),
+    // Ideenliste
+    Ideen: [],
+    gefilterteIdeen: [],
   }),
   methods: {
     selectFilter() {
@@ -145,20 +148,33 @@ export default Vue.extend({
         this.zielgruppeAktiv = "inaktiv";
       }
     },
-    selectIdee(){
-      console.log(this.Ideen[0].IdeenTyp)
+    selectIdee() {
+      // Platzhalter für später
     },
     ideenFiltern() {
-      // TODO: Wenn erneut gefiltert wird muss die Liste vorher resetted werden #############
-      var ideeArray = new Array();
-      this.Ideen.forEach((idee) => {
-        if (idee.IdeenTyp === this.ideenTyp) ideeArray.push(idee);
-        console.log(idee.IdeenTyp)
-        console.log(idee)
+      var it = this.ideenTyp;
+      var sp = this.sparte;
+      var vw = this.vertriebsweg;
+      var zg = this.zielgruppe;
+      var hf = this.handlungsfeld;
+
+      return this.Ideen.filter(function (idee) {
+        if ((idee as any).typ == it) return true;
+        else if ((idee as any).sparten == sp) return true;
+        else if ((idee as any).vertriebsweg == vw) return true;
+        else if ((idee as any).zielgruppe == zg) return true;
+        else if ((idee as any).handlungsfeld == hf) return true;
       });
-      this.Ideen = ideeArray;
-    }
-  }
+    },
+    alleIdeenladen() {
+      axios.get("http://localhost:9090/idee").then((res) => {
+        this.Ideen = res.data;
+      });
+    },
+  },
+  created() {
+    this.alleIdeenladen();
+  },
 });
 </script>
 
