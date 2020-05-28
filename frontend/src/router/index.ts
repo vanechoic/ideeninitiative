@@ -7,6 +7,7 @@ import Mitarbeiter from '../views/Mitarbeiter.vue'
 import MeineIdeen from '../views/MeineIdeen.vue'
 import IdeeBearbeiten from '../views/IdeeBearbeiten.vue'
 import NeueIdeeAnlegen from '../views/NeueIdeeAnlegen.vue'
+import Idee from '../views/Idee.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes: Array<RouteConfig> = [
     path: '/Systemnachricht',
     name: 'SystemnachrichtAnzeigen',
     component: SystemnachrichtAnzeigen
+  },
+  {
+    path: '/Idee',
+    name: 'Idee',
+    component: Idee
   },
 ]
 

@@ -4,16 +4,13 @@
       <div class="links">
         <p>Meine Ideen</p>
         <div class="listeContainer">
-        <ul class="liste">
-          <!-- ALTER STAND
-          <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
-            {{idee.titel}} von {{idee.erfasser}} -
-            {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
-          </li>
-          !-->
-          <li v-for="idee in ideenFiltern()" :key="idee"
-          v-on:click="showModal = true, selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
-        </ul>
+          <ul class="liste">
+            <li
+              v-for="idee in ideenFiltern()"
+              :key="idee"
+              v-on:click="showModal = true, selectIdee(idee)"
+            >{{idee.titel}} von {{idee.erfasser}}</li>
+          </ul>
         </div>
         <!--3 Filter Dropdowns -->
         <div class="filter">
@@ -61,9 +58,9 @@
         </div>
       </div>
       <div class="rechts">
-        <button id="ideeVeroeffentlichen">Idee veröffentlichen</button>
+        <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
         <router-link to="IdeeBearbeiten" tag="button" id="ideeBearbeiten">Bearbeiten</router-link>
-        <button id="ideeLoeschen">Löschen</button>
+        <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
         <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
       </div>
     </div>
@@ -73,6 +70,7 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
+import { Helper } from "../services/helper";
 export default Vue.extend({
   data: () => ({
     // Auth Token
@@ -95,7 +93,8 @@ export default Vue.extend({
     // Ideenliste
     Ideen: [],
     gefilterteIdeen: [],
-    nutzerIdeen: []
+    nutzerIdeen: [],
+    tempIdee: {}
   }),
   methods: {
     goBack() {
@@ -114,8 +113,8 @@ export default Vue.extend({
         this.zielgruppeAktiv = "inaktiv";
       }
     },
-    selectIdee() {
-      // Platzhalter für später
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -141,12 +140,28 @@ export default Vue.extend({
         this.Ideen = res.data;
       });
 
-      this.Ideen.forEach(idee => {
-        if ((idee as any).erfasser == nutzer)
-           this.nutzerIdeen.push(idee);
+      this.Ideen.forEach((idee) => {
+        if ((idee as any).erfasser == nutzer) this.nutzerIdeen.push(idee);
       });
       this.Ideen = this.nutzerIdeen;
     },
+    ideeVeroeffentlichen() {
+
+    },
+    ideeLoeschen() {
+      // IN ARBEIT
+      console.log(this.tempIdee as any);
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      var titel = (this.tempIdee as any).titel;
+      var erfasser = decode["sub"];
+      var erstelldatum = (this.tempIdee as any).erstellzeitpunkt
+
+      axiosInstance.delete("http://localhost:9090/idee", {
+        headers: { Authorization: `Bearer ${this.token}` },
+      });
+    }
   },
   created() {
     this.meineIdeenladen();

@@ -1,6 +1,6 @@
 <template>
   <article>
-    <div class="container" :class="{'sign-up-active' : signUp}">
+    <div class="container" :class="{ 'sign-up-active': signUp }">
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-links">
@@ -81,9 +81,7 @@ export default Vue.extend({
           email: this.emailReg,
           passwort: this.passwortReg,
         })
-        .then(function (response) {
-          
-        });
+        .then(function (response) {});
     },
     anmelden: function (event: Event) {
       console.log("ANMELDEN BUTTON");
@@ -106,12 +104,6 @@ export default Vue.extend({
             Params.getInstance().tokenSubject.next(decode);
           this.$router.push("Startseite");
         });
-    },
-    countDownChanged(dismissCountDown: any) {
-      this.dismissCountDown = dismissCountDown;
-    },
-    showAlert() {
-      this.dismissCountDown = this.dismissSecs;
     },
   },
   beforeCreate() {
@@ -142,7 +134,6 @@ input,
 .registrieren {
   left: 0;
 }
-.container,
 .overlay-container,
 form {
   position: absolute;
@@ -174,6 +165,7 @@ button.invert {
   height: 480px;
   top: 10%;
   right: 0;
+  position: relative;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   background: linear-gradient(to bottom, #efefef, #ccc);
 }

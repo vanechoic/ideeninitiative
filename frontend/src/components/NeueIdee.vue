@@ -42,9 +42,23 @@
       </div>
       <div class="row">
         <!-- Existierende Idee - Checkbox -->
-        <div class="existiert" v-bind:class="[ existiertAktiv ]">
-          <label for="existiertBereits">Existiert eine vergleichbare Idee?</label>
-          <input type="checkbox" v-model="existiert" id="existiertBereits" />
+        <div class="existiert" v-bind:class="[existiertAktiv]">
+          <p for="existiertBereits">Existiert eine vergleichbare Idee?</p>
+          <input
+            type="checkbox"
+            v-model="existiert"
+            id="existiertBereits"
+            v-on:click="existiert = true"
+          />
+          <div class="existiertInfo" v-if="existiert">
+            <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
+            <input type="text" id="unternehmen" v-model="unternehmen" />
+            <label
+              id="beschreibungsTextExistiertLbl"
+              for="beschreibungsTextExistiert"
+            >Beschreibung wie die diese Idee schon umgesetzt ist:</label>
+            <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx"></textarea>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -57,7 +71,7 @@
               <option value="INTERNE_IDEE">Interne Idee</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ sparteAktiv ]">
+          <div class="combobox" v-bind:class="[sparteAktiv]">
             <p>Sparte</p>
             <select v-model="sparte">
               <option value="KFZ">KFZ</option>
@@ -71,7 +85,7 @@
               <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ vertriebswegAktiv ]">
+          <div class="combobox" v-bind:class="[vertriebswegAktiv]">
             <p>Vertriebsweg</p>
             <select v-model="vertriebsweg" multiple>
               <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
@@ -80,7 +94,7 @@
               <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ zielgruppeAktiv ]">
+          <div class="combobox" v-bind:class="[zielgruppeAktiv]">
             <p>Zielgruppen</p>
             <select v-model="zielgruppe" multiple>
               <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
@@ -91,7 +105,7 @@
               <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ handlungsfelderAktiv ]">
+          <div class="combobox" v-bind:class="[handlungsfelderAktiv]">
             <p>Handlungsfelder</p>
             <select v-model="handlungsfeld">
               <option value="KOSTENSENKUNG">Kostensenkung</option>
@@ -135,6 +149,8 @@ export default Vue.extend({
     titel: "",
     beschreibung: "",
     existiert: false,
+    unternehmen: "",
+    beschreibungEx: "",
     // Data für Vorteile und Vorteilslogik
     counter: 0,
     vorteilText: "",
@@ -227,22 +243,42 @@ export default Vue.extend({
           headers: { Authorization: `Bearer ${this.token}` },
         };
         if (this.ideenTyp == "PRODUKTIDEE") {
-          axiosInstance.post(
-            "http://localhost:9090/idee",
-            {
-              titel: this.titel,
-              beschreibung: this.beschreibung,
-              bearbeitungsstatus: "ANGELEGT",
-              typ: this.ideenTyp,
-              erfasser: decode["sub"],
-              vorteile: this.vorteile,
-              existiertBereits: this.existiert,
-              sparten: this.sparte,
-              vertriebsweg: this.vertriebsweg,
-              zielgruppe: this.zielgruppe
-            },
-            config
-          );
+          if (this.existiert) {
+            axiosInstance.post(
+              "http://localhost:9090/idee",
+              {
+                titel: this.titel,
+                beschreibung: this.beschreibung,
+                bearbeitungsstatus: "ANGELEGT",
+                typ: this.ideenTyp,
+                erfasser: decode["sub"],
+                vorteile: this.vorteile,
+                existiertBereits: this.existiert,
+                unternehmensbezeichnung: this.unternehmen,
+                artDerUmsetzung: this.beschreibungEx,
+                sparten: this.sparte,
+                vertriebsweg: this.vertriebsweg,
+                zielgruppe: this.zielgruppe,
+              },
+              config
+            );
+          } else {
+            axiosInstance.post(
+              "http://localhost:9090/idee",
+              {
+                titel: this.titel,
+                beschreibung: this.beschreibung,
+                bearbeitungsstatus: "ANGELEGT",
+                typ: this.ideenTyp,
+                erfasser: decode["sub"],
+                vorteile: this.vorteile,
+                sparten: this.sparte,
+                vertriebsweg: this.vertriebsweg,
+                zielgruppe: this.zielgruppe,
+              },
+              config
+            );
+          }
         } else {
           axiosInstance.post(
             "http://localhost:9090/idee",
@@ -253,7 +289,7 @@ export default Vue.extend({
               typ: this.ideenTyp,
               erfasser: decode["sub"],
               vorteile: this.vorteile,
-              handlungsfeld: this.handlungsfeld
+              handlungsfeld: this.handlungsfeld,
             },
             config
           );
@@ -275,7 +311,10 @@ export default Vue.extend({
 .titel,
 .ideenDropdowns,
 #selectVorteile,
-select {
+select,
+.existiertInfo,
+#beschreibungsTextExistiert,
+#unternehmen {
   width: 100%;
 }
 .ideeButton,
@@ -289,7 +328,8 @@ button {
   font-size: 1rem;
 }
 .container-fluid,
-.beschreibung {
+.beschreibung,
+#existiert {
   height: 100%;
 }
 .container-fluid,
@@ -324,7 +364,8 @@ button {
 h1 {
   text-align: center;
 }
-.beschreibung textarea {
+.beschreibung textarea,
+#beschreibungsTextExistiert {
   height: 200px;
 }
 .ideeButton {
