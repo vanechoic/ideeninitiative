@@ -48,6 +48,12 @@ public class IdeeninitiativeExceptionHandler{
         return erzeugeApiFehler("MethodArgumentNotValid", fehlertext, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({KeineBefugnisZumIdeeLoeschenException.class})
+    public ResponseEntity<ApiFehler> handleException(KeineBefugnisZumIdeeLoeschenException e){
+        return erzeugeApiFehler(e.getClass().getSimpleName(), e.getMessage(), e.getHttpStatus());
+    }
+
+
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<ApiFehler> handleException(BadCredentialsException e){
         return erzeugeApiFehler("BadCredentials", e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -90,7 +96,7 @@ public class IdeeninitiativeExceptionHandler{
     }
 
     @ExceptionHandler({DateTimeParseException.class})
-    public ResponseEntity<ApiFehler> handleException(DateTimeParseException e){
+    public ResponseEntity<ApiFehler> handleException(DateTimeParseException e) {
         return erzeugeApiFehler("DatumFormatierung", e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

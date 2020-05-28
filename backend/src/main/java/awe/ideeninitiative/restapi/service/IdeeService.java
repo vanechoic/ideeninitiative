@@ -1,9 +1,7 @@
 package awe.ideeninitiative.restapi.service;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
-import awe.ideeninitiative.exception.IdeeBereitsVeroeffentlichtException;
-import awe.ideeninitiative.exception.IdeeExistiertNichtException;
-import awe.ideeninitiative.exception.KeinFachspezialistVerfuegbarException;
+import awe.ideeninitiative.exception.*;
 import awe.ideeninitiative.model.enums.Ideenstatus;
 import awe.ideeninitiative.model.enums.Ideentyp;
 import awe.ideeninitiative.model.enums.Sparte;
@@ -16,6 +14,8 @@ import awe.ideeninitiative.util.DatumUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -50,23 +50,26 @@ public class IdeeService {
         return ideeRepository.save(idee);
     }
 
-    public void ideeLoeschen(String titel, String erfasser, String erstelldatum) throws IdeeExistiertNichtException {
-        logger.error("titel: "+titel);
-        logger.error("erfasser: "+erfasser);
-        logger.error("erstelldatum: "+erstelldatum);
-        LocalDateTime erstelldatumDate = DatumUtil.formeStringZuDatumUm(erstelldatum);
-        List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(titel, erstelldatumDate, erfasser);
-        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, titel, erfasser);
-        logger.info(String.format("Die Idee %s von Benutzer %s mit Erstelldatum %s wurde gelöscht.", titel, erfasser, erstelldatum));
+    public void ideeLoeschen(String benutzername, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("id", "interneIdeeHandlungsfeld.idee", "produktideeSparte.idee", "produktideeVertriebsweg.idee", "produktideeZielgruppe.idee", "produktideeZusatzinformation.idee").withIgnoreNullValues();
+        List<Idee> zutreffendeIdeen = ideeRepository.findAll(Example.of(zuLoeschendeIdee, matcher));
+        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, zuLoeschendeIdee);
+        pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(benutzername, zuLoeschendeIdee);
         ideeRepository.delete(zutreffendeIdeen.get(0));
     }
 
-    private void pruefeObZuLoeschendeIdeeExistiert(List<Idee> zutreffendeIdeen, String titel, String erfasser) throws IdeeExistiertNichtException{
+    private void pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(String benutzername, Idee zuLoeschendeIdee) throws KeineBefugnisZumIdeeLoeschenException {
+        if(zuLoeschendeIdee.getErfasser() == null || !zuLoeschendeIdee.getErfasser().getBenutzername().equals(benutzername)){
+            throw new KeineBefugnisZumIdeeLoeschenException(zuLoeschendeIdee, benutzername);
+        }
+    }
+
+    private void pruefeObZuLoeschendeIdeeExistiert(List<Idee> zutreffendeIdeen, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException{
         if(zutreffendeIdeen == null || zutreffendeIdeen.isEmpty()){
-            throw new IdeeExistiertNichtException(titel, erfasser, 0);
+            throw new IdeeExistiertNichtException(zuLoeschendeIdee, 0);
         }
         if(zutreffendeIdeen.size() > 1){
-            throw new IdeeExistiertNichtException(titel, erfasser, zutreffendeIdeen.size());
+            throw new IdeeExistiertNichtException(zuLoeschendeIdee, zutreffendeIdeen.size());
         }
     }
 
@@ -74,7 +77,7 @@ public class IdeeService {
     public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException {
         //Idee suchen
         List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(idee.getTitel(), idee.getErstellzeitpunkt(), idee.getErfasser().getBenutzername());
-        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, idee.getTitel(), idee.getErfasser().getBenutzername());
+        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, idee);
         //Idee aktualisieren - ID und Erstellzeitpunkt werden beibehalten
         Idee zuAktualisierendeIdee = zutreffendeIdeen.get(0);
         zuAktualisierendeIdee.setTitel(idee.getTitel());

@@ -3,6 +3,8 @@ package awe.ideeninitiative.model.idee;
 import awe.ideeninitiative.model.AbstractEntity;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,7 +43,7 @@ public class Idee extends AbstractEntity {
     @JoinColumn(name="fachspezialist_id", referencedColumnName = "id")
     private Mitarbeiter fachspezialist;
 
-    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private InterneIdeeHandlungsfeld interneIdeeHandlungsfeld;
 
     @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)

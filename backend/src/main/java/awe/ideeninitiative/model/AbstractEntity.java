@@ -37,4 +37,7 @@ public class AbstractEntity {
         this.id = id;
     }
 
+    public void setErstellzeitpunkt(LocalDateTime erstellzeitpunkt) {
+        this.erstellzeitpunkt = erstellzeitpunkt;
+    }
 }

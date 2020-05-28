@@ -1,6 +1,7 @@
 package awe.ideeninitiative.restapi.service;
 
 import awe.ideeninitiative.exception.IdeeExistiertNichtException;
+import awe.ideeninitiative.exception.KeineBefugnisZumIdeeLoeschenException;
 import awe.ideeninitiative.model.builder.IdeeBuilder;
 import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.enums.Ideenstatus;
@@ -19,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
@@ -53,35 +55,40 @@ public class IdeeLoeschenServiceTest{
 
     @Before
     public void setup(){
-        idee = null;
+        given.einRegistrierterMitarbeiterAlsErfasser();
+        given.eineGespeicherteInterneIdee();
         ideen = null;
         erfasser = null;
     }
 
     @Test
-    public void ideeErfolgreichLoeschen() throws IdeeExistiertNichtException {
-        given.einRegistrierterMitarbeiterAlsErfasser();
-        given.eineGespeicherteInterneIdee();
+    public void ideeErfolgreichLoeschen() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
         given.einGemocktesRepositoryMitEinerIdee();
         when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWird();
         then.dieIdeeWurdeGeloescht();
     }
 
     @Test(expected = IdeeExistiertNichtException.class)
-    public void ideeExistiertNicht() throws IdeeExistiertNichtException {
+    public void ideeExistiertNicht() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
         given.einGemocktesRepositoryOhneIdee();
-        when.ideeLoeschenMitNichtZutreffendenWertenAufgerufenWird();
+        when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWird();
+    }
+
+    @Test(expected = KeineBefugnisZumIdeeLoeschenException.class)
+    public void benutzerVersuchtIdeeEinesAnderenBenutzersZuLoeschen() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+        given.einGemocktesRepositoryMitEinerIdee();
+        when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWirdAberAnderemBenutzer();
     }
 
     private class Given{
         private void einGemocktesRepositoryMitEinerIdee(){
             List<Idee> ideen = new ArrayList<>();
             ideen.add(idee);
-            when(ideeRepositoryMock.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(any(), any(), any())).thenReturn(ideen);
+            when(ideeRepositoryMock.findAll((Example<Idee>) any())).thenReturn(ideen);
         }
 
         private void einGemocktesRepositoryOhneIdee(){
-            when(ideeRepositoryMock.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(any(), any(), any())).thenReturn(null);
+            when(ideeRepositoryMock.findAll((Example<Idee>) any())).thenReturn(null);
         }
 
         public void einRegistrierterMitarbeiterAlsErfasser() {
@@ -90,19 +97,19 @@ public class IdeeLoeschenServiceTest{
         }
 
         public void eineGespeicherteInterneIdee() {
-            idee = IdeeBuilder.anIdee().withTitel("Titel").withBeschreibung("Beschreibung")
+            idee = IdeeBuilder.anIdee().withTitel("Titel").withBeschreibung("Beschreibung").withErstellzeitpunkt(LocalDateTime.now())
                     .withBearbeitungsstatus(Ideenstatus.ANGELEGT).withErfasser(erfasser).withTyp(Ideentyp.INTERNE_IDEE).build();
         }
     }
 
     private class When{
 
-        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWird() throws IdeeExistiertNichtException {
-            ideeService.ideeLoeschen(idee.getTitel(), idee.getErfasser().getBenutzername(), DatumUtil.formeDatumZuStringUm(idee.getErstellzeitpunkt()));
+        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWird() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+            ideeService.ideeLoeschen(idee.getErfasser().getBenutzername(), idee);
         }
 
-        public void ideeLoeschenMitNichtZutreffendenWertenAufgerufenWird() throws IdeeExistiertNichtException {
-            ideeService.ideeLoeschen("Falscher Titel", "nichtexistent", DatumUtil.formeDatumZuStringUm(LocalDateTime.now()));
+        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWirdAberAnderemBenutzer() throws KeineBefugnisZumIdeeLoeschenException, IdeeExistiertNichtException {
+            ideeService.ideeLoeschen("andererBenutzer", idee);
         }
     }
 

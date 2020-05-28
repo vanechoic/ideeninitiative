@@ -2,6 +2,9 @@ package awe.ideeninitiative.model.idee;
 
 import awe.ideeninitiative.model.AbstractEntity;
 import awe.ideeninitiative.model.enums.Handlungsfeld;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class InterneIdeeHandlungsfeld extends AbstractEntity {
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idee_id", referencedColumnName = "id")
     private Idee idee;
 

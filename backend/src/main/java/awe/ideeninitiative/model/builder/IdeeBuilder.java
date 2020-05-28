@@ -5,6 +5,7 @@ import awe.ideeninitiative.model.enums.Ideentyp;
 import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public final class IdeeBuilder {
@@ -20,7 +21,7 @@ public final class IdeeBuilder {
     private List<ProduktideeVertriebsweg> produktideeVertriebsweg;
     private List<ProduktideeZielgruppe> produktideeZielgruppe;
     private ProduktideeZusatzinformation produktideeZusatzinformation;
-    private Long id;
+    private LocalDateTime erstellzeitpunkt;
 
     private IdeeBuilder() {
     }
@@ -89,8 +90,8 @@ public final class IdeeBuilder {
         return this;
     }
 
-    public IdeeBuilder withId(Long id) {
-        this.id = id;
+    public IdeeBuilder withErstellzeitpunkt(LocalDateTime erstellzeitpunkt) {
+        this.erstellzeitpunkt = erstellzeitpunkt;
         return this;
     }
 
@@ -108,7 +109,7 @@ public final class IdeeBuilder {
         idee.setProduktideeVertriebsweg(produktideeVertriebsweg);
         idee.setProduktideeZielgruppe(produktideeZielgruppe);
         idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
-        idee.setId(id);
+        idee.setErstellzeitpunkt(erstellzeitpunkt);
         return idee;
     }
 }
