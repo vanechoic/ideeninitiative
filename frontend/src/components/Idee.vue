@@ -108,7 +108,7 @@
       <label id="statusLbl" for="status">Status:</label>
       <div id="status">{{}} Angenommen</div>
     </div>
-    <div class="fußzeile" v-if="showDetails">
+    <div class="fußzeile" v-if="showDetails == true && wirdBewertet==false ">
       <button class="zurueckBtn" v-on:click="push()">Zurück</button>
       <button
         class="bewertungBtn"
@@ -117,7 +117,6 @@
       >
         Zur Bewertung
       </button>
-      <!--Problem mit 2 Variablen-->
     </div>
 
     <!--Modal mit der Bewertung. Wird nur angezeigt, wenn bewertungBtn betätigt wird-->
@@ -154,7 +153,6 @@
           >
             Zurück
           </button>
-          <!--Problem mit 2 Variablen-->
         </div>
       </div>
     </transition>
@@ -181,6 +179,7 @@ export default Vue.extend({
       showAngenommen: false,
       showAbgelehnt: false,
       showNichtBewertet: true,
+      wirdBewertet: false,
     };
   },
   mounted() {

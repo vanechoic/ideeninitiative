@@ -8,6 +8,7 @@ import MeineIdeen from '../views/MeineIdeen.vue'
 import IdeeBearbeiten from '../views/IdeeBearbeiten.vue'
 import NeueIdeeAnlegen from '../views/NeueIdeeAnlegen.vue'
 import Idee from '../views/Idee.vue'
+import IdeeBewerten from '../views/IdeeBewerten.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,11 @@ const routes: Array<RouteConfig> = [
     path: '/Idee',
     name: 'Idee',
     component: Idee
+  },
+  {
+    path: '/IdeeBewerten',
+    name: 'IdeeBewerten',
+    component: IdeeBewerten
   },
 ]
 

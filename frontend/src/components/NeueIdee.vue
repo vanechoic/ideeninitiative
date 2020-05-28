@@ -16,13 +16,15 @@
           <textarea id="beschreibungsText" v-model="beschreibung"></textarea>
         </div>
       </div>
+      <!--
       <div class="row">
-        <!-- Datei Upload -->
+         Datei Upload
         <h2>Datei Upload</h2>
         <div class="dateien">
           <input type="file" />
         </div>
       </div>
+      -->
       <div class="row">
         <!-- Vorteile -->
         <h2>Vorteile</h2>

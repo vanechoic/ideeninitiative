@@ -21,7 +21,6 @@ body {
   padding: 1%;
   display: flex;
   justify-content: center;
-  //align-items: center;
 }
 .selector-for-some-widget {
   box-sizing: content-box;
