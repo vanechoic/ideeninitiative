@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="links">
-      <p>Alle Ideen</p>
+      <p v-on:click="pushDemo()">Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
           <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
@@ -129,6 +129,9 @@ export default Vue.extend({
     },
      push: function () {
       this.$router.push({ path: "/Idee" });
+    },
+    pushDemo: function () {
+      this.$router.push({ path: "/IdeeBewerten" });
     },
   },
   mounted() {
