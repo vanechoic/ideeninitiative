@@ -1,9 +1,11 @@
 package awe.ideeninitiative.restapi.security;
 
+import awe.ideeninitiative.exception.ApiException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -114,16 +116,30 @@ public class JwtUtil implements Serializable {
      * @param userDetails
      * @return
      */
-    public Boolean validiereToken(String token, UserDetails userDetails) {
+    public Boolean istTokenValide(String token, UserDetails userDetails) {
         final String username = extrahiereBenutzernamenAusToken(token);
         return (username.equals(userDetails.getUsername()) && !istTokenAbgelaufen(token));
     }
-    
-    private String extrahiereJwtAusAuthorizationHeader(String authorizationHeader){
-        return authorizationHeader.substring(7);
+
+    /**
+     * Entfernt das "Bearer " aus dem Wert des AuthorizationHeaders und gibt nur den Token zurück.
+     * @param authorizationHeader im Format "Bearer <jwt>"
+     * @return jwt
+     */
+    public String extrahiereJwtAusAuthorizationHeader(String authorizationHeader) throws ApiException {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        throw new ApiException("Fehlender AuthorizationHeader.", HttpStatus.UNAUTHORIZED);
+
     }
 
-    public String extrahiereBenutzernamenAusAuthorizationHeader(String authorizationHeader){
+    /**
+     * Liest das Subject, hier den Benutzernamen, aus dem AuthorizationHeader aus.
+     * @param authorizationHeader im Format "Bearer <jwt>"
+     * @return benutzername (sub)
+     */
+    public String extrahiereBenutzernamenAusAuthorizationHeader(String authorizationHeader) throws ApiException {
         return extrahiereBenutzernamenAusToken(extrahiereJwtAusAuthorizationHeader(authorizationHeader));
     }
 
