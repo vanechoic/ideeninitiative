@@ -93,7 +93,7 @@ public class IdeeninitiativeExceptionHandler{
     public ResponseEntity<ApiFehler> handleException(DateTimeParseException e){
         return erzeugeApiFehler("DatumFormatierung", e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  
+
     public static ResponseEntity<ApiFehler> erzeugeApiFehler(String fehlertyp, String fehlertext, HttpStatus httpStatus){
         ApiFehler apiFehler = new ApiFehler();
         apiFehler.setFehlertext(fehlertext);

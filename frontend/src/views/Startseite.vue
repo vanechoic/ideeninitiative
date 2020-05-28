@@ -22,3 +22,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.startseite{
+  position: fixed;
+}
+</style>
