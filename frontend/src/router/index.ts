@@ -51,7 +51,7 @@ const routes: Array<RouteConfig> = [
     path: '/Idee',
     name: 'Idee',
     component: Idee
-  },
+  }
 ]
 
 const router = new VueRouter({

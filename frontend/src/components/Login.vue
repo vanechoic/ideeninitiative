@@ -48,8 +48,8 @@
 </template>
 
 <script lang="ts">
-import axios from "axios";
 import Vue from "vue";
+import axios from "axios";
 import HauptseiteVue from "./Hauptseite.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
@@ -71,7 +71,6 @@ export default Vue.extend({
   }),
   methods: {
     registrieren: function (event: Event) {
-      console.log("REGISTRIEREN BUTTON");
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer", {
@@ -84,7 +83,6 @@ export default Vue.extend({
         .then(function (response) {});
     },
     anmelden: function (event: Event) {
-      console.log("ANMELDEN BUTTON");
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer/login", {
@@ -98,10 +96,14 @@ export default Vue.extend({
 
           var jwt = require("jsonwebtoken");
           var decode = jwt.decode(token);
-          console.log(decode);
 
-          if (decode["rollen"] == "ROLE_MITARBEITER")
+          if (decode["rollen"] == "ROLE_FACHSPEZIALIST") {
             Params.getInstance().tokenSubject.next(decode);
+          }
+          if (decode["rollen"] == "ROLE_MITARBEITER") {
+            Params.getInstance().tokenSubject.next(decode);
+            //this.$router.push("Startseite");
+          }
           this.$router.push("Startseite");
         });
     },
