@@ -4,7 +4,11 @@
       <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
+          <li
+            v-for="idee in ideenFiltern()"
+            :key="idee"
+            v-on:click="push(), selectIdee(idee)"
+          >{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
@@ -25,19 +29,13 @@
             <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
             <option value="HAFTPFLICHT">Haftpflicht</option>
             <option value="HAUSRAT">Hausrat</option>
-            <option value="WOHNGEBAUEDEVERSICHERUNG"
-              >Wohngebäudeversicherung</option
-            >
+            <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
           </select>
           <select id="filter3" v-model="vertriebsweg" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Vertriebsweg</option>
-            <option value="STATIONAERER_VERTRIEB"
-              >Stationärer Vertrieb in eigenen Geschäftsstelle</option
-            >
+            <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
             <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-            <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
-              >Kooperation mit Kreditinstituten</option
-            >
+            <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
             <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
           <select id="filter4" v-model="zielgruppe" v-if="ideenTyp == 'PRODUKTIDEE'">
@@ -68,13 +66,17 @@
 import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
+import Mitarbeiter from "@/components/Mitarbeiter.vue";
+import Spezialist from "@/components/Spezialist.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
 
 export default Vue.extend({
   name: "Hauptseite",
   components: {
-    registrierter: Registrierter
+    registrierter: Registrierter,
+    mitarbeiter: Mitarbeiter,
+    spezialist: Spezialist,
   },
   data: () => ({
     // Auth Token
@@ -90,18 +92,19 @@ export default Vue.extend({
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
-    ideenTyp: '',
-    selektierterTyp: '',
+    ideenTyp: "",
+    selektierterTyp: "",
     // Modalfenster und Componentenlogik
     showModal: false,
-    component: "registrierter",
+    component: "mitarbeiter",
     // Ideenliste
     Ideen: [],
     gefilterteIdeen: [],
+    tempIdee: {}
   }),
   methods: {
-    selectIdee() {
-      // Platzhalter für später
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -111,28 +114,45 @@ export default Vue.extend({
       var hf = this.handlungsfeld;
       console.log("Ideen.length ", this.Ideen.length);
       return this.Ideen.filter(function (idee) {
-        return it == '' || it == null || (idee as any).typ == it
-      }).filter(function(idee){
-        return sp == '' || sp == null || (idee as any).sparte == sp
-      }).filter(function(idee){
-        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
-      }).filter(function(idee){
-        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
-      }).filter(function(idee){
-        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
-      });
+        return it == "" || it == null || (idee as any).typ == it;
+      })
+        .filter(function (idee) {
+          return sp == "" || sp == null || (idee as any).sparte == sp;
+        })
+        .filter(function (idee) {
+          return hf == "" || hf == null || (idee as any).handlungsfeld == hf;
+        })
+        .filter(function (idee) {
+          return (
+            vw == "" || vw == null || (idee as any).vertriebsweg.includes(vw)
+          );
+        })
+        .filter(function (idee) {
+          return (
+            zg == "" || zg == null || (idee as any).zielgruppe.includes(zg)
+          );
+        });
     },
     alleIdeenladen() {
       axios.get("http://localhost:9090/idee").then((res) => {
         this.Ideen = res.data;
       });
     },
-     push: function () {
+    push: function () {
       this.$router.push({ path: "/Idee" });
     },
   },
   mounted() {
     this.alleIdeenladen();
+    var jwt = require("jsonwebtoken");
+    var decode = jwt.decode(this.token);
+    var rolle = decode["rollen"][0];
+
+    if (rolle == "ROLE_MITARBEITER")
+      this.component = "registrierter";
+    else if (rolle == "ROLE_FACHSPEZIALIST")
+      this.component = "spezialist";
+    else this.component = "mitarbeiter";
   },
 });
 </script>
