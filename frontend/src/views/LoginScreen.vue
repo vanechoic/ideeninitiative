@@ -13,3 +13,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.loginScreen{
+  position: fixed;
+}
+</style>

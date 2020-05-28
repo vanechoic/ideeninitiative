@@ -1,11 +1,9 @@
-package awe.ideeninitiative.model.mitarbeiter;
+package awe.ideeninitiative.model.builder;
 
-import awe.ideeninitiative.model.enums.Handlungsfeld;
-import awe.ideeninitiative.model.enums.Sparte;
-import awe.ideeninitiative.model.enums.Vertriebskanal;
+import awe.ideeninitiative.model.mitarbeiter.*;
 
 import java.io.File;
-import java.util.Set;
+import java.util.List;
 
 public final class MitarbeiterBuilder {
     private String benutzername;
@@ -16,10 +14,11 @@ public final class MitarbeiterBuilder {
     private File profilbild;
     private boolean istFachspezialist;
     private boolean istAdmin;
-    private Set<Vertriebskanal> vertriebswege;
-    private Set<Sparte> sparten;
-    private Set<Handlungsfeld> zielgruppen;
-    private Set<Handlungsfeld> handlungsfelder;
+    private List<FachspezialistVertriebsweg> fachspezialistVertriebswege;
+    private List<FachspezialistSparte> fachspezialistSparten;
+    private List<FachspezialistZielgruppe> fachspezialistZielgruppen;
+    private List<FachspezialistHandlungsfeld> fachspezialistHandlungsfelder;
+    private Long id;
 
     private MitarbeiterBuilder() {
     }
@@ -68,23 +67,28 @@ public final class MitarbeiterBuilder {
         return this;
     }
 
-    public MitarbeiterBuilder withVertriebswege(Set<Vertriebskanal> vertriebswege) {
-        this.vertriebswege = vertriebswege;
+    public MitarbeiterBuilder withFachspezialistVertriebswege(List<FachspezialistVertriebsweg> fachspezialistVertriebswege) {
+        this.fachspezialistVertriebswege = fachspezialistVertriebswege;
         return this;
     }
 
-    public MitarbeiterBuilder withSparten(Set<Sparte> sparten) {
-        this.sparten = sparten;
+    public MitarbeiterBuilder withFachspezialistSparten(List<FachspezialistSparte> fachspezialistSparten) {
+        this.fachspezialistSparten = fachspezialistSparten;
         return this;
     }
 
-    public MitarbeiterBuilder withZielgruppen(Set<Handlungsfeld> zielgruppen) {
-        this.zielgruppen = zielgruppen;
+    public MitarbeiterBuilder withFachspezialistZielgruppen(List<FachspezialistZielgruppe> fachspezialistZielgruppen) {
+        this.fachspezialistZielgruppen = fachspezialistZielgruppen;
         return this;
     }
 
-    public MitarbeiterBuilder withHandlungsfelder(Set<Handlungsfeld> handlungsfelder) {
-        this.handlungsfelder = handlungsfelder;
+    public MitarbeiterBuilder withFachspezialistHandlungsfelder(List<FachspezialistHandlungsfeld> fachspezialistHandlungsfelder) {
+        this.fachspezialistHandlungsfelder = fachspezialistHandlungsfelder;
+        return this;
+    }
+
+    public MitarbeiterBuilder withId(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -98,10 +102,11 @@ public final class MitarbeiterBuilder {
         mitarbeiter.setProfilbild(profilbild);
         mitarbeiter.setIstFachspezialist(istFachspezialist);
         mitarbeiter.setIstAdmin(istAdmin);
-        mitarbeiter.setVertriebswege(vertriebswege);
-        mitarbeiter.setSparten(sparten);
-        mitarbeiter.setZielgruppen(zielgruppen);
-        mitarbeiter.setHandlungsfelder(handlungsfelder);
+        mitarbeiter.setFachspezialistVertriebswege(fachspezialistVertriebswege);
+        mitarbeiter.setFachspezialistSparten(fachspezialistSparten);
+        mitarbeiter.setFachspezialistZielgruppen(fachspezialistZielgruppen);
+        mitarbeiter.setFachspezialistHandlungsfelder(fachspezialistHandlungsfelder);
+        mitarbeiter.setId(id);
         return mitarbeiter;
     }
 }

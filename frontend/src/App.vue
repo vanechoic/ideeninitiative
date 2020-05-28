@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <div id="nav">
-    </div>
-    <router-view/>
+    <div id="nav"></div>
+    <router-view />
   </div>
 </template>
 
@@ -17,14 +16,16 @@ body {
   font-size: 1.2rem;
   color: #00894d;
   background-color: #104227;
-  height: 100%;
   width: 100%;
-  padding: 10px;
+  height: 80em;
+  padding: 1%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 .selector-for-some-widget {
   box-sizing: content-box;
+}
+.example::-webkit-scrollbar {
+  display: none;
 }
 </style>
