@@ -4,34 +4,58 @@
       <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li v-for="idee in Ideen" :key="idee.Idee" v-on:click="showModal = true">{{idee.Idee}}</li>
+          <!-- ALTER STAND
+          <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
+            {{idee.titel}} von {{idee.erfasser}} -
+            {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
+          </li>
+          !-->
+          <li v-for="idee in ideenFiltern()" :key="idee"
+          v-on:click="showModal = true, selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
       <div class="filter">
         <div class="filterElement">
-          <select id="filter1">
-            <option value disabled selected>Filter 1</option>
-            <option value="Sparte 1">Sparte 1</option>
-            <option value="Sparte 2">Sparte 2</option>
-            <option value="Sparte 3">Sparte 3</option>
-            <option value="Sparte 3">Sparte 4</option>
+          <select id="filter1" v-model="ideenTyp" @click="selectFilter()">
+            <option value disabled selected>Ideentyp</option>
+            <option value="PRODUKTIDEE" selected>Produkt</option>
+            <option value="INTERNE_IDEE">Intern</option>
           </select>
-          <select id="filter2">
-            <option value disabled selected>Filter 2</option>
-            <option value="Sparte 1">Sparte 1</option>
-            <option value="Sparte 2">Sparte 2</option>
+          <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
+            <option value disabled selected>Sparte</option>
+            <option value="KFZ">KFZ</option>
+            <option value="UNFALL">Unfall</option>
+            <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
+            <option value="RECHTSSCHUTZ">Rechtsschutz</option>
+            <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
+            <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
+            <option value="HAFTPFLICHT">Haftpflicht</option>
+            <option value="HAUSRAT">Hausrat</option>
+            <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
           </select>
-          <select id="filter3">
-            <option value disabled selected>Filter 3</option>
-            <option value="Sparte 1">Sparte 1</option>
-            <option value="Sparte 2">Sparte 2</option>
-            <option value="Sparte 3">Sparte 3</option>
+          <select id="filter3" v-model="vertriebsweg" v-bind:class="[ vertriebswegAktiv ]">
+            <option value disabled selected>Vertriebsweg</option>
+            <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+            <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
+            <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+            <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
-        </div>
-        <div class="filterElement">
-          <!--Filter Button -->
-          <button id="filterButton">Filter</button>
+          <select id="filter4" v-model="zielgruppe" v-bind:class="[ zielgruppeAktiv ]">
+            <option value disabled selected>Zielgruppe</option>
+            <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+            <option value="FAMILIEN">Familien</option>
+            <option value="SINGLES">Singles</option>
+            <option value="PAARE">Paare</option>
+            <option value="PERSONEN_50PLUS">Personen 50+</option>
+            <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
+          </select>
+          <select id="filter5" v-model="handlungsfeld" v-bind:class="[ handlungsfelderAktiv ]">
+            <option value disabled selected>Handlungsfeld</option>
+            <option value="KOSTENSENKUNG">Kostensenkung</option>
+            <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
+            <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
+          </select>
         </div>
       </div>
     </div>
@@ -74,177 +98,250 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import axios from 'axios'
-import Mitarbeiter from './Mitarbeiter.vue'
-import { properties } from '@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dropdownlist.component'
+import Vue from "vue";
+import axios from "axios";
+import Mitarbeiter from "./Mitarbeiter.vue";
 import { Params } from "../services/params-service";
-
-  export default {
-    name:'Hauptseite_Mitarbeiter',
-    components: {
-        'mitarbeiter': Mitarbeiter
-    },
-    data: ()=> {
-      return {
-        showModal: false,
-        component:'mitarbeiter',
-        Ideen:[
-            {Id:'i1', Idee:'Idee1'},
-            {Id:'i2', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i3', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Ikjafbnakibnfaof '},
-            {Id:'i5', Idee:'Idee die sehr kreativ ist'}
-        ],
-        dataFields:{value:'Id', text:'Idee'}
+import { Helper } from "../services/helper";
+export default Vue.extend({
+  name: "Hauptseite_Mitarbeiter",
+  components: {
+    mitarbeiter: Mitarbeiter,
+  },
+  data: () => ({
+    // Auth Token
+    token: localStorage.getItem("token"),
+    // Filterwerte
+    sparte: "",
+    vertriebsweg: "",
+    zielgruppe: "",
+    handlungsfeld: "",
+    // Aktivieren/Deaktivieren der Filter
+    sparteAktiv: "aktiv",
+    vertriebswegAktiv: "aktiv",
+    zielgruppeAktiv: "aktiv",
+    handlungsfelderAktiv: "aktiv",
+    existiertAktiv: "aktiv",
+    ideenTyp: "",
+    // Modalfenster und Componentenlogik
+    showModal: false,
+    component: "mitarbeiter",
+    // Ideenliste
+    Ideen: [],
+    gefilterteIdeen: [],
+  }),
+   methods: {
+    selectFilter() {
+      if (this.ideenTyp == "PRODUKTIDEE") {
+        this.handlungsfelderAktiv = "inaktiv";
+        this.sparteAktiv = "aktiv";
+        this.vertriebswegAktiv = "aktiv";
+        this.zielgruppeAktiv = "aktiv";
+      } else {
+        this.handlungsfelderAktiv = "aktiv";
+        this.sparteAktiv = "inaktiv";
+        this.vertriebswegAktiv = "inaktiv";
+        this.zielgruppeAktiv = "inaktiv";
       }
     },
-    mounted(){
-        Params.getInstance().tokenObserver.subscribe(res =>  {
-                        console.log('hauptseite', res);
-        });
-    }
-  }
+    selectIdee() {
+      // Platzhalter für später
+    },
+    ideenFiltern() {
+      var it = this.ideenTyp;
+      var sp = this.sparte;
+      var vw = this.vertriebsweg;
+      var zg = this.zielgruppe;
+      var hf = this.handlungsfeld;
+
+      return this.Ideen.filter(function (idee) {
+        if ((idee as any).typ == it) return true;
+        else if ((idee as any).sparten == sp) return true;
+        else if ((idee as any).vertriebsweg == vw) return true;
+        else if ((idee as any).zielgruppe == zg) return true;
+        else if ((idee as any).handlungsfeld == hf) return true;
+      });
+    },
+    alleIdeenladen() {
+      axios.get("http://localhost:9090/idee").then((res) => {
+        this.Ideen = res.data;
+      });
+    },
+  },
+  created() {
+    this.alleIdeenladen();
+  },
+});
 </script>
 
-<style lang="scss" scoped>  
-  .container, .rechts, .hauptteil{
-    position: relative;
+<style lang="scss" scoped>
+.container,
+.rechts,
+.hauptteil {
+  position: relative;
+}
+.links,
+.modal-overlay,
+.fußzeile {
+  position: absolute;
+}
+.hauptteil,
+.listeContainer,
+.filter,
+.fußzeile,
+#beschreibung {
+  width: 100%;
+}
+.rechts,
+.links,
+.erstellInfos,
+#beschreibung {
+  height: 100%;
+}
+.rechts,
+.links,
+.erstellInfos,
+.filter,
+#ideeName {
+  display: flex;
+  justify-content: space-around;
+}
+p,
+.links,
+.rechts,
+.modal-overlay {
+  top: 0;
+}
+.links,
+.rechts {
+  width: 50%;
+}
+li,
+#beschreibung,
+#ersteller,
+#erstellDatum {
+  color: black;
+}
+li,
+.listeContainer,
+#beschreibung {
+  border: 0.5px solid #000;
+}
+.links,
+.rechts,
+.modal-overlay {
+  padding: 2%;
+}
+.container,
+.modal-overlay {
+  background: linear-gradient(to bottom, #efefef, #ccc);
+}
+.links,
+.rechts,
+#ideeName {
+  align-items: center;
+}
+button,
+.container,
+#beschreibung {
+  border-radius: 20px;
+}
+button,
+.rechts {
+  background-color: #00894d;
+}
+.links,
+#ideeName {
+  flex-direction: column;
+}
+.rechts,
+#ideeName {
+  text-align: center;
+}
+ul,
+.listeContainer {
+  height: 300px;
+}
+#filter1,
+#filter2,
+#filter3,
+#filter4,
+#filter5 {
+  margin-right: 2px;
+  width: 6em;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+button {
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
   }
-  .links, .modal-overlay,.fußzeile{
-    position: absolute;
+  &:focus {
+    outline: none;
   }
-  .hauptteil, .listeContainer, .filter, .fußzeile, #beschreibung{
-    width: 100%
-  }
-  .rechts, .links, .erstellInfos, #beschreibung{
-    height: 100%;
-  }
-  .rechts, .links, .erstellInfos, .filter, #ideeName{
-    display: flex;
-    justify-content: space-around;
-  }
-  p, .links, .rechts, .modal-overlay{
-    top:0;
-  }
-  .links, .rechts{
-    width: 50%;
-  }
-  li, #beschreibung, #ersteller, #erstellDatum{
-    color: black;
-  }
-  li, .listeContainer, #beschreibung{
-    border: 0.5px solid #000;
-  }
-  .links, .rechts, .modal-overlay{
-    padding: 2%;
-  }
-  .container, .modal-overlay{
-    background: linear-gradient(to bottom, #efefef, #ccc);
-  }
-  .links, .rechts, #ideeName{
-    align-items: center;
-  }
-  button, .container, #beschreibung{
-    border-radius: 20px;
-  }
-  button, .rechts{
-    background-color: #00894d;
-  }
-  .links, #ideeName{
-    flex-direction: column;
-  }
-  .rechts, #ideeName{
-    text-align: center;
-  }
-  ul, .listeContainer{
-    height: 300px;
-  }
-  #filter1, #filter2{
-    margin-right: 2px;
-  }
-  .fade-enter-active, .fade-leave-active{
-    transition: opacity 0.5;
-  }
-  .fade-enter, .fade-leave-to{
-    opacity: 0;
-  }
-  button{
-    border: 1px solid #fff;
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: bold;
-    padding: 2px 5px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.1s ease-in;
-    &:active{
-      transform: scale(0.9);
-    }
-    &:focus{
-      outline: none;
-    }
-  }
-  #beschreibung{
-    display: block;
-    background-color: #fff;
-    word-wrap: break-word;
-    padding: 0.2% 1%;
-    overflow: scroll;
-  }
-  .container{
-    overflow: hidden;
-    height: 500px;
-    width: 800px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-  }
-  .rechts{
-    margin-left: 52.5%;
-  }
-  .hauptteil{
-    height: 65%;
-  }
-  .zurueckBtn{
-    background-color: #f80303;
-    right: 5%;
-  }
-  .fußzeile{
-    bottom: 5%;
-  }
-  #ideeName{
-    font-size: 1.5rem;
-  }
-  .modal-overlay{
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  p{
-    margin: 8px 0 8px;
-  }
-  ul{
-    list-style: none;
-    overflow: auto;    text-indent: 10px;
-    padding: 0;
-  }
-  li{
-    line-height: 150%;
-  }
-  li:hover{
-    background-color: rgba(0, 0, 0, 0.1);
-  }
+}
+#beschreibung {
+  display: block;
+  background-color: #fff;
+  word-wrap: break-word;
+  padding: 0.2% 1%;
+  overflow: scroll;
+}
+.container {
+  overflow: hidden;
+  height: 500px;
+  width: 800px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+}
+.rechts {
+  margin-left: 52.5%;
+}
+.hauptteil {
+  height: 65%;
+}
+.zurueckBtn {
+  background-color: #f80303;
+  right: 5%;
+}
+.fußzeile {
+  bottom: 5%;
+}
+#ideeName {
+  font-size: 1.5rem;
+}
+.modal-overlay {
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+p {
+  margin: 8px 0 8px;
+}
+ul {
+  list-style: none;
+  overflow: auto;
+  text-indent: 10px;
+  padding: 0;
+}
+li {
+  line-height: 150%;
+}
+li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
 </style>

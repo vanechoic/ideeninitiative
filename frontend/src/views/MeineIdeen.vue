@@ -28,13 +28,6 @@ p, .rechts, .links{
   justify-content: space-around;
   width: 50%;
 }
-
-
-
-
-
-
-
  button {
     border-radius: 20px;
     border: 1px solid #fff;
@@ -54,4 +47,7 @@ p, .rechts, .links{
       outline: none;
     }
   }
+.meineideen{
+  position: fixed;
+}
 </style>

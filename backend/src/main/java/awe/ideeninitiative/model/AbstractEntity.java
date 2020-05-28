@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class AbstractEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @CreationTimestamp
     private LocalDateTime erstellzeitpunkt;
@@ -21,7 +21,7 @@ public class AbstractEntity {
     @UpdateTimestamp
     private LocalDateTime aktualisierungszeitpunkt;
 
-    public Integer getId(){
+    public Long getId(){
         return id;
     }
 
@@ -31,5 +31,9 @@ public class AbstractEntity {
 
     public LocalDateTime getAktualisierungszeitpunkt() {
         return aktualisierungszeitpunkt;
+    }
+  
+    public void setId(Long id) {
+        this.id = id;
     }
 }

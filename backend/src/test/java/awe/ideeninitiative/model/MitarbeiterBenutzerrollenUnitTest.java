@@ -1,7 +1,7 @@
 package awe.ideeninitiative.model;
 
+import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.restapi.security.BenutzerRollen;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

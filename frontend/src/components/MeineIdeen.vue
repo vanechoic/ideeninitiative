@@ -1,180 +1,292 @@
 <template>
   <article>
     <div class="container">
-        <div class="links">
-            <p>Meine Ideen</p>
-            <div class="listeContainer">
-              <ul class="liste">
-                <li v-for="idee in Ideen" :key="idee.Idee">{{idee.Idee}}</li>
-              </ul>
-            </div>
-            <!--3 Filter Dropdowns -->
-            <div class="filter">
-                <div class="filterElement">
-                    <select id="filter1">
-                        <option value="Sparte 1">Sparte 1</option>
-                        <option value="Sparte 2">Sparte 2</option>
-                        <option value="Sparte 3">Sparte 3</option>
-                        <option value="Sparte 3">Sparte 4</option>
-                    </select>
-                    <select id="filter2">
-                        <option value="Sparte 1">Sparte 1</option>
-                        <option value="Sparte 2">Sparte 2</option>
-                    </select>
-                    <select id="filter3">
-                        <option value="Sparte 1">Sparte 1</option>
-                        <option value="Sparte 2">Sparte 2</option>
-                        <option value="Sparte 3">Sparte 3</option>
-                    </select>
-                </div>
-                <div class="filterElement">
-                    <!--Filter Button -->
-                    <button id="filterButton">Filter</button>
-                </div>
-            </div> 
+      <div class="links">
+        <p>Meine Ideen</p>
+        <div class="listeContainer">
+          <ul class="liste">
+            <li
+              v-for="idee in ideenFiltern()"
+              :key="idee"
+              v-on:click="showModal = true, selectIdee(idee)"
+            >{{idee.titel}} von {{idee.erfasser}}</li>
+          </ul>
         </div>
-        <div class="rechts">
-            <button id="ideeVeroeffentlichen"> Idee veröffentlichen </button>
-            <router-link to="IdeeBearbeiten" tag="button" id="ideeBearbeiten"> Bearbeiten </router-link>
-            <button id="ideeLoeschen"> Löschen </button>
-            <router-link to="Startseite" tag="button" id="zurueck"> Zurück </router-link>
+        <!--3 Filter Dropdowns -->
+        <div class="filter">
+          <div class="filterElement">
+            <select id="filter1" v-model="ideenTyp" @click="selectFilter()">
+              <option value disabled selected>Ideentyp</option>
+              <option value="PRODUKTIDEE" selected>Produkt</option>
+              <option value="INTERNE_IDEE">Intern</option>
+            </select>
+            <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
+              <option value disabled selected>Sparte</option>
+              <option value="KFZ">KFZ</option>
+              <option value="UNFALL">Unfall</option>
+              <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
+              <option value="RECHTSSCHUTZ">Rechtsschutz</option>
+              <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
+              <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
+              <option value="HAFTPFLICHT">Haftpflicht</option>
+              <option value="HAUSRAT">Hausrat</option>
+              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+            </select>
+            <select id="filter3" v-model="vertriebsweg" v-bind:class="[ vertriebswegAktiv ]">
+              <option value disabled selected>Vertriebsweg</option>
+              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+              <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
+              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+              <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
+            </select>
+            <select id="filter4" v-model="zielgruppe" v-bind:class="[ zielgruppeAktiv ]">
+              <option value disabled selected>Zielgruppe</option>
+              <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+              <option value="FAMILIEN">Familien</option>
+              <option value="SINGLES">Singles</option>
+              <option value="PAARE">Paare</option>
+              <option value="PERSONEN_50PLUS">Personen 50+</option>
+              <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
+            </select>
+            <select id="filter5" v-model="handlungsfeld" v-bind:class="[ handlungsfelderAktiv ]">
+              <option value disabled selected>Handlungsfeld</option>
+              <option value="KOSTENSENKUNG">Kostensenkung</option>
+              <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
+              <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
+            </select>
+          </div>
         </div>
+      </div>
+      <div class="rechts">
+        <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
+        <router-link to="IdeeBearbeiten" tag="button" id="ideeBearbeiten">Bearbeiten</router-link>
+        <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
+        <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
+      </div>
     </div>
   </article>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
+import axios from "axios";
+import { Helper } from "../services/helper";
 export default Vue.extend({
-    data: () => {
-      return {
-        Ideen:[
-            {Id:'i1', Idee:'Idee1'},
-            {Id:'i2', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i3', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Idee als Beispiel für Liste '},
-            {Id:'i4', Idee:'Ikjafbnakibnfaof '},
-            {Id:'i5', Idee:'Idee die sehr kreativ ist'}
-        ],
-        dataFields:{value:'Id', text:'Idee'}
+  data: () => ({
+    // Auth Token
+    token: localStorage.getItem("token"),
+    // Filterwerte
+    sparte: "",
+    vertriebsweg: "",
+    zielgruppe: "",
+    handlungsfeld: "",
+    // Aktivieren/Deaktivieren der Filter
+    sparteAktiv: "aktiv",
+    vertriebswegAktiv: "aktiv",
+    zielgruppeAktiv: "aktiv",
+    handlungsfelderAktiv: "aktiv",
+    existiertAktiv: "aktiv",
+    ideenTyp: "",
+    // Modalfenster und Componentenlogik
+    showModal: false,
+    component: "registrierter",
+    // Ideenliste
+    Ideen: [],
+    gefilterteIdeen: [],
+    nutzerIdeen: [],
+    tempIdee: {}
+  }),
+  methods: {
+    goBack() {
+      if (window.history.length > 1) this.$router.go(-1);
+    },
+    selectFilter() {
+      if (this.ideenTyp == "PRODUKTIDEE") {
+        this.handlungsfelderAktiv = "inaktiv";
+        this.sparteAktiv = "aktiv";
+        this.vertriebswegAktiv = "aktiv";
+        this.zielgruppeAktiv = "aktiv";
+      } else {
+        this.handlungsfelderAktiv = "aktiv";
+        this.sparteAktiv = "inaktiv";
+        this.vertriebswegAktiv = "inaktiv";
+        this.zielgruppeAktiv = "inaktiv";
       }
     },
-    methods: {
-      goBack() {
-      if (window.history.length > 1)
-        this.$router.go(-1)
-      }
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
+    },
+    ideenFiltern() {
+      var it = this.ideenTyp;
+      var sp = this.sparte;
+      var vw = this.vertriebsweg;
+      var zg = this.zielgruppe;
+      var hf = this.handlungsfeld;
+
+      return this.Ideen.filter(function (idee) {
+        if ((idee as any).typ == it) return true;
+        else if ((idee as any).sparten == sp) return true;
+        else if ((idee as any).vertriebsweg == vw) return true;
+        else if ((idee as any).zielgruppe == zg) return true;
+        else if ((idee as any).handlungsfeld == hf) return true;
+      });
+    },
+    meineIdeenladen() {
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      var nutzer = decode["sub"];
+
+      axios.get("http://localhost:9090/idee").then((res) => {
+        this.Ideen = res.data;
+      });
+
+      this.Ideen.forEach((idee) => {
+        if ((idee as any).erfasser == nutzer) this.nutzerIdeen.push(idee);
+      });
+      this.Ideen = this.nutzerIdeen;
+    },
+    ideeVeroeffentlichen() {
+      
+    },
+    ideeLoeschen() {
+      // IN ARBEIT
+      console.log(this.tempIdee as any);
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      var titel = (this.tempIdee as any).titel;
+      var erfasser = decode["sub"];
+      var erstelldatum = (this.tempIdee as any).erstellzeitpunkt
+
+      axiosInstance.delete("http://localhost:9090/idee", {
+        headers: { Authorization: `Bearer ${this.token}` },
+      });
     }
-  })
+  },
+  created() {
+    this.meineIdeenladen();
+  },
+});
 </script>
 
 <style lang="scss" scoped>
-  .container, .links, .rechts{
-    height: 100%;
+.container,
+.links,
+.rechts {
+  height: 100%;
+}
+p,
+.rechts,
+.links {
+  top: 0;
+}
+.container,
+button,
+#fliterButton {
+  border-radius: 20px;
+}
+#ideeVeroeffentlichen,
+#ideeBearbeiten,
+#zurueck {
+  background-color: black;
+}
+.container,
+.links {
+  position: relative;
+}
+.links,
+.rechts {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 50%;
+  flex-direction: column;
+}
+.rechts,
+#filterButton {
+  background-color: #00894d;
+}
+.filter,
+.filterElement {
+  float: left;
+}
+#filter1,
+#filter2,
+#filter3,
+#filter4,
+#filter5 {
+  margin-right: 2px;
+  width: 6em;
+}
+button,
+#filterButton {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
   }
-  p, .rechts, .links{
-    top: 0;
-  }
-  .container, button, #fliterButton{
-    border-radius: 20px;
-  }
-  #ideeVeroeffentlichen,#ideeBearbeiten, #zurueck{
-    background-color: black;
-  }
-  .container, .links{
-    position: relative;
-  }
-  .links, .rechts{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 50%;
-    flex-direction: column;
-  }
-  .rechts, #filterButton{
-    background-color:#00894d;
-  }
-  .filter, .filterElement{
-    float: left;
-  }
-  button, #filterButton{
-    color: #fff;
-    font-size: .75rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform .1s ease-in;
-    &:active {
-        transform: scale(.9);
-    }
-    &:focus {
+  &:focus {
     outline: none;
-    }
   }
-  .listeContainer, li{
-    border: 0.5px solid #000;
-  }
-  .filter, .listeContainer{
-    width: 100%;
-  }
-  .listeContainer, ul {
-    height: 400px;
-  }
-  .container {
-    width: 900px;
-    overflow: hidden;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
-                0 10px 10px rgba(0, 0, 0, .2);
-    background: linear-gradient(to bottom, #efefef, #ccc);
-  }
-  ul {
-    list-style: none;
-    margin: 0;
-    overflow: auto;
-    padding: 0;
-    text-indent: 10px;
-  }
-  li:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }   
-  .filter{
-    padding: 10px;
-  }
-  .rechts{
-    position: absolute;
-    margin-left: 52.5%;
-  }
-  p {
-    margin: 8px 0 8px;
-  }
-  #filterButton{
-    border: 1px solid #00894d;
-    padding: 2px 5px;
-    margin-left: 60%;
-  }
-  #ideeLoeschen{
-    background-color: #f80303;
-  }
-  button {
-    border: 1px solid #fff;
-    padding: 10px 40px;
-    margin-top:10px;
-  }
-  li {
-    line-height: 30px;
-    color: black;
-  }
+}
+.listeContainer,
+li {
+  border: 0.5px solid #000;
+}
+.filter,
+.listeContainer {
+  width: 100%;
+}
+.listeContainer,
+ul {
+  height: 400px;
+}
+.container {
+  width: 900px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #efefef, #ccc);
+}
+ul {
+  list-style: none;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+  text-indent: 10px;
+}
+li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.filter {
+  padding: 10px;
+}
+.rechts {
+  position: absolute;
+  margin-left: 52.5%;
+}
+p {
+  margin: 8px 0 8px;
+}
+#filterButton {
+  border: 1px solid #00894d;
+  padding: 2px 5px;
+  margin-left: 60%;
+}
+#ideeLoeschen {
+  background-color: #f80303;
+}
+button {
+  border: 1px solid #fff;
+  padding: 10px 40px;
+  margin-top: 10px;
+}
+li {
+  line-height: 30px;
+  color: black;
+}
 </style>

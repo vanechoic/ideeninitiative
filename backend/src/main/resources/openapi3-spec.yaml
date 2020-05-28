@@ -60,6 +60,31 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
+    put:
+      tags:
+        - idee
+      summary: Idee bearbeiten
+      operationId: ideeBearbeiten
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/IdeeDTO"
+        description: Zu aktualisierende Idee
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        "400":
+          description: Fehlerhafte Eingabe
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
     delete:
       tags:
         - idee
@@ -367,6 +392,9 @@ components:
             pattern: '^[^\^°=*#~;:(){}§$%<>|''`´\/\\]*$'
         handlungsfeld:
           type: string
+        erstellzeitpunkt:
+          type: string
+          pattern: '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s([01][0-9]|2[0-3]):([012345][0-9]):([012345][0-9])$'
     ApiFehler:
       type: object
       properties:

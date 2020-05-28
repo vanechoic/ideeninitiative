@@ -1,8 +1,8 @@
 package awe.ideeninitiative.restapi.security;
 
+import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.restapi.AbstrakterApiTest;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.restapi.controller.IdeeController;
 import awe.ideeninitiative.restapi.service.IdeeService;
 import org.junit.Before;
