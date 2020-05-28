@@ -5,7 +5,6 @@ import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.restapi.mapper.IdeeMapper;
 import org.junit.Before;
