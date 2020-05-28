@@ -146,7 +146,7 @@ export default Vue.extend({
       this.Ideen = this.nutzerIdeen;
     },
     ideeVeroeffentlichen() {
-
+      
     },
     ideeLoeschen() {
       // IN ARBEIT
