@@ -1,15 +1,15 @@
 package awe.ideeninitiative.model.idee;
 
 import awe.ideeninitiative.model.AbstractEntity;
+import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.enums.Ideenstatus;
-import awe.ideeninitiative.model.enums.Ideentyp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Beinhaltet die gemeinsamen Attribute und Funktionen der Produktideen und internen Ideen.
@@ -154,6 +154,12 @@ public class Idee extends AbstractEntity {
         return produktideeVertriebsweg;
     }
 
+    public List<Vertriebskanal> getProduktideeVertriebswegeWerte(){
+        return produktideeVertriebsweg.stream()
+                .map( vw-> vw.getVertriebsweg())
+                .collect(Collectors.toList());
+    }
+
     public void setProduktideeVertriebsweg(List<ProduktideeVertriebsweg> produktideeVertriebsweg) {
         if(produktideeVertriebsweg != null && !produktideeVertriebsweg.isEmpty()){
             produktideeVertriebsweg.forEach(vw -> vw.setIdee(this));
@@ -164,6 +170,12 @@ public class Idee extends AbstractEntity {
 
     public List<ProduktideeZielgruppe> getProduktideeZielgruppe() {
         return produktideeZielgruppe;
+    }
+
+    public List<Zielgruppe> getProduktideeZielgruppeWerte(){
+        return produktideeZielgruppe.stream()
+                .map( zg-> zg.getZielgruppe())
+                .collect(Collectors.toList());
     }
 
     public void setProduktideeZielgruppe(List<ProduktideeZielgruppe> produktideeZielgruppe) {
