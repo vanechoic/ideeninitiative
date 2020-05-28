@@ -1,8 +1,8 @@
 package awe.ideeninitiative.restapi;
 
 import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
+import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
 import awe.ideeninitiative.model.repositories.InterneIdeeHandlungsfeldRepository;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;

@@ -2,8 +2,10 @@ package awe.ideeninitiative.model.builder;
 
 import awe.ideeninitiative.model.enums.Ideenstatus;
 import awe.ideeninitiative.model.enums.Ideentyp;
-import awe.ideeninitiative.model.idee.Idee;
+import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
+
+import java.util.List;
 
 public final class IdeeBuilder {
     private String titel;
@@ -13,6 +15,12 @@ public final class IdeeBuilder {
     private Ideentyp typ;
     private Mitarbeiter erfasser;
     private Mitarbeiter fachspezialist;
+    private InterneIdeeHandlungsfeld interneIdeeHandlungsfeld;
+    private ProduktideeSparte produktideeSparte;
+    private List<ProduktideeVertriebsweg> produktideeVertriebsweg;
+    private List<ProduktideeZielgruppe> produktideeZielgruppe;
+    private ProduktideeZusatzinformation produktideeZusatzinformation;
+    private Long id;
 
     private IdeeBuilder() {
     }
@@ -56,6 +64,36 @@ public final class IdeeBuilder {
         return this;
     }
 
+    public IdeeBuilder withInterneIdeeHandlungsfeld(InterneIdeeHandlungsfeld interneIdeeHandlungsfeld) {
+        this.interneIdeeHandlungsfeld = interneIdeeHandlungsfeld;
+        return this;
+    }
+
+    public IdeeBuilder withProduktideeSparte(ProduktideeSparte produktideeSparte) {
+        this.produktideeSparte = produktideeSparte;
+        return this;
+    }
+
+    public IdeeBuilder withProduktideeVertriebsweg(List<ProduktideeVertriebsweg> produktideeVertriebsweg) {
+        this.produktideeVertriebsweg = produktideeVertriebsweg;
+        return this;
+    }
+
+    public IdeeBuilder withProduktideeZielgruppe(List<ProduktideeZielgruppe> produktideeZielgruppe) {
+        this.produktideeZielgruppe = produktideeZielgruppe;
+        return this;
+    }
+
+    public IdeeBuilder withProduktideeZusatzinformation(ProduktideeZusatzinformation produktideeZusatzinformation) {
+        this.produktideeZusatzinformation = produktideeZusatzinformation;
+        return this;
+    }
+
+    public IdeeBuilder withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Idee build() {
         Idee idee = new Idee();
         idee.setTitel(titel);
@@ -65,6 +103,12 @@ public final class IdeeBuilder {
         idee.setTyp(typ);
         idee.setErfasser(erfasser);
         idee.setFachspezialist(fachspezialist);
+        idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld);
+        idee.setProduktideeSparte(produktideeSparte);
+        idee.setProduktideeVertriebsweg(produktideeVertriebsweg);
+        idee.setProduktideeZielgruppe(produktideeZielgruppe);
+        idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
+        idee.setId(id);
         return idee;
     }
 }
