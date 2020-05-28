@@ -70,7 +70,6 @@ public class IdeeService {
         }
     }
 
-
     public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException {
         //Idee suchen
         List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(idee.getTitel(), idee.getErstellzeitpunkt(), idee.getErfasser().getBenutzername());

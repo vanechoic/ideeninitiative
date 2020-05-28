@@ -32,9 +32,8 @@ public class AbstractEntity {
     public LocalDateTime getAktualisierungszeitpunkt() {
         return aktualisierungszeitpunkt;
     }
-
+  
     public void setId(Long id) {
         this.id = id;
     }
-
 }
