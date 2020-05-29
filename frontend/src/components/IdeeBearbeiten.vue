@@ -6,7 +6,7 @@
         <!-- Ideen Titel/Name -->
         <h2>Titel</h2>
         <div class="titel">
-          <input type="text" id="titel" v-model="titel" />
+          <label id="ideeName">{{ titel }}</label>
         </div>
       </div>
       <div class="row">
@@ -16,13 +16,13 @@
           <textarea id="beschreibungsText" v-model="beschreibung"></textarea>
         </div>
       </div>
-      <div class="row">
-        <!-- Datei Upload -->
+      <!--  <div class="row">
+        Datei Upload 
         <h2>Datei Upload</h2>
         <div class="dateien">
           <input type="file" />
         </div>
-      </div>
+      </div>-->
       <div class="row">
         <!-- Vorteile -->
         <h2>Vorteile</h2>
@@ -31,72 +31,94 @@
           <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">-</button>
           <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+</button>
           <br />
-          <select v-model="selected" multiple id="selectVorteile">
+          <select v-model="selectedVorteil" multiple id="selectVorteile">
             <option
-              v-for="vorteil in Vorteile"
-              :key="vorteil.vorteil"
+              v-for="vorteil in vorteile"
+              :key="vorteil"
               @click="vorteilSelection(vorteil)"
-            >{{ vorteil.vorteil }}</option>
+            >{{ vorteil }}</option>
           </select>
         </div>
       </div>
       <div class="row">
         <!-- Existierende Idee - Checkbox -->
-        <div class="existiert" v-bind:class="[ existiertAktiv ]">
-          <label for="existiertBereits">Existiert eine vergleichbare Idee?</label>
-          <input type="checkbox" v-model="existiert" id="existiertBereits" />
+        <div class="existiert" v-bind:class="[existiertAktiv]">
+          <p for="existiertBereits">Existiert eine vergleichbare Idee?</p>
+          <input
+            type="checkbox"
+            v-model="existiert"
+            id="existiertBereits"
+            v-on:click="existiert = true"
+          />
+          <div class="existiertInfo" v-if="existiert">
+            <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
+            <input type="text" id="unternehmen" v-model="unternehmen" />
+            <label
+              id="beschreibungsTextExistiertLbl"
+              for="beschreibungsTextExistiert"
+            >Beschreibung wie die diese Idee schon umgesetzt ist:</label>
+            <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx"></textarea>
+          </div>
         </div>
       </div>
-      <div class="row">
+     <div class="row">
         <!--Comboboxen zur Ideen-Spezifikation -->
         <div class="ideenDropdowns">
           <div class="combobox">
             <p>Ideen-Typ</p>
             <select v-model="ideenTyp" @click="ideeSelection()">
-              <option value="Produktidee" selected>Produktidee</option>
-              <option value="Interne Idee">Interne Idee</option>
+              <option value="PRODUKTIDEE" >Produktidee</option>
+              <option value="INTERNE_IDEE">Interne Idee</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ sparteAktiv ]">
+          <div class="combobox" v-bind:class="[sparteAktiv]">
             <p>Sparte</p>
             <select v-model="sparte">
-              <option>KFZ</option>
-              <option>Unfall</option>
-              <option>Krankenversicherung</option>
-              <option>Rechtsschutz</option>
-              <option>Lebensversicherung</option>
-              <option>Rentenversicherung</option>
-              <option>Haftpflicht</option>
-              <option>Hausrat</option>
-              <option>Wohngebäudeversicherung</option>
+              <option value="KFZ">KFZ</option>
+              <option value="UNFALL">Unfall</option>
+              <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
+              <option value="RECHTSSCHUTZ">Rechtsschutz</option>
+              <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
+              <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
+              <option value="HAFTPFLICHT">Haftpflicht</option>
+              <option value="HAUSRAT">Hausrat</option>
+              <option value="WOHNGEBAUEDEVERSICHERUNG"
+                >Wohngebäudeversicherung</option
+              >
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ vertriebswegAktiv ]">
+          <div class="combobox" v-bind:class="[vertriebswegAktiv]">
             <p>Vertriebsweg</p>
             <select v-model="vertriebsweg" multiple>
-              <option>Stationärer Vertrieb in eigenen Geschäftsstelle</option>
-              <option>Versicherungsmakler</option>
-              <option>Kooperation mit Kreditinstituten</option>
-              <option>Direktversicherung</option>
+              <option value="STATIONAERER_VERTRIEB"
+                >Stationärer Vertrieb in eigenen Geschäftsstelle</option
+              >
+              <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
+              <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
+                >Kooperation mit Kreditinstituten</option
+              >
+              <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ zielgruppeAktiv ]">
+          <div class="combobox" v-bind:class="[zielgruppeAktiv]">
             <p>Zielgruppen</p>
             <select v-model="zielgruppe" multiple>
-              <option selected>Kinder/Jugendliche</option>
-              <option>Familien</option>
-              <option>Singles</option>
-              <option>Paare</option>
-              <option>Personen 50+</option>
-              <option>Gewerbetreibende</option>
+              <option selected value="KINDER_JUGENDLICHE"
+                >Kinder/Jugendliche</option
+              >
+              <option value="FAMILIEN">Familien</option>
+              <option value="SINGLES">Singles</option>
+              <option value="PAARE">Paare</option>
+              <option value="PERSONEN_50PLUS">Personen 50+</option>
+              <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
             </select>
           </div>
-          <div class="combobox" v-bind:class="[ handlungsfelderAktiv ]">
+          <div class="combobox" v-bind:class="[handlungsfelderAktiv]">
             <p>Handlungsfelder</p>
             <select v-model="handlungsfeld">
-              <option>Kostensenkung</option>
-              <option>Ertragssteigerung</option>
-              <option>Zukunftsfähigkeit</option>
+              <option value="KOSTENSENKUNG">Kostensenkung</option>
+              <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
+              <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
             </select>
           </div>
         </div>
@@ -113,35 +135,31 @@
 
 <script lang="ts">
 import Vue from "vue";
+import axios from "axios";
+import { Helper } from "../services/helper";
 export default Vue.extend({
   data: () => ({
+    // Auth Token
+    token: localStorage.getItem("token"),
     // Idee-Objekt
-    idee: {
-      titel: "String",
-      beschreibung: "String",
-      vorteile: [{ vorteil: "" }],
-      existiert: false,
-      ideenTyp: "String",
-      sparte: "String",
-      vertriebsweg: [{ id: 0, value: "" }],
-      zielgruppe: [{ id: 0, value: "" }],
-      handlungsfeld: "String",
-    },
+    idee: {},
     // Beschreibende Attribute
     titel: "",
     beschreibung: "",
     existiert: false,
+    unternehmen: "",
+    beschreibungEx: "",
     // Data für Vorteile und Vorteilslogik
     counter: 0,
     vorteilText: "",
-    Vorteile: [{ vorteil: "Vorteil" }],
-    selected: "",
+    vorteile: [],
+    selectedVorteil: [{}],
     selectedIndex: 0,
     // Data für Comboboxen und Comboboxlogik
     ideenTyp: "",
     sparte: "",
-    vertriebsweg: [{ id: 1, value: "" }],
-    zielgruppe: [{ id: 1, value: "" }],
+    vertriebsweg: [{}],
+    zielgruppe: [{}],
     handlungsfeld: "",
     // Aktivieren/Deaktivieren
     sparteAktiv: "aktiv",
@@ -149,8 +167,9 @@ export default Vue.extend({
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
-    // Bootstrap Alert Variablen
-    showSuccess: false
+    // Zusätzliche Attribute
+    ideeBearbeitungszustand: "",
+    erstelldatum: ""
   }),
   methods: {
     // Methode für Abbrechen-Button => Zurück im Browser
@@ -160,7 +179,7 @@ export default Vue.extend({
     // Logik für das Hinzufügen/Entfernen von Vorteilen
     vorteilHinzufuegen() {
       if (this.counter < 3 && this.vorteilText != "") {
-        this.Vorteile.push({ vorteil: this.vorteilText });
+        this.vorteile.push(this.vorteilText);
         this.counter++;
       } else if (this.counter > 2)
         alert("Pro Idee können nur 3 Ideen hinzugefügt werden");
@@ -168,33 +187,32 @@ export default Vue.extend({
     },
     vorteilEntfernen() {
       if (this.counter) {
-        this.$delete(this.Vorteile, this.selectedIndex);
+        this.$delete(this.vorteile, this.selectedIndex);
         this.counter--;
         if (this.counter < 0) this.counter = 0;
       }
     },
-    vorteilSelection(selected: { id: number; vorteil: string }) {
-      this.selectedIndex = this.Vorteile.indexOf(selected);
+    vorteilSelection(selectedVorteil: { id: number; vorteil: string }) {
+      this.selectedIndex = this.vorteile.indexOf(selectedVorteil);
     },
     // Logik für das Auswählen/Ausblenden von Comboboxen
     ideeSelection() {
-      if (this.ideenTyp == "Produktidee") {
+      if (this.ideenTyp == "PRODUKTIDEE") {
         this.handlungsfelderAktiv = "inaktiv";
-        (this.sparteAktiv = "aktiv"),
-          (this.vertriebswegAktiv = "aktiv"),
-          (this.zielgruppeAktiv = "aktiv"),
-          (this.existiertAktiv = "aktiv");
+        this.sparteAktiv = "aktiv";
+        this.vertriebswegAktiv = "aktiv";
+        this.zielgruppeAktiv = "aktiv";
+        this.existiertAktiv = "aktiv";
       } else {
         this.handlungsfelderAktiv = "aktiv";
-        (this.sparteAktiv = "inaktiv"),
-          (this.vertriebswegAktiv = "inaktiv"),
-          (this.zielgruppeAktiv = "inaktiv"),
-          (this.existiertAktiv = "inaktiv");
+        this.sparteAktiv = "inaktiv";
+        this.vertriebswegAktiv = "inaktiv";
+        this.zielgruppeAktiv = "inaktiv";
+        this.existiertAktiv = "inaktiv";
       }
     },
     // Eingaben überprüfen und Idee speichern
     validiereEingaben(): boolean {
-      // NOCH NICHT FERTIG
       var errorMessage = "Angaben ungültig: ";
       var error = true;
       if (this.ideenTyp == "Interne Idee" && this.handlungsfeld.length == 0) {
@@ -204,116 +222,171 @@ export default Vue.extend({
       return error;
     },
     ideeSpeichern() {
-      if (this.validiereEingaben()) {
-        this.idee.titel = this.titel;
-        this.idee.beschreibung = this.beschreibung;
-        this.idee.vorteile = this.Vorteile;
-        this.idee.existiert = this.existiert;
-        this.idee.ideenTyp = this.ideenTyp;
-        this.idee.sparte = this.sparte;
-        this.idee.vertriebsweg = this.vertriebsweg;
-        this.idee.zielgruppe = this.zielgruppe;
-        this.idee.handlungsfeld = this.handlungsfeld;
-        console.log(this.idee);
-      }
-    }
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      var erfasserT = decode["sub"];
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      axiosInstance.put(
+        "http://localhost:9090/idee",
+        {
+          typ: this.ideeTyp,
+          existiertBereits: this.ideeExistiert,
+          titel: this.titel,
+          erfasser: erfasserT,
+          erstellzeitpunkt: this.erstelldatum,
+          beschreibung: this.ideeBeschreibung,
+          vorteile: this.vorteile,
+          unternehmensbezeichnung: this.unternehmensbezeichnung,
+          artDerUmsetzung: this.existiertBereits,
+          sparten: this.sparten,
+          vertriebsweg: this.vertriebsweg,
+          zielgruppe: this.zielgruppe,
+          handlungsfeld: this.handlungsfeld,
+          bearbeitungsstatus: this.ideeBearbeitungszustand,
+        },
+        config
+      );
+    },
   },
   mounted() {
-    this.$delete(this.Vorteile, 0);
+    
+  },
+  created() {
+    this.idee = JSON.parse(localStorage.getItem("idee") as string);
+    console.log(this.idee);
+
+    this.ideeTyp = (this.idee as any).typ;
+    this.existiertBereits = (this.idee as any).existiertBereits;
+    this.titel = (this.idee as any).titel;
+    this.erfasser = (this.idee as any).erfasser;
+    this.beschreibung = (this.idee as any).beschreibung;
+    this.vorteile = (this.idee as any).vorteile;
+    this.unternehmen = (this.idee as any).unternehmensbezeichnung;
+    this.beschreibungEx = (this.idee as any).artDerUmsetzung;
+    this.sparte = (this.idee as any).sparten;
+    this.vertriebsweg = (this.idee as any).vertriebsweg;
+    this.zielgruppe = (this.idee as any).zielgruppe;
+    this.handlungsfeld = (this.idee as any).handlungsfeld;
+    this.ideeBearbeitungszustand = (this.idee as any).bearbeitungsstatus;
+    this.erstelldatum = (this.idee as any).erstellzeitpunkt;
+
+    if (this.vorteile == null) this.vorteile = [];
   },
 });
 </script>
 
 <style lang="scss" scoped>
-  .beschreibung, .beschreibung textarea, .dateien, .row, .titel, .ideenDropdowns, #selectVorteile, select{
-    width: 100%;
+.beschreibung,
+.beschreibung textarea,
+.dateien,
+.row,
+.titel,
+.ideenDropdowns,
+#selectVorteile,
+select {
+  width: 100%;
+}
+.ideeButton,
+#vorteile,
+#titel {
+  height: 30px;
+}
+p,
+label,
+button {
+  font-size: 1rem;
+}
+.container-fluid,
+.beschreibung {
+  height: 100%;
+}
+.container-fluid,
+button {
+  border-radius: 20px;
+}
+.container-fluid,
+#selectVorteile {
+  overflow: hidden;
+}
+#vorteile,
+#titel {
+  width: 88%;
+  margin-bottom: 2px;
+}
+#entfernen,
+#hinzu {
+  color: #fff;
+}
+.combobox,
+#entfernen {
+  margin-right: 2px;
+}
+.container-fluid {
+  width: 800px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #efefef, #ccc);
+}
+.vorteile button {
+  padding: 5px;
+}
+h1 {
+  text-align: center;
+}
+.beschreibung textarea {
+  height: 200px;
+}
+.ideeButton {
+  width: 30px;
+}
+.vorteile {
+  width: 650px;
+}
+.row {
+  padding-left: 3%;
+}
+.ideenDropdowns {
+  display: flex;
+  justify-content: space-between;
+}
+#existiertBereits {
+  height: 15px;
+  width: 15px;
+  margin-left: 20px;
+}
+.buttons {
+  padding: 1%;
+  margin: auto;
+}
+#hinzu {
+  background-color: #00894d;
+}
+#entfernen {
+  background-color: #f80303;
+}
+button {
+  border: 1px solid #fff;
+  font-weight: bold;
+  padding: 2px 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
   }
-  .ideeButton, #vorteile, #titel{
-    height: 30px;
+  &:focus {
+    outline: none;
   }
-  p, label, button{
-    font-size: 1rem;
-  } 
-  .container-fluid, .beschreibung{
-    height: 100%;
-  }
-  .container-fluid, button{
-    border-radius: 20px;
-  }
-  .container-fluid, #selectVorteile{
-    overflow: hidden;
-  }
-  #vorteile, #titel{
-    width: 88%;
-    margin-bottom: 2px;
-  }
-  #entfernen, #hinzu{
-    color: #fff;
-  }
-  .combobox, #entfernen{
-    margin-right: 2px;
-  }
-  .container-fluid{
-    width: 800px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(to bottom, #efefef, #ccc);
-  }
-  .vorteile button {
-    padding: 5px;
-  }
-  h1 {
-    text-align: center;
-  }
-  .beschreibung textarea {
-    height: 200px;
-  }
-  .ideeButton {
-    width: 30px;
-  }
-  .vorteile {
-    width: 650px;
-  }
-  .row{
-    padding-left: 3%;
-  }
-  .ideenDropdowns{
-    display: flex;
-    justify-content: space-between;
-  }
-  #existiertBereits{
-    height: 15px;
-    width: 15px;
-    margin-left: 20px;
-  }
-  .buttons {
-    padding: 1%;
-    margin: auto;
-  }
-  #hinzu {
-    background-color: #00894d;
-  }
-  #entfernen {
-    background-color: #f80303;
-  }
-  button {
-    border: 1px solid #fff;
-    font-weight: bold;
-    padding: 2px 8px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.1s ease-in;
-    &:active {
-      transform: scale(0.9);
-    }
-    &:focus {
-      outline: none;
-    }
-  }
-  select {
-    font-size: .80rem;
-  }
-  .inaktiv {
-    display: none;
-  }
+}
+select {
+  font-size: 0.8rem;
+}
+.inaktiv {
+  display: none;
+}
 </style>

@@ -59,7 +59,7 @@
       </div>
       <div class="rechts">
         <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
-        <router-link to="IdeeBearbeiten" tag="button" id="ideeBearbeiten">Bearbeiten</router-link>
+        <router-link id="ideeBearbeiten" to="/IdeeBearbeiten" tag="button">Bearbeiten</router-link>
         <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
         <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
       </div>
@@ -95,6 +95,21 @@ export default Vue.extend({
     gefilterteIdeen: [],
     nutzerIdeen: [],
     tempIdee: {},
+    //
+    ideeTitel: "",
+    ideeErsteller: "",
+    ideeErstellt: "",
+    ideeBeschreibung: "",
+    ideeVorteile: [{}],
+    ideeExistiert: "",
+    ideeUnternehmen: "",
+    ideeExistiertBeschreibung: "",
+    ideeTyp: "",
+    ideeSparte: "",
+    ideeVertriebskanal: [{}],
+    ideeZielgruppe: [{}],
+    ideeHandlungsfeld: "",
+    ideeBearbeitungszustand: "",
   }),
   methods: {
     goBack() {
@@ -115,6 +130,21 @@ export default Vue.extend({
     },
     selectIdee(idee: any) {
       this.tempIdee = idee;
+      localStorage.setItem("idee", JSON.stringify(this.tempIdee));
+      this.ideeTyp = this.tempIdee.typ;
+      this.ideeExistiert = this.tempIdee.existiertBereits;
+      this.ideeTitel = this.tempIdee.titel;
+      this.ideeErsteller = this.tempIdee.erfasser;
+      this.ideeErstellt = this.tempIdee.erstellzeitpunkt;
+      this.ideeBeschreibung = this.tempIdee.beschreibung;
+      this.ideeVorteile = this.tempIdee.vorteile;
+      this.ideeUnternehmen = this.tempIdee.unternehmensbezeichnung;
+      this.ideeExistiertBeschreibung = this.tempIdee.artDerUmsetzung;
+      this.ideeSparte = this.tempIdee.sparten;
+      this.ideeVertriebskanal = this.tempIdee.vertriebsweg;
+      this.ideeZielgruppe = this.tempIdee.zielgruppe;
+      this.ideeHandlungsfeld = this.tempIdee.handlungsfeld;
+      this.ideeBearbeitungszustand = this.tempIdee.bearbeitungsstatus;
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -158,18 +188,41 @@ export default Vue.extend({
     },
     ideeVeroeffentlichen() {},
     ideeLoeschen() {
-      // IN ARBEIT
       console.log(this.tempIdee as any);
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       var jwt = require("jsonwebtoken");
       var decode = jwt.decode(this.token);
-      var titel = (this.tempIdee as any).titel;
-      var erfasser = decode["sub"];
-      var erstelldatum = (this.tempIdee as any).erstellzeitpunkt;
+      var titelT = (this.tempIdee as any).titel;
+      var erfasserT = decode["sub"];
+      var erstelldatumT = (this.tempIdee as any).erstellzeitpunkt;
 
-      axiosInstance.delete("http://localhost:9090/idee", {
-        headers: { Authorization: `Bearer ${this.token}` },
-      });
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      axiosInstance.post(
+        "http://localhost:9090/idee/loeschen",
+        {
+          typ: this.ideeTyp,
+          existiertBereits: this.ideeExistiert,
+          titel: this.ideeTitel,
+          erfasser: this.ideeErsteller,
+          erstellzeitpunkt: this.ideeErstellt,
+          beschreibung: this.ideeBeschreibung,
+          vorteile: this.ideeVorteile,
+          unternehmensbezeichnung: this.ideeUnternehmen,
+          artDerUmsetzung: this.ideeExistiertBeschreibung,
+          sparten: this.ideeSparte,
+          vertriebsweg: this.ideeVertriebskanal,
+          zielgruppe: this.ideeZielgruppe,
+          handlungsfeld: this.ideeHandlungsfeld,
+          bearbeitungsstatus: this.ideeBearbeitungszustand
+        },
+        config
+      );
+      this.meineIdeenladen();
     },
   },
   created() {
