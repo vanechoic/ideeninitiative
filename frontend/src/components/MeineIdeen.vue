@@ -186,7 +186,38 @@ export default Vue.extend({
       });
       this.Ideen = this.nutzerIdeen;
     },
-    ideeVeroeffentlichen() {},
+    ideeVeroeffentlichen() {
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      var nutzer = decode["sub"];
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axios.post(
+        "http://localhost:9090/idee/veroeffentlichen",
+        {
+          typ: this.ideeTyp,
+          existiertBereits: this.ideeExistiert,
+          titel: this.ideeTitel,
+          erfasser: this.ideeErsteller,
+          erstellzeitpunkt: this.ideeErstellt,
+          beschreibung: this.ideeBeschreibung,
+          vorteile: this.ideeVorteile,
+          unternehmensbezeichnung: this.ideeUnternehmen,
+          artDerUmsetzung: this.ideeExistiertBeschreibung,
+          sparten: this.ideeSparte,
+          vertriebsweg: this.ideeVertriebskanal,
+          zielgruppe: this.ideeZielgruppe,
+          handlungsfeld: this.ideeHandlungsfeld,
+          bearbeitungsstatus: this.ideeBearbeitungszustand,
+        },
+        config
+      );
+    },
     ideeLoeschen() {
       console.log(this.tempIdee as any);
       var axiosInstance = Helper.getInstance().createAxiosInstance();
@@ -218,7 +249,7 @@ export default Vue.extend({
           vertriebsweg: this.ideeVertriebskanal,
           zielgruppe: this.ideeZielgruppe,
           handlungsfeld: this.ideeHandlungsfeld,
-          bearbeitungsstatus: this.ideeBearbeitungszustand
+          bearbeitungsstatus: this.ideeBearbeitungszustand,
         },
         config
       );

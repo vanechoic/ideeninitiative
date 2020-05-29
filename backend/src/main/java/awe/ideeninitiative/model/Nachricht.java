@@ -12,14 +12,26 @@ import javax.validation.constraints.Pattern;
 public class Nachricht extends AbstractEntity{
 
     @NotNull
-    @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
-    private String text;
+    @Pattern(regexp = "[^\\^°=*#~;(){}§$%<>|'`´\\/\\\\]*")
+    private String titel;
 
-    public String getText() {
-        return text;
+    @NotNull
+    @Pattern(regexp = "[^\\^°=*#~;(){}§$%<>|'`´\\/\\\\]*")
+    private String beschreibung;
+
+    public String getTitel() {
+        return titel;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setTitel(String titel) {
+        this.titel = titel;
+    }
+
+    public String getBeschreibung() {
+        return beschreibung;
+    }
+
+    public void setBeschreibung(String beschreibung) {
+        this.beschreibung = beschreibung;
     }
 }

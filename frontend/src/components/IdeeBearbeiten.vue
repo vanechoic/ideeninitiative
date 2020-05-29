@@ -61,13 +61,13 @@
           </div>
         </div>
       </div>
-     <div class="row">
+      <div class="row">
         <!--Comboboxen zur Ideen-Spezifikation -->
         <div class="ideenDropdowns">
           <div class="combobox">
             <p>Ideen-Typ</p>
             <select v-model="ideenTyp" @click="ideeSelection()">
-              <option value="PRODUKTIDEE" >Produktidee</option>
+              <option value="PRODUKTIDEE">Produktidee</option>
               <option value="INTERNE_IDEE">Interne Idee</option>
             </select>
           </div>
@@ -82,30 +82,22 @@
               <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
               <option value="HAFTPFLICHT">Haftpflicht</option>
               <option value="HAUSRAT">Hausrat</option>
-              <option value="WOHNGEBAUEDEVERSICHERUNG"
-                >Wohngebäudeversicherung</option
-              >
+              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[vertriebswegAktiv]">
             <p>Vertriebsweg</p>
             <select v-model="vertriebsweg" multiple>
-              <option value="STATIONAERER_VERTRIEB"
-                >Stationärer Vertrieb in eigenen Geschäftsstelle</option
-              >
+              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
               <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-              <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
-                >Kooperation mit Kreditinstituten</option
-              >
+              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
               <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[zielgruppeAktiv]">
             <p>Zielgruppen</p>
             <select v-model="zielgruppe" multiple>
-              <option selected value="KINDER_JUGENDLICHE"
-                >Kinder/Jugendliche</option
-              >
+              <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
               <option value="FAMILIEN">Familien</option>
               <option value="SINGLES">Singles</option>
               <option value="PAARE">Paare</option>
@@ -169,7 +161,7 @@ export default Vue.extend({
     existiertAktiv: "aktiv",
     // Zusätzliche Attribute
     ideeBearbeitungszustand: "",
-    erstelldatum: ""
+    erstelldatum: "",
   }),
   methods: {
     // Methode für Abbrechen-Button => Zurück im Browser
@@ -231,19 +223,20 @@ export default Vue.extend({
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       };
+
       axiosInstance.put(
         "http://localhost:9090/idee",
         {
           typ: this.ideeTyp,
-          existiertBereits: this.ideeExistiert,
+          existiertBereits: this.existiert,
           titel: this.titel,
           erfasser: erfasserT,
           erstellzeitpunkt: this.erstelldatum,
-          beschreibung: this.ideeBeschreibung,
+          beschreibung: this.beschreibung,
           vorteile: this.vorteile,
           unternehmensbezeichnung: this.unternehmensbezeichnung,
-          artDerUmsetzung: this.existiertBereits,
-          sparten: this.sparten,
+          artDerUmsetzung: this.beschreibungEx,
+          sparten: this.sparte,
           vertriebsweg: this.vertriebsweg,
           zielgruppe: this.zielgruppe,
           handlungsfeld: this.handlungsfeld,
@@ -253,15 +246,13 @@ export default Vue.extend({
       );
     },
   },
-  mounted() {
-    
-  },
+  mounted() {},
   created() {
     this.idee = JSON.parse(localStorage.getItem("idee") as string);
-    console.log(this.idee);
 
+    if ((this.idee as any).existiertBereit) this.existiert = true;
+    else this.existiert = false;
     this.ideeTyp = (this.idee as any).typ;
-    this.existiertBereits = (this.idee as any).existiertBereits;
     this.titel = (this.idee as any).titel;
     this.erfasser = (this.idee as any).erfasser;
     this.beschreibung = (this.idee as any).beschreibung;
