@@ -1,12 +1,14 @@
 package awe.ideeninitiative.restapi;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
+import awe.ideeninitiative.exception.MaximaleAnzahlVorteileUeberschrittenException;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.restapi.mapper.IdeeMapper;
+import awe.ideeninitiative.util.DatumUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -32,6 +34,7 @@ public class IdeeMapperTest {
     private ProduktideeZusatzinformation produktideeZusatzinformation;
     private List<ProduktideeZielgruppe> produktideeZielgruppen;
     private List<ProduktideeVertriebsweg> produktideeVertriebswege;
+    private List<Vorteil> vorteile;
     private ProduktideeSparte produktideeSparte;
     private Mitarbeiter erfasser, fachspezialist;
 
@@ -52,32 +55,33 @@ public class IdeeMapperTest {
     }
 
     @Test
-    public void mappeIdeeDTOZuInternerIdee(){
+    public void mappeIdeeDTOZuInternerIdee() throws MaximaleAnzahlVorteileUeberschrittenException {
         given.vollstaendigeEingabenFuerEineInterneIdee();
         when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdEineIdeeMitDenWertenDerInternenIdeeZurueckgegeben();
     }
 
     @Test
-    public void mappeIdeeDTOZuProduktidee(){
+    public void mappeIdeeDTOZuProduktidee() throws MaximaleAnzahlVorteileUeberschrittenException {
         given.vollstaendigeEingabenFuerEineProduktidee();
         when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdEineIdeeMitDenWertenDerProduktideeZurueckgegeben();
     }
 
     @Test
-    public void mappeIdeeDTOOhneTyp(){
+    public void mappeIdeeDTOOhneTyp() throws MaximaleAnzahlVorteileUeberschrittenException {
         given.eingabenOhneIdeentyp();
         when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdKeineIdeeZurueckGegeben();
     }
     
     @Test
-    public void mappeInterneIdeeZuIdeeDTO(){
+    public void mappeInterneIdeeZuIdeeDTO() throws MaximaleAnzahlVorteileUeberschrittenException {
         given.eineInterneIdeeMitHandlungsfeld();
         when.derMapperIdeeZuIdeeDTOAufgerufenWird();
         then.wirdEinIdeeDTOMitDenWertenDerInternenIdeeZurueckgegeben();
-        then.enthaeltDieIdeeEinHandlungsfeld();
+        then.enthaeltDasIdeeDTOEinHandlungsfeld();
+        then.enthaeltDasIdeeDTODreiVorteile();
     }
 
     @Test
@@ -153,7 +157,7 @@ public class IdeeMapperTest {
             ideeDTO.setTyp(null);
         }
 
-        public void eineInterneIdeeMitHandlungsfeld() {
+        public void eineInterneIdeeMitHandlungsfeld() throws MaximaleAnzahlVorteileUeberschrittenException {
             idee = IdeeBuilder.anIdee()
                     .withTitel("Eine Katze pro Mitarbeiter")
                     .withBeschreibung("Alternativ ein Katzenplüschtier bei Tierhaarallergie oder ein Fisch bei Phobien.")
@@ -163,6 +167,9 @@ public class IdeeMapperTest {
                     .withBegruendung("Es wurde an alles gedacht!")
                     .withBearbeitungsstatus(Ideenstatus.AKZEPTIERT)
                     .build();
+            idee.addVorteil("Vorteil1");
+            idee.addVorteil("Vorteil2");
+            idee.addVorteil("Vorteil3");
             interneIdeeHandlungsfeld = InterneIdeeHandlungsfeldBuilder.anInterneIdeeHandlungsfeld()
                     .withHandlungsfeld(Handlungsfeld.ZUKUNFTSFAEHIGKEIT).withIdee(idee).build();
             idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld); //TODO: Brauchen wir hier einen Setter?
@@ -220,7 +227,7 @@ public class IdeeMapperTest {
 
     private class When{
 
-        public void derMapperIdeeDTOZuIdeeAufgerufenWird() {
+        public void derMapperIdeeDTOZuIdeeAufgerufenWird() throws MaximaleAnzahlVorteileUeberschrittenException {
             idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
         }
 
@@ -234,6 +241,7 @@ public class IdeeMapperTest {
         public void wirdEineIdeeMitDenWertenDerInternenIdeeZurueckgegeben() {
             dieAllgemeinenWerteDerIdeeStimmenUeberein();
             assertEquals(ideeDTO.getHandlungsfeld(), idee.getInterneIdeeHandlungsfeld().getHandlungsfeld().toString());
+
         }
 
         public void wirdEineIdeeMitDenWertenDerProduktideeZurueckgegeben() {
@@ -270,6 +278,7 @@ public class IdeeMapperTest {
             assertEquals(ideeDTO.getErfasser(), idee.getErfasser().getBenutzername());
             assertEquals(ideeDTO.getFachspezialist(), idee.getFachspezialist().getBenutzername());
             assertEquals(ideeDTO.getTyp(), idee.getTyp().toString());
+            assertEquals(ideeDTO.getErstellzeitpunkt(), DatumUtil.formeDatumZuStringUm(idee.getErstellzeitpunkt()));
         }
 
         public void wirdKeineIdeeZurueckGegeben() {
@@ -279,10 +288,11 @@ public class IdeeMapperTest {
         public void wirdEinIdeeDTOMitDenWertenDerInternenIdeeZurueckgegeben() {
             assertNotNull(ideeDTO);
             dieAllgemeinenWerteDerIdeeStimmenUeberein();
-                   }
+        }
 
-        public void enthaeltDieIdeeEinHandlungsfeld() {
+        public void enthaeltDasIdeeDTOEinHandlungsfeld() {
             assertNotNull(idee.getInterneIdeeHandlungsfeld());
+            assertNotNull(ideeDTO.getHandlungsfeld());
             assertEquals(idee.getInterneIdeeHandlungsfeld().getHandlungsfeld().toString(), ideeDTO.getHandlungsfeld().toUpperCase());
 
         }
@@ -293,6 +303,24 @@ public class IdeeMapperTest {
             assertEquals(produktideeSparte.getSparte().toString(), ideeDTO.getSparten());
             dieProduktideeVertriebswegeStimmenUeberein();
             dieProduktideeZielgruppenStimmenUeberein();
+            dieProduktideeZusatzinformationenStimmenUeberein();
+        }
+
+        private void dieProduktideeZusatzinformationenStimmenUeberein() {
+            assertNotNull(idee);
+            assertNotNull(idee.getProduktideeZusatzinformation());
+            assertNotNull(ideeDTO);
+            assertEquals(ideeDTO.getExistiertBereits(), idee.getProduktideeZusatzinformation().isExistiertBereits());
+            assertEquals(ideeDTO.getArtDerUmsetzung(), idee.getProduktideeZusatzinformation().getArtDerUmsetzung());
+            assertEquals(ideeDTO.getUnternehmensbezeichnung(), idee.getProduktideeZusatzinformation().getUnternehmensbezeichnung());
+        }
+
+        public void enthaeltDasIdeeDTODreiVorteile() {
+            assertNotNull(ideeDTO.getVorteile());
+            assertEquals(3, ideeDTO.getVorteile().size());
+            for (String vorteil: ideeDTO.getVorteile()) {
+                assertTrue(idee.getVorteile().stream().anyMatch(v -> v.getBeschreibung().equals(vorteil)));
+            }
         }
     }
 }

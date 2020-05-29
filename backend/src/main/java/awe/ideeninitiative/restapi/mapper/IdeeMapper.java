@@ -1,6 +1,7 @@
 package awe.ideeninitiative.restapi.mapper;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
+import awe.ideeninitiative.exception.MaximaleAnzahlVorteileUeberschrittenException;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
@@ -78,7 +79,7 @@ public class IdeeMapper {
         return null;
     }
 
-    public Idee mappeIdeeDTOZuIdee(IdeeDTO ideeDTO){
+    public Idee mappeIdeeDTOZuIdee(IdeeDTO ideeDTO) throws MaximaleAnzahlVorteileUeberschrittenException {
         if(ideeDTO.getTyp() == null || StringUtils.isEmpty(ideeDTO.getTyp())){
             return null;
         }
@@ -92,6 +93,7 @@ public class IdeeMapper {
                 .withTyp(ideentyp)
         .build();
         //TODO: Muss ID auch gemappt werden?
+        mappeIdeeDTOVorteileZuIdeeVorteile(ideeDTO, idee);
 
         switch (ideentyp){
             case INTERNE_IDEE:
@@ -107,6 +109,21 @@ public class IdeeMapper {
                 return null;
         }
         return idee;
+    }
+
+    private void mappeIdeeDTOVorteileZuIdeeVorteile(IdeeDTO ideeDTO, Idee idee) throws MaximaleAnzahlVorteileUeberschrittenException {
+        if(ideeDTO.getVorteile() != null && !ideeDTO.getVorteile().isEmpty()){
+            idee.setVorteile(mappeStringListeZuVorteile(idee, ideeDTO.getVorteile()));
+        }
+    }
+
+    private List<Vorteil> mappeStringListeZuVorteile(Idee idee, List<String> vorteileStringListe) {
+        if(idee != null && vorteileStringListe != null && !vorteileStringListe.isEmpty()){
+            List<Vorteil> vorteile = new ArrayList<>();
+            vorteileStringListe.stream().forEach(vorteilString -> vorteile.add(VorteilBuilder.aVorteil().withIdee(idee).withBeschreibung(vorteilString).build()));
+            return vorteile;
+        }
+        return null;
     }
 
     private void mappeIdeeDTOZuInterneIdeeHandlungsfeld(IdeeDTO ideeDTO, Idee idee) {
