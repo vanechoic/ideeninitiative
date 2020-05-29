@@ -11,7 +11,7 @@
           <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
             <p>Bitte ihre Daten eingeben</p>
-            <router-link to="/Home" tag="button" class="nichtRegistriert">Weiter ohne Registrierung</router-link>
+            <button class="nichtRegistriert" @click="weiterOhneAnmeldung()">Weiter ohne Registrierung</button>
             <button class="invert" id="zurRegistrierung" @click="signUp = !signUp">Registrieren</button>
           </div>
         </div>
@@ -96,17 +96,13 @@ export default Vue.extend({
 
           var jwt = require("jsonwebtoken");
           var decode = jwt.decode(token);
-
-          if (decode["rollen"] == "ROLE_FACHSPEZIALIST") {
-            Params.getInstance().tokenSubject.next(decode);
-          }
-          if (decode["rollen"] == "ROLE_MITARBEITER") {
-            Params.getInstance().tokenSubject.next(decode);
-            //this.$router.push("Startseite");
-          }
+          Params.getInstance().tokenSubject.next(decode);
           this.$router.push("Startseite");
         });
     },
+    weiterOhneAnmeldung(){
+      this.$router.push("Startseite-Mitarbeiter");
+    }
   },
   beforeCreate() {
     window.localStorage.clear();

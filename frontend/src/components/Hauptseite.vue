@@ -4,14 +4,18 @@
       <p v-on:click="pushDemo()">Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
+          <li
+            v-for="idee in ideenFiltern()"
+            :key="idee"
+            v-on:click="push(), selectIdee(idee)"
+          >{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
       <div class="filter">
         <div class="filterElement">
           <select id="filter1" v-model="ideenTyp">
-            <option value disabled selected>Ideentyp</option>
+            <option value disabled>Ideentyp</option>
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
@@ -68,13 +72,17 @@
 import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
+import Mitarbeiter from "@/components/Mitarbeiter.vue";
+import Spezialist from "@/components/Spezialist.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
 
 export default Vue.extend({
   name: "Hauptseite",
   components: {
-    registrierter: Registrierter
+    registrierter: Registrierter,
+    mitarbeiter: Mitarbeiter,
+    spezialist: Spezialist,
   },
   data: () => ({
     // Auth Token
@@ -90,18 +98,21 @@ export default Vue.extend({
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
-    ideenTyp: '',
-    selektierterTyp: '',
+    ideenTyp: "",
+    selektierterTyp: "",
     // Modalfenster und Componentenlogik
     showModal: false,
-    component: "registrierter",
+    component: "mitarbeiter",
     // Ideenliste
     Ideen: [],
     gefilterteIdeen: [],
+    tempIdee: {},
   }),
   methods: {
-    selectIdee() {
-      // Platzhalter für später
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
+      console.log(idee);
+      localStorage.setItem("idee", JSON.stringify(this.tempIdee));
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -110,24 +121,27 @@ export default Vue.extend({
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
       console.log("Ideen.length ", this.Ideen.length);
-      return this.Ideen.filter(function (idee) {
-        return it == '' || it == null || (idee as any).typ == it
-      }).filter(function(idee){
-        return sp == '' || sp == null || (idee as any).sparte == sp
-      }).filter(function(idee){
-        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
-      }).filter(function(idee){
-        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
-      }).filter(function(idee){
-        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
-      });
+      let ideen: any = [];
+      return this.Ideen.filter(
+        (idee) =>
+          it == "" ||
+          it == null ||
+          ((idee as any).typ == it && !sp) ||
+          ((idee as any).sparte == sp && !hf) ||
+          ((idee as any).handlungsfeld == hf && !vw) ||
+          ((idee as any).vertriebsweg.includes(vw) && !zg) ||
+          (idee as any).zielgruppe.includes(zg)
+      );
     },
     alleIdeenladen() {
-      axios.get("http://localhost:9090/idee").then((res) => {
-        this.Ideen = res.data;
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      console.log(axiosInstance)
+      axiosInstance.get("http://localhost:9090/idee").then((res) => {
+        console.log("response", res);
+        this.Ideen = res.data || [];
       });
     },
-     push: function () {
+    push: function () {
       this.$router.push({ path: "/Idee" });
     },
     pushDemo: function () {
@@ -136,6 +150,14 @@ export default Vue.extend({
   },
   mounted() {
     this.alleIdeenladen();
+    var jwt = require("jsonwebtoken");
+    var decode = jwt.decode(this.token);
+    var rolle = decode["rollen"][0];
+
+    // Entsprechende Component laden, abhängig von Nutzerrolle
+    if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
+    else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
+    else this.component = "mitarbeiter";
   },
 });
 </script>
