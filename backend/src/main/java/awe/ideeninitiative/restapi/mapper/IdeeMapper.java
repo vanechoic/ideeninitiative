@@ -81,6 +81,7 @@ public class IdeeMapper {
                 .withFachspezialist(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getFachspezialist()))
                 .withTyp(ideentyp)
         .build();
+        //TODO: Muss ID auch gemappt werden?
 
         switch (ideentyp){
             case INTERNE_IDEE:

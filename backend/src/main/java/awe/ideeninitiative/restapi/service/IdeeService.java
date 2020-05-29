@@ -1,6 +1,5 @@
 package awe.ideeninitiative.restapi.service;
 
-import awe.ideeninitiative.api.model.IdeeDTO;
 import awe.ideeninitiative.exception.*;
 import awe.ideeninitiative.model.enums.Ideenstatus;
 import awe.ideeninitiative.model.enums.Ideentyp;
@@ -9,22 +8,14 @@ import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
-import awe.ideeninitiative.restapi.mapper.IdeeMapper;
-import awe.ideeninitiative.util.DatumUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class IdeeService {
@@ -47,39 +38,38 @@ public class IdeeService {
     }
 
     public Idee neueIdeeAnlegen(Idee idee){
+        //TODO: Interne Idee MUSS Handlungsfeld haben
+        //TODO: Produktidee MUSS Sparte, Zusatzinformationen und Zielgruppe haben
         return ideeRepository.save(idee);
     }
 
-    public void ideeLoeschen(String benutzername, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+    public void ideeLoeschen(String benutzername, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("id", "interneIdeeHandlungsfeld.idee", "produktideeSparte.idee", "produktideeVertriebsweg.idee", "produktideeZielgruppe.idee", "produktideeZusatzinformation.idee").withIgnoreNullValues();
         List<Idee> zutreffendeIdeen = ideeRepository.findAll(Example.of(zuLoeschendeIdee, matcher));
-        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, zuLoeschendeIdee);
+        pruefeObZuModifizierendeIdeeExistiert(zutreffendeIdeen, zuLoeschendeIdee);
         pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(benutzername, zuLoeschendeIdee);
         ideeRepository.delete(zutreffendeIdeen.get(0));
     }
 
-    private void pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(String benutzername, Idee zuLoeschendeIdee) throws KeineBefugnisZumIdeeLoeschenException {
-        if(zuLoeschendeIdee.getErfasser() == null || !zuLoeschendeIdee.getErfasser().getBenutzername().equals(benutzername)){
-            throw new KeineBefugnisZumIdeeLoeschenException(zuLoeschendeIdee, benutzername);
+    private void pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(String benutzername, Idee idee) throws KeineBefugnisFuerIdeeAenderungenException {
+        if(idee.getErfasser() == null || !idee.getErfasser().getBenutzername().equals(benutzername)){
+            throw new KeineBefugnisFuerIdeeAenderungenException(idee, benutzername);
         }
     }
 
-    private void pruefeObZuLoeschendeIdeeExistiert(List<Idee> zutreffendeIdeen, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException{
+    private void pruefeObZuModifizierendeIdeeExistiert(List<Idee> zutreffendeIdeen, Idee zuModifizierendeIdee) throws IdeeExistiertNichtException{
         if(zutreffendeIdeen == null || zutreffendeIdeen.isEmpty()){
-            throw new IdeeExistiertNichtException(zuLoeschendeIdee, 0);
+            throw new IdeeExistiertNichtException(zuModifizierendeIdee, 0);
         }
         if(zutreffendeIdeen.size() > 1){
-            throw new IdeeExistiertNichtException(zuLoeschendeIdee, zutreffendeIdeen.size());
+            throw new IdeeExistiertNichtException(zuModifizierendeIdee, zutreffendeIdeen.size());
         }
     }
 
 
     public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException {
-        //Idee suchen
-        List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(idee.getTitel(), idee.getErstellzeitpunkt(), idee.getErfasser().getBenutzername());
-        pruefeObZuLoeschendeIdeeExistiert(zutreffendeIdeen, idee);
+        Idee zuAktualisierendeIdee = ladeIdeeAusDatenbank(idee);
         //Idee aktualisieren - ID und Erstellzeitpunkt werden beibehalten
-        Idee zuAktualisierendeIdee = zutreffendeIdeen.get(0);
         zuAktualisierendeIdee.setTitel(idee.getTitel());
         zuAktualisierendeIdee.setBeschreibung(idee.getBeschreibung());
         zuAktualisierendeIdee.setBearbeitungsstatus(idee.getBearbeitungsstatus());
@@ -98,24 +88,33 @@ public class IdeeService {
         ideeRepository.save(zuAktualisierendeIdee);
     }
 
-    public void ideeVeroeffentlichen(Idee idee) throws IdeeBereitsVeroeffentlichtException, KeinFachspezialistVerfuegbarException {
-        pruefeIdeeBefindetSichImStatusAngelegt(idee);
+    protected Idee ladeIdeeAusDatenbank(Idee ideeWerteAusDTO) throws IdeeExistiertNichtException {
+        List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(ideeWerteAusDTO.getTitel(), ideeWerteAusDTO.getErstellzeitpunkt(), ideeWerteAusDTO.getErfasser().getBenutzername());
+        pruefeObZuModifizierendeIdeeExistiert(zutreffendeIdeen, ideeWerteAusDTO);
+        return zutreffendeIdeen.get(0);
+    }
+
+    public void ideeVeroeffentlichen(String benutzername, Idee idee) throws IdeeBereitsVeroeffentlichtException, KeinFachspezialistVerfuegbarException, KeineBefugnisFuerIdeeAenderungenException, IdeeExistiertNichtException {
+        Idee zuVeroeffentlichendeIdee = ladeIdeeAusDatenbank(idee);
+        pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(benutzername, zuVeroeffentlichendeIdee);
+        pruefeIdeeBefindetSichImStatusAngelegt(zuVeroeffentlichendeIdee);
         //Suche den Fachspezialisten mit einem der angegebenen Fachbereiche
         List<Mitarbeiter> fachspezialistenMitPassenderSpezialisierung = null;
-        switch (idee.getTyp()){
+        switch (zuVeroeffentlichendeIdee.getTyp()){
             case INTERNE_IDEE:
-                fachspezialistenMitPassenderSpezialisierung = mitarbeiterRepository.findAllByIstFachspezialistTrueAndFachspezialistHandlungsfelderHandlungsfeldLike(idee.getInterneIdeeHandlungsfeld().getHandlungsfeld());
+                //TODO: Prüfung, ob Handlungsfeld vorliegt. Wenn nicht: Fehler!
+                fachspezialistenMitPassenderSpezialisierung = mitarbeiterRepository.findAllByIstFachspezialistTrueAndFachspezialistHandlungsfelderHandlungsfeldLike(zuVeroeffentlichendeIdee.getInterneIdeeHandlungsfeld().getHandlungsfeld());
                 break;
             case PRODUKTIDEE:
-                List<Sparte> sparte = idee.getProduktideeSparte() == null ? new ArrayList<>() : Arrays.asList(idee.getProduktideeSparte().getSparte());
-                fachspezialistenMitPassenderSpezialisierung = mitarbeiterRepository.findDistinctByIstFachspezialistTrueAndFachspezialistVertriebswegeVertriebswegInOrFachspezialistSpartenSparteInOrFachspezialistZielgruppenZielgruppeIn(idee.getProduktideeVertriebswegeWerte(), sparte, idee.getProduktideeZielgruppeWerte());
+                List<Sparte> sparte = idee.getProduktideeSparte() == null ? new ArrayList<>() : Arrays.asList(zuVeroeffentlichendeIdee.getProduktideeSparte().getSparte());
+                fachspezialistenMitPassenderSpezialisierung = mitarbeiterRepository.findDistinctByIstFachspezialistTrueAndFachspezialistVertriebswegeVertriebswegInOrFachspezialistSpartenSparteInOrFachspezialistZielgruppenZielgruppeIn(zuVeroeffentlichendeIdee.getProduktideeVertriebswegeWerte(), sparte, zuVeroeffentlichendeIdee.getProduktideeZielgruppeWerte());
                 break;
         }
-        pruefeObEinFachspezialistGefundenWurde(fachspezialistenMitPassenderSpezialisierung, idee);
+        pruefeObEinFachspezialistGefundenWurde(fachspezialistenMitPassenderSpezialisierung, zuVeroeffentlichendeIdee);
         Mitarbeiter fachSpezialistMitWenigstenZugewiesenenIdeen = fachspezialistenMitPassenderSpezialisierung.stream().min(Comparator.comparingInt(Mitarbeiter::getAnzahlZugewieseneIdeen)).orElseThrow();
-        idee.setFachspezialist(fachSpezialistMitWenigstenZugewiesenenIdeen);
-        idee.setBearbeitungsstatus(Ideenstatus.IN_BEARBEITUNG);
-        ideeRepository.save(idee);
+        zuVeroeffentlichendeIdee.setFachspezialist(fachSpezialistMitWenigstenZugewiesenenIdeen);
+        zuVeroeffentlichendeIdee.setBearbeitungsstatus(Ideenstatus.IN_BEARBEITUNG);
+        ideeRepository.save(zuVeroeffentlichendeIdee);
     }
 
     private void pruefeObEinFachspezialistGefundenWurde(List<Mitarbeiter> fachspezialisten, Idee idee) throws KeinFachspezialistVerfuegbarException {

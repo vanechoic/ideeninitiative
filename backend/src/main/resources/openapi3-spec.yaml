@@ -117,6 +117,38 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
+  /idee/veroeffentlichen:
+    post:
+      tags:
+        - idee
+      summary: Veröffentlichen einer Idee
+      operationId: ideeVeroeffentlichen
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/IdeeDTO"
+        description: Zu loeschende Idee
+        required: true
+      responses:
+        "200":
+          description: Idee erfolgreich veröffentlicht.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        "400":
+          description: Fehlerhafte Eingabe
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
   /idee/meineideen:
     get:
       tags:

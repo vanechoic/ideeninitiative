@@ -1,7 +1,7 @@
 package awe.ideeninitiative.restapi.service;
 
 import awe.ideeninitiative.exception.IdeeExistiertNichtException;
-import awe.ideeninitiative.exception.KeineBefugnisZumIdeeLoeschenException;
+import awe.ideeninitiative.exception.KeineBefugnisFuerIdeeAenderungenException;
 import awe.ideeninitiative.model.builder.IdeeBuilder;
 import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.enums.Ideenstatus;
@@ -9,7 +9,6 @@ import awe.ideeninitiative.model.enums.Ideentyp;
 import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
-import awe.ideeninitiative.util.DatumUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,20 +61,20 @@ public class IdeeLoeschenServiceTest{
     }
 
     @Test
-    public void ideeErfolgreichLoeschen() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+    public void ideeErfolgreichLoeschen() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         given.einGemocktesRepositoryMitEinerIdee();
         when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWird();
         then.dieIdeeWurdeGeloescht();
     }
 
     @Test(expected = IdeeExistiertNichtException.class)
-    public void ideeExistiertNicht() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+    public void ideeExistiertNicht() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         given.einGemocktesRepositoryOhneIdee();
         when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWird();
     }
 
-    @Test(expected = KeineBefugnisZumIdeeLoeschenException.class)
-    public void benutzerVersuchtIdeeEinesAnderenBenutzersZuLoeschen() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+    @Test(expected = KeineBefugnisFuerIdeeAenderungenException.class)
+    public void benutzerVersuchtIdeeEinesAnderenBenutzersZuLoeschen() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         given.einGemocktesRepositoryMitEinerIdee();
         when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWirdAberAnderemBenutzer();
     }
@@ -104,11 +103,11 @@ public class IdeeLoeschenServiceTest{
 
     private class When{
 
-        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWird() throws IdeeExistiertNichtException, KeineBefugnisZumIdeeLoeschenException {
+        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWird() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
             ideeService.ideeLoeschen(idee.getErfasser().getBenutzername(), idee);
         }
 
-        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWirdAberAnderemBenutzer() throws KeineBefugnisZumIdeeLoeschenException, IdeeExistiertNichtException {
+        public void ideeLoeschenMitDenWertenDerIdeeAufgerufenWirdAberAnderemBenutzer() throws KeineBefugnisFuerIdeeAenderungenException, IdeeExistiertNichtException {
             ideeService.ideeLoeschen("andererBenutzer", idee);
         }
     }

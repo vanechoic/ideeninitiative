@@ -30,9 +30,11 @@ public class Idee extends AbstractEntity {
     private String begruendung;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Ideenstatus bearbeitungsstatus;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Ideentyp typ;
 
     @ManyToOne(fetch=FetchType.LAZY)
