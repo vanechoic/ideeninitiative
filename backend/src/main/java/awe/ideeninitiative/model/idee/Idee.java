@@ -1,14 +1,18 @@
 package awe.ideeninitiative.model.idee;
 
+import awe.ideeninitiative.exception.MaximaleAnzahlVorteileUeberschrittenException;
 import awe.ideeninitiative.model.AbstractEntity;
+import awe.ideeninitiative.model.builder.VorteilBuilder;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +70,7 @@ public class Idee extends AbstractEntity {
   public Idee() {
         produktideeZielgruppe = new ArrayList<>();
         produktideeVertriebsweg = new ArrayList<>();
+        vorteile = new ArrayList<>();
     }
 
     public String getTitel() {
@@ -203,7 +208,22 @@ public class Idee extends AbstractEntity {
                 .collect(Collectors.toList());
     }
 
-    public void setVorteile(List<Vorteil> vorteile) {
-        this.vorteile = vorteile;
+    public void setVorteile(List<Vorteil> vorteile) throws MaximaleAnzahlVorteileUeberschrittenException {
+      if(vorteile != null && vorteile != null){
+          if (vorteile.size() > 3){
+              throw new MaximaleAnzahlVorteileUeberschrittenException(this);
+          }
+          vorteile.forEach(v -> v.setIdee(this));
+          this.vorteile.clear();
+          this.vorteile.addAll(vorteile);
+      }
+    }
+
+    public void addVorteil(String vorteil) throws MaximaleAnzahlVorteileUeberschrittenException {
+      if(vorteile != null && vorteile.size() < 3){
+          vorteile.add(VorteilBuilder.aVorteil().withBeschreibung(vorteil).withIdee(this).build());
+      } else if (vorteile.size() >= 3){
+          throw new MaximaleAnzahlVorteileUeberschrittenException(this);
+      }
     }
 }
