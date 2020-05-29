@@ -29,13 +29,19 @@
             <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
             <option value="HAFTPFLICHT">Haftpflicht</option>
             <option value="HAUSRAT">Hausrat</option>
-            <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+            <option value="WOHNGEBAUEDEVERSICHERUNG"
+              >Wohngebäudeversicherung</option
+            >
           </select>
           <select id="filter3" v-model="vertriebsweg" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Vertriebsweg</option>
-            <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+            <option value="STATIONAERER_VERTRIEB"
+              >Stationärer Vertrieb in eigenen Geschäftsstelle</option
+            >
             <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-            <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+            <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
+              >Kooperation mit Kreditinstituten</option
+            >
             <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
           <select id="filter4" v-model="zielgruppe" v-if="ideenTyp == 'PRODUKTIDEE'">
