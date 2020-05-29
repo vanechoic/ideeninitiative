@@ -30,15 +30,20 @@
         <h2>Vorteile</h2>
         <div class="vorteile">
           <input id="vorteile" type="text" v-model="vorteilText" />
-          <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">-</button>
-          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+</button>
+          <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">
+            -
+          </button>
+          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">
+            +
+          </button>
           <br />
           <select v-model="selectedVorteil" multiple id="selectVorteile">
             <option
               v-for="vorteil in vorteile"
               :key="vorteil"
               @click="vorteilSelection(vorteil)"
-            >{{ vorteil }}</option>
+              >{{ vorteil }}</option
+            >
           </select>
         </div>
       </div>
@@ -84,22 +89,30 @@
               <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
               <option value="HAFTPFLICHT">Haftpflicht</option>
               <option value="HAUSRAT">Hausrat</option>
-              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+              <option value="WOHNGEBAUEDEVERSICHERUNG"
+                >Wohngebäudeversicherung</option
+              >
             </select>
           </div>
           <div class="combobox" v-bind:class="[vertriebswegAktiv]">
             <p>Vertriebsweg</p>
             <select v-model="vertriebsweg" multiple>
-              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+              <option value="STATIONAERER_VERTRIEB"
+                >Stationärer Vertrieb in eigenen Geschäftsstelle</option
+              >
               <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+              <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
+                >Kooperation mit Kreditinstituten</option
+              >
               <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
             </select>
           </div>
           <div class="combobox" v-bind:class="[zielgruppeAktiv]">
             <p>Zielgruppen</p>
             <select v-model="zielgruppe" multiple>
-              <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+              <option selected value="KINDER_JUGENDLICHE"
+                >Kinder/Jugendliche</option
+              >
               <option value="FAMILIEN">Familien</option>
               <option value="SINGLES">Singles</option>
               <option value="PAARE">Paare</option>

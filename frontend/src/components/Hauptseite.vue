@@ -4,18 +4,14 @@
       <p v-on:click="pushDemo()">Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li
-            v-for="idee in ideenFiltern()"
-            :key="idee"
-            v-on:click="push(), selectIdee(idee)"
-          >{{idee.titel}} von {{idee.erfasser}}</li>
+          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
       <div class="filter">
         <div class="filterElement">
           <select id="filter1" v-model="ideenTyp">
-            <option value disabled>Ideentyp</option>
+            <option value disabled selected>Ideentyp</option>
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
@@ -121,17 +117,17 @@ export default Vue.extend({
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
       console.log("Ideen.length ", this.Ideen.length);
-      let ideen: any = [];
-      return this.Ideen.filter(
-        (idee) =>
-          it == "" ||
-          it == null ||
-          ((idee as any).typ == it && !sp) ||
-          ((idee as any).sparte == sp && !hf) ||
-          ((idee as any).handlungsfeld == hf && !vw) ||
-          ((idee as any).vertriebsweg.includes(vw) && !zg) ||
-          (idee as any).zielgruppe.includes(zg)
-      );
+      return this.Ideen.filter(function (idee) {
+        return it == '' || it == null || (idee as any).typ == it
+      }).filter(function(idee){
+        return sp == '' || sp == null || (idee as any).sparte == sp
+      }).filter(function(idee){
+        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
+      }).filter(function(idee){
+        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
+      }).filter(function(idee){
+        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
+      });
     },
     alleIdeenladen() {
       var axiosInstance = Helper.getInstance().createAxiosInstance();
@@ -235,8 +231,8 @@ ul,
 #filter3,
 #filter4,
 #filter5 {
-  margin-right: 2px;
-  width: 6em;
+  margin: 2px;
+  width: 5.5em;
 }
 #beschreibung {
   display: block;

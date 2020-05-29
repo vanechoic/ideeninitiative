@@ -17,11 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 @ControllerAdvice
@@ -47,6 +43,12 @@ public class IdeeninitiativeExceptionHandler{
         }
         return erzeugeApiFehler("MethodArgumentNotValid", fehlertext, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({KeineBefugnisFuerIdeeAenderungenException.class})
+    public ResponseEntity<ApiFehler> handleException(KeineBefugnisFuerIdeeAenderungenException e){
+        return erzeugeApiFehler(e.getClass().getSimpleName(), e.getMessage(), e.getHttpStatus());
+    }
+
 
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<ApiFehler> handleException(BadCredentialsException e){
@@ -90,7 +92,7 @@ public class IdeeninitiativeExceptionHandler{
     }
 
     @ExceptionHandler({DateTimeParseException.class})
-    public ResponseEntity<ApiFehler> handleException(DateTimeParseException e){
+    public ResponseEntity<ApiFehler> handleException(DateTimeParseException e) {
         return erzeugeApiFehler("DatumFormatierung", e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

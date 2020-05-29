@@ -14,6 +14,5 @@ import java.util.Optional;
 public interface IdeeRepository extends JpaRepository<Idee, Long> {
     public List<Idee> findAllByErfasserBenutzername(String benutzername);
     public List<Idee> findAllByBearbeitungsstatusNotLike(Ideenstatus ideenstatus);
-
     public List<Idee> findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(String titel, LocalDateTime erstellzeitpunkt, String erfasserBenutzername);
 }

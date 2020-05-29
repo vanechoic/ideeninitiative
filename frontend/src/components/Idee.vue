@@ -3,19 +3,16 @@
     <div class="kopfzeile" v-if="showDetails">
       <label id="ideeName">
         {{ ideeTitel }}
-        <!--{{}}-->
       </label>
       <div class="erstellInfos">
         <!--Ersteller-->
         <label class="erstellerLbl" for="ersteller">Ersteller:</label>
         <div id="ersteller">
-          <!--{{}}-->
           {{ ideeErsteller }}
         </div>
         <!--Erstell Datum-->
         <label id="erstellDatumLbl">Erstellt am:</label>
         <div id="erstellDatum">
-          <!--{{}}-->
           {{ ideeErstellt }}
         </div>
       </div>
@@ -25,7 +22,6 @@
       <div class="beschreibung">
         <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
         <div id="beschreibung">
-          <!--{{}}-->
           {{ ideeBeschreibung }}
         </div>
       </div>
@@ -41,13 +37,11 @@
           <!--Unternehmen-->
           <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
           <div id="unternehmen">
-            <!--{{}}-->
             {{ ideeUnternehmen }}
           </div>
           <!--Beschreibung in welcher form es existiert-->
           <label id="beschreibungExistiertLbl" for="beschreibungExistiert"></label>
           <div id="beschreibungExistiert">
-            <!--{{}}-->
             {{ ideeExistiertBeschreibung }}
           </div>
         </div>
@@ -56,7 +50,6 @@
       <div class="ideeTyp">
         <label id="ideeTypLbl" for="ideeTyp">Idee Typ:</label>
         <div id="ideeTyp">
-          <!--{{}}-->
           {{ ideeTyp }}
         </div>
       </div>
@@ -66,7 +59,6 @@
         <div class="handlungsfeld">
           <label id="handlungsfeldLbl" for="handlungsfeld">Handlungsfeld:</label>
           <div id="handlungsfeld">
-            <!--{{}}-->
             {{ ideeHandlungsfeld }}
           </div>
         </div>
@@ -77,7 +69,6 @@
         <div class="sparte">
           <label id="sparteLbl" for="sparte">Sparte:</label>
           <div id="sparte">
-            <!--{{}}-->
             {{ ideeSparte }}
           </div>
         </div>
@@ -357,7 +348,7 @@ ul {
 }
 #bewertung,
 .abgelehnt,
-.angenommen,
+.angenommen, 
 .nichtBewertet {
   margin: 5% 0;
 }

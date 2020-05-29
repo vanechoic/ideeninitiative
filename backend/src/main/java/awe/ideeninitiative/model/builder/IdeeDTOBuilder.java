@@ -20,6 +20,7 @@ public final class IdeeDTOBuilder {
     private List<String> zielgruppe = null;
     private List<String> vorteile = null;
     private String handlungsfeld;
+    private String erstellzeitpunkt;
 
     private IdeeDTOBuilder() {
     }
@@ -52,6 +53,12 @@ public final class IdeeDTOBuilder {
         this.typ = typ;
         return this;
     }
+
+    public IdeeDTOBuilder withErstellzeitpunkt(String erstellzeitpunkt) {
+        this.erstellzeitpunkt = erstellzeitpunkt;
+        return this;
+    }
+
 
     public IdeeDTOBuilder withErfasser(String erfasser) {
         this.erfasser = erfasser;
@@ -120,6 +127,7 @@ public final class IdeeDTOBuilder {
         ideeDTO.setZielgruppe(zielgruppe);
         ideeDTO.setVorteile(vorteile);
         ideeDTO.setHandlungsfeld(handlungsfeld);
+        ideeDTO.setErstellzeitpunkt(erstellzeitpunkt);
         return ideeDTO;
     }
 }

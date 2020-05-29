@@ -43,10 +43,21 @@ public class IdeeController implements IdeeApi {
     }
 
     @Override
-    public ResponseEntity<String> ideeLoeschen(String titel, String erfasser, String erstelldatum) throws Exception {
-        ideeService.ideeLoeschen(titel, erfasser, erstelldatum);
-        return ResponseEntity.ok(String.format("Die Idee %s von %s wurde erfolgreich gelöscht.", titel, erfasser));
+    public ResponseEntity<String> ideeLoeschen(String authorization, IdeeDTO ideeDTO) throws Exception {
+        //Für die Prüfung, dass man nur eigene Ideen löschen kann, wird der Benutzername aus dem Token gelesen.
+        String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
+        Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
+        ideeService.ideeLoeschen(benutzername, idee);
+        return ResponseEntity.ok(String.format("Die Idee %s von %s wurde erfolgreich gelöscht.", idee.getTitel(), idee.getErfasser().getBenutzername()));
     }
+
+    @Override
+    public ResponseEntity<String> ideeVeroeffentlichen(String authorization, IdeeDTO ideeDTO) throws Exception {
+        String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
+        Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
+        ideeService.ideeVeroeffentlichen(benutzername, idee);
+        return ResponseEntity.ok(String.format("Die Idee %s von %s wurde erfolgreich veröffentlicht.", idee.getTitel(), idee.getErfasser().getBenutzername()));
+   }
 
     @Override
     public ResponseEntity<List<IdeeDTO>> meineIdeen(String authorization) throws Exception {

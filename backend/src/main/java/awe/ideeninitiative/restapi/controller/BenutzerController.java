@@ -31,7 +31,6 @@ public class BenutzerController implements BenutzerApi {
 
     @Override
     public ResponseEntity<String> benutzerRegistrieren(BenutzerDTO benutzer) throws MitarbeiterExistiertBereitsException {
-        logger.error(benutzer.getVorname());
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
                 .withVorname(benutzer.getVorname())//
@@ -44,7 +43,6 @@ public class BenutzerController implements BenutzerApi {
 
     @Override
     public ResponseEntity<String> benutzerAnmelden(InlineObject anmeldedaten) throws Exception {
-        logger.error(anmeldedaten.getBenutzername() + " mit "+ anmeldedaten.getPasswort());
         final String token;
         try {
             token = benutzerService.mitarbeiterAnmelden(anmeldedaten.getBenutzername(), anmeldedaten.getPasswort());

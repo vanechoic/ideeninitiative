@@ -6,7 +6,9 @@
           <div class="overlay-links">
             <h2>Zur Anmeldung!</h2>
             <p>Bitte Benutzernamen und Passwort angeben</p>
-            <button class="invert" id="zurAnmeldung" @click="signUp = !signUp">Anmelden</button>
+            <button class="invert" id="zurAnmeldung" @click="signUp = !signUp">
+              Anmelden
+            </button>
           </div>
           <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
@@ -25,23 +27,57 @@
           id="benutzernameReg"
           v-model="benutzernameReg"
         />
-        <input type="text" placeholder="Vorname" id="vorname" v-model="vorname" />
-        <input type="text" placeholder="Nachname" id="nachname" v-model="nachname" />
-        <input type="email" placeholder="beispiel@email.de" id="emailReg" v-model="emailReg" />
-        <input type="password" placeholder="Passwort" id="passwortReg" v-model="passwortReg" />
+        <input
+          type="text"
+          placeholder="Vorname"
+          id="vorname"
+          v-model="vorname"
+        />
+        <input
+          type="text"
+          placeholder="Nachname"
+          id="nachname"
+          v-model="nachname"
+        />
+        <input
+          type="email"
+          placeholder="beispiel@email.de"
+          id="emailReg"
+          v-model="emailReg"
+        />
+        <input
+          type="password"
+          placeholder="Passwort"
+          id="passwortReg"
+          v-model="passwortReg"
+        />
         <button
           class="registrierung"
           id="registrierungButton"
           v-on:click="registrieren()"
           @click="signUp = !signUp"
-        >Registrieren</button>
+        >
+          Registrieren
+        </button>
       </form>
       <form class="anmelden" action="#">
         <h2>Anmeldung</h2>
         <div>Bitte geben sie ihre Benutzerdaten ein</div>
-        <input type="text" placeholder="Benutzername" id="benutzernameAn" v-model="benutzernameAn" />
-        <input type="password" placeholder="Passwort" id="passwortAn" v-model="passwortAn" />
-        <button class="login" id="anmeldungButton" v-on:click="anmelden()">Anmelden</button>
+        <input
+          type="text"
+          placeholder="Benutzername"
+          id="benutzernameAn"
+          v-model="benutzernameAn"
+        />
+        <input
+          type="password"
+          placeholder="Passwort"
+          id="passwortAn"
+          v-model="passwortAn"
+        />
+        <button class="login" id="anmeldungButton" v-on:click="anmelden()">
+          Anmelden
+        </button>
       </form>
     </div>
   </article>
