@@ -2,21 +2,18 @@
   <div class="container">
     <div class="kopfzeile" v-if="showDetails">
       <label id="ideeName">
-        Idee Name
-        <!--{{}}-->
+        {{ ideeTitel }}
       </label>
       <div class="erstellInfos">
         <!--Ersteller-->
         <label class="erstellerLbl" for="ersteller">Ersteller:</label>
         <div id="ersteller">
-          <!--{{}}-->
-          gggg
+          {{ ideeErsteller }}
         </div>
         <!--Erstell Datum-->
         <label id="erstellDatumLbl">Erstellt am:</label>
         <div id="erstellDatum">
-          <!--{{}}-->
-          20.12.20
+          {{ ideeErstellt }}
         </div>
       </div>
     </div>
@@ -25,33 +22,27 @@
       <div class="beschreibung">
         <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
         <div id="beschreibung">
-          <!--{{}}-->
-          adadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+          {{ ideeBeschreibung }}
         </div>
       </div>
       <!--Vorteile-->
       <label id="vorteileLbl" for="vorteile">Vorteile:</label>
-      <ul id="vorteile">
-        <li>{{}}</li>
+      <ul id="vorteile" v-for="vorteil in ideeVorteile" :key="vorteil">
+        <li>{{ vorteil }}</li>
       </ul>
       <!--Existiert-->
       <div class="existiert" v-if="showExistiert">
-        <label id="existiertLbl" for="existiertDiv">Existiert:</label>
+        <label id="existiertLbl" for="existiertDiv">Existiert: {{ ideeExistiert }}</label>
         <div id="existiertDiv">
           <!--Unternehmen-->
           <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
           <div id="unternehmen">
-            <!--{{}}-->
-            Nils ist cool GmbH
+            {{ ideeUnternehmen }}
           </div>
           <!--Beschreibung in welcher form es existiert-->
-          <label id="beschreibungExistiertLbl" for="beschreibungExistiert"
-            >Beschreibung der existierenden Idee:</label
-          >
+          <label id="beschreibungExistiertLbl" for="beschreibungExistiert"></label>
           <div id="beschreibungExistiert">
-            <!--{{}}-->
-            Hier steht eine tolle Beschreibung
-            adadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+            {{ ideeExistiertBeschreibung }}
           </div>
         </div>
       </div>
@@ -59,20 +50,16 @@
       <div class="ideeTyp">
         <label id="ideeTypLbl" for="ideeTyp">Idee Typ:</label>
         <div id="ideeTyp">
-          <!--{{}}-->
-          Intern
+          {{ ideeTyp }}
         </div>
       </div>
       <!--Einblenden, wenn es eine interne Idee ist-->
       <div class="intern" v-if="showIntern">
         <!--Handlungsfeld-->
         <div class="handlungsfeld">
-          <label id="handlungsfeldLbl" for="handlungsfeld"
-            >Handlungsfeld:</label
-          >
+          <label id="handlungsfeldLbl" for="handlungsfeld">Handlungsfeld:</label>
           <div id="handlungsfeld">
-            <!--{{}}-->
-            Handlungsfeld X
+            {{ ideeHandlungsfeld }}
           </div>
         </div>
       </div>
@@ -82,42 +69,40 @@
         <div class="sparte">
           <label id="sparteLbl" for="sparte">Sparte:</label>
           <div id="sparte">
-            <!--{{}}-->
-            Sparte X
+            {{ ideeSparte }}
           </div>
         </div>
         <!-- Anzeigen, wenn Vertriebskanal vorhanden ist-->
         <div class="vertriebskanal" v-if="showVertriebskanal">
           <!--Vertriebskanal-->
-          <label id="vertriebskanalLbl" for="vertriebskanal"
-            >Vertriebskanal:</label
+          <label id="vertriebskanalLbl" for="vertriebskanal">Vertriebskanal:</label>
+          <ul
+            id="vertriebskanal"
+            v-for="vertriebskanal in ideeVertriebskanal"
+            :key="vertriebskanal"
           >
-          <ul id="vertriebskanal">
-            <li>{{}}</li>
+            <li>{{ vertriebskanal }}</li>
           </ul>
         </div>
         <!--Zielgruppe-->
         <div class="zielgruppe">
           <label id="zielgruppeLbl" for="zielgruppe">Zielgruppe:</label>
-          <ul id="zielgruppe">
-            <li>{{}}</li>
+          <ul id="zielgruppe" v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">
+            <li>{{ ideeZielgruppe }}</li>
           </ul>
         </div>
       </div>
       <!--Status-->
       <label id="statusLbl" for="status">Status:</label>
-      <div id="status">{{}} Angenommen</div>
+      <div id="status">{{ ideeBearbeitungszustand }}</div>
     </div>
-    <div class="fußzeile" v-if="showDetails">
+    <div class="fußzeile" v-if="showDetails == true && wirdBewertet==false ">
       <button class="zurueckBtn" v-on:click="push()">Zurück</button>
       <button
         class="bewertungBtn"
         v-if="showButton"
         v-on:click="(showModal = true), (showDetails = false)"
-      >
-        Zur Bewertung
-      </button>
-      <!--Problem mit 2 Variablen-->
+      >Zur Bewertung</button>
     </div>
 
     <!--Modal mit der Bewertung. Wird nur angezeigt, wenn bewertungBtn betätigt wird-->
@@ -148,13 +133,7 @@
           </div>
         </div>
         <div class="fußzeile">
-          <button
-            class="zurueckBtn"
-            v-on:click="(showModal = false), (showDetails = true)"
-          >
-            Zurück
-          </button>
-          <!--Problem mit 2 Variablen-->
+          <button class="zurueckBtn" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
         </div>
       </div>
     </transition>
@@ -164,34 +143,79 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
-import { properties } from "@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dropdownlist.component";
 import { Params } from "../services/params-service";
 
 export default Vue.extend({
   name: "Idee",
-  data: () => {
-    return {
-      showModal: false,
-      showDetails: true,
-      showButton: true,
-      showVertriebskanal: false,
-      showExistiert: true,
-      showIntern: true,
-      showProduktidee: false,
-      showAngenommen: false,
-      showAbgelehnt: false,
-      showNichtBewertet: true,
-    };
-  },
-  mounted() {
-    Params.getInstance().tokenObserver.subscribe((res) => {
-      console.log("hauptseite", res);
-    });
-  },
+  data: () => ({
+    // Modal Attribute
+    showModal: false,
+    showDetails: true,
+    showButton: true,
+    showVertriebskanal: false,
+    showExistiert: false,
+    showIntern: true,
+    showProduktidee: false,
+    showAngenommen: false,
+    showAbgelehnt: false,
+    showNichtBewertet: true,
+    wirdBewertet: false,
+    // Idee-Objekt
+    idee: {},
+    // Seitenattribute für Ideendetails
+    ideeTitel: "",
+    ideeErsteller: "",
+    ideeErstellt: "",
+    ideeBeschreibung: "",
+    ideeVorteile: [{}],
+    ideeExistiert: "",
+    ideeUnternehmen: "",
+    ideeExistiertBeschreibung: "",
+    ideeTyp: "",
+    ideeSparte: "",
+    ideeVertriebskanal: [{}],
+    ideeZielgruppe: [{}],
+    ideeHandlungsfeld: "",
+    ideeBearbeitungszustand: "",
+  }),
   methods: {
     push: function () {
+      localStorage.removeItem("idee");
       this.$router.push({ path: "/Startseite" });
     },
+  },
+  created() {
+    this.idee = JSON.parse(localStorage.getItem("idee") as string);
+    console.log(this.idee);
+
+    this.ideeTyp = (this.idee as any).typ;
+    this.ideeExistiert = (this.idee as any).existiertBereits;
+
+    if (this.ideeTyp == "PRODUKTIDEE") {
+      if (this.ideeExistiert) this.showExistiert = true;
+
+      this.showVertriebskanal = true;
+      this.showIntern = true;
+      this.showProduktidee = true;
+    } else {
+      this.showVertriebskanal = false;
+      this.showExistiert = false;
+      this.showIntern = true;
+      this.showProduktidee = false;
+    }
+
+    this.ideeTitel = (this.idee as any).titel;
+    this.ideeErsteller = (this.idee as any).erfasser;
+    this.ideeErstellt = (this.idee as any).erstellzeitpunkt;
+    this.ideeBeschreibung = (this.idee as any).beschreibung;
+    this.ideeVorteile = (this.idee as any).vorteile;
+    this.ideeUnternehmen = (this.idee as any).unternehmensbezeichnung;
+    this.ideeExistiertBeschreibung = (this.idee as any).artDerUmsetzung;
+    this.ideeSparte = (this.idee as any).sparten;
+    this.ideeVertriebskanal = (this.idee as any).vertriebsweg;
+    this.ideeZielgruppe = (this.idee as any).zielgruppe;
+    this.ideeHandlungsfeld = (this.idee as any).handlungsfeld;
+    this.ideeBearbeitungszustand = (this.idee as any).bearbeitungsstatus;
   },
 });
 </script>
@@ -337,8 +361,7 @@ p {
 .angenommen {
   color: #00894d;
 }
-#app{
+#app {
   position: relative;
-  
 }
 </style>

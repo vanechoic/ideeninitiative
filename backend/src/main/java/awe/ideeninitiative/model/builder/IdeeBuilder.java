@@ -4,7 +4,6 @@ import awe.ideeninitiative.model.enums.Ideenstatus;
 import awe.ideeninitiative.model.enums.Ideentyp;
 import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +20,7 @@ public final class IdeeBuilder {
     private List<ProduktideeVertriebsweg> produktideeVertriebsweg;
     private List<ProduktideeZielgruppe> produktideeZielgruppe;
     private ProduktideeZusatzinformation produktideeZusatzinformation;
+
     private LocalDateTime erstellzeitpunkt;
 
     private IdeeBuilder() {

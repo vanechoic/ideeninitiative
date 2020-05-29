@@ -1,20 +1,10 @@
 <template>
   <div class="container">
     <div class="links">
-      <p>Alle Ideen</p>
+      <p v-on:click="pushDemo()">Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-<<<<<<< HEAD
-          <li v-for="idee in ideenFiltern()" :key="idee">{{idee.titel}} von {{idee.erfasser}}</li>
-=======
-          <!-- ALTER STAND
-          <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
-            {{idee.titel}} von {{idee.erfasser}} -
-            {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
-          </li>
-          !-->
           <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
->>>>>>> 890764eefbbd85a6b49c8ff65f04ef401673e274
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
@@ -25,11 +15,7 @@
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
-<<<<<<< HEAD
           <select id="filter2" v-model="sparte" v-if="ideenTyp == 'PRODUKTIDEE'">
-=======
-          <select id="filter2" v-model="sparte" v-bind:class="[sparteAktiv]">
->>>>>>> 890764eefbbd85a6b49c8ff65f04ef401673e274
             <option value disabled selected>Sparte</option>
             <option value="KFZ">KFZ</option>
             <option value="UNFALL">Unfall</option>
@@ -43,15 +29,7 @@
               >Wohngebäudeversicherung</option
             >
           </select>
-<<<<<<< HEAD
           <select id="filter3" v-model="vertriebsweg" v-if="ideenTyp == 'PRODUKTIDEE'">
-=======
-          <select
-            id="filter3"
-            v-model="vertriebsweg"
-            v-bind:class="[vertriebswegAktiv]"
-          >
->>>>>>> 890764eefbbd85a6b49c8ff65f04ef401673e274
             <option value disabled selected>Vertriebsweg</option>
             <option value="STATIONAERER_VERTRIEB"
               >Stationärer Vertrieb in eigenen Geschäftsstelle</option
@@ -62,15 +40,7 @@
             >
             <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
-<<<<<<< HEAD
           <select id="filter4" v-model="zielgruppe" v-if="ideenTyp == 'PRODUKTIDEE'">
-=======
-          <select
-            id="filter4"
-            v-model="zielgruppe"
-            v-bind:class="[zielgruppeAktiv]"
-          >
->>>>>>> 890764eefbbd85a6b49c8ff65f04ef401673e274
             <option value disabled selected>Zielgruppe</option>
             <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
             <option value="FAMILIEN">Familien</option>
@@ -79,23 +49,12 @@
             <option value="PERSONEN_50PLUS">Personen 50+</option>
             <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
           </select>
-<<<<<<< HEAD
           <select id="filter5" v-model="handlungsfeld" v-if="ideenTyp == 'INTERNE_IDEE'">
-=======
-          <select
-            id="filter5"
-            v-model="handlungsfeld"
-            v-bind:class="[handlungsfelderAktiv]"
-          >
->>>>>>> 890764eefbbd85a6b49c8ff65f04ef401673e274
             <option value disabled selected>Handlungsfeld</option>
             <option value="KOSTENSENKUNG">Kostensenkung</option>
             <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
             <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
           </select>
-        </div>
-        <div class="filterElement">
-          <!--Filter Button -->
         </div>
       </div>
     </div>
@@ -109,6 +68,8 @@
 import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
+import Mitarbeiter from "@/components/Mitarbeiter.vue";
+import Spezialist from "@/components/Spezialist.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
 
@@ -116,6 +77,8 @@ export default Vue.extend({
   name: "Hauptseite",
   components: {
     registrierter: Registrierter,
+    mitarbeiter: Mitarbeiter,
+    spezialist: Spezialist,
   },
   data: () => ({
     // Auth Token
@@ -131,18 +94,21 @@ export default Vue.extend({
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
-    ideenTyp: '',
-    selektierterTyp: '',
+    ideenTyp: "",
+    selektierterTyp: "",
     // Modalfenster und Componentenlogik
     showModal: false,
-    component: "registrierter",
+    component: "mitarbeiter",
     // Ideenliste
     Ideen: [],
     gefilterteIdeen: [],
+    tempIdee: {},
   }),
   methods: {
-    selectIdee() {
-      // Platzhalter für später
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
+      console.log(idee);
+      localStorage.setItem("idee", JSON.stringify(this.tempIdee));
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -164,16 +130,30 @@ export default Vue.extend({
       });
     },
     alleIdeenladen() {
-      axios.get("http://localhost:9090/idee").then((res) => {
-        this.Ideen = res.data;
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      console.log(axiosInstance)
+      axiosInstance.get("http://localhost:9090/idee").then((res) => {
+        console.log("response", res);
+        this.Ideen = res.data || [];
       });
     },
-     push: function () {
+    push: function () {
       this.$router.push({ path: "/Idee" });
+    },
+    pushDemo: function () {
+      this.$router.push({ path: "/IdeeBewerten" });
     },
   },
   mounted() {
     this.alleIdeenladen();
+    var jwt = require("jsonwebtoken");
+    var decode = jwt.decode(this.token);
+    var rolle = decode["rollen"][0];
+
+    // Entsprechende Component laden, abhängig von Nutzerrolle
+    if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
+    else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
+    else this.component = "mitarbeiter";
   },
 });
 </script>
@@ -263,6 +243,8 @@ ul,
 }
 .container {
   overflow: hidden;
+  height: 500px;
+  width: 800px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 .rechts {

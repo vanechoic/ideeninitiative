@@ -57,8 +57,7 @@ public class IdeeController implements IdeeApi {
         Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
         ideeService.ideeVeroeffentlichen(benutzername, idee);
         return ResponseEntity.ok(String.format("Die Idee %s von %s wurde erfolgreich veröffentlicht.", idee.getTitel(), idee.getErfasser().getBenutzername()));
-
-    }
+   }
 
     @Override
     public ResponseEntity<List<IdeeDTO>> meineIdeen(String authorization) throws Exception {

@@ -63,7 +63,7 @@ public class Idee extends AbstractEntity {
     @OneToMany(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Vorteil> vorteile;
 
-    public Idee() {
+  public Idee() {
         produktideeZielgruppe = new ArrayList<>();
         produktideeVertriebsweg = new ArrayList<>();
     }

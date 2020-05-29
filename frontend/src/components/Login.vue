@@ -13,16 +13,8 @@
           <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
             <p>Bitte ihre Daten eingeben</p>
-            <router-link to="/Home" tag="button" class="nichtRegistriert"
-              >Weiter ohne Registrierung</router-link
-            >
-            <button
-              class="invert"
-              id="zurRegistrierung"
-              @click="signUp = !signUp"
-            >
-              Registrieren
-            </button>
+            <button class="nichtRegistriert" @click="weiterOhneAnmeldung()">Weiter ohne Registrierung</button>
+            <button class="invert" id="zurRegistrierung" @click="signUp = !signUp">Registrieren</button>
           </div>
         </div>
       </div>
@@ -92,8 +84,8 @@
 </template>
 
 <script lang="ts">
-import axios from "axios";
 import Vue from "vue";
+import axios from "axios";
 import HauptseiteVue from "./Hauptseite.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
@@ -108,10 +100,13 @@ export default Vue.extend({
     passwortReg: "",
     benutzernameAn: "",
     passwortAn: "",
+
+    dismissSecs: 10,
+    dismissCountDown: 0,
+    showDismissibleAlert: false,
   }),
   methods: {
     registrieren: function (event: Event) {
-      console.log("REGISTRIEREN BUTTON");
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer", {
@@ -121,12 +116,9 @@ export default Vue.extend({
           email: this.emailReg,
           passwort: this.passwortReg,
         })
-        .then(function (response) {
-          console.log(response);
-        });
+        .then(function (response) {});
     },
     anmelden: function (event: Event) {
-      console.log("ANMELDEN BUTTON");
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer/login", {
@@ -140,13 +132,13 @@ export default Vue.extend({
 
           var jwt = require("jsonwebtoken");
           var decode = jwt.decode(token);
-          console.log(decode);
-
-          if (decode["rollen"] == "ROLE_MITARBEITER")
-            Params.getInstance().tokenSubject.next(decode);
+          Params.getInstance().tokenSubject.next(decode);
           this.$router.push("Startseite");
         });
     },
+    weiterOhneAnmeldung(){
+      this.$router.push("Startseite-Mitarbeiter");
+    }
   },
   beforeCreate() {
     window.localStorage.clear();
@@ -176,7 +168,6 @@ input,
 .registrieren {
   left: 0;
 }
-
 .overlay-container,
 form {
   position: absolute;
@@ -341,5 +332,4 @@ input {
     z-index: 10;
   }
 }
-
 </style>

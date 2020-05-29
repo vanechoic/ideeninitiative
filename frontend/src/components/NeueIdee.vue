@@ -16,13 +16,15 @@
           <textarea id="beschreibungsText" v-model="beschreibung"></textarea>
         </div>
       </div>
+      <!--
       <div class="row">
-        <!-- Datei Upload -->
+         Datei Upload
         <h2>Datei Upload</h2>
         <div class="dateien">
           <input type="file" />
         </div>
       </div>
+      -->
       <div class="row">
         <!-- Vorteile -->
         <h2>Vorteile</h2>
@@ -35,7 +37,7 @@
             +
           </button>
           <br />
-          <select v-model="selected" multiple id="selectVorteile">
+          <select v-model="selectedVorteil" multiple id="selectVorteile">
             <option
               v-for="vorteil in vorteile"
               :key="vorteil"
@@ -57,13 +59,12 @@
           />
           <div class="existiertInfo" v-if="existiert">
             <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
-            <input type="text" id="unternehmen" v-model="titel" />
+            <input type="text" id="unternehmen" v-model="unternehmen" />
             <label
               id="beschreibungsTextExistiertLbl"
               for="beschreibungsTextExistiert"
-              >Beschreibung wie die diese Idee schon umgesetzt ist:</label
-            >
-            <textarea id="beschreibungsTextExistiert"></textarea>
+            >Beschreibung wie die diese Idee schon umgesetzt ist:</label>
+            <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx"></textarea>
           </div>
         </div>
       </div>
@@ -148,41 +149,31 @@ export default Vue.extend({
     // Auth Token
     token: localStorage.getItem("token"),
     // Idee-Objekt
-    idee: {
-      titel: "String",
-      beschreibung: "String",
-      vorteile: [{}],
-      existiert: false,
-      ideenTyp: "String",
-      sparte: "String",
-      vertriebsweg: [{ value: "" }],
-      zielgruppe: [{ value: "" }],
-      handlungsfeld: "String",
-    },
+    idee: {},
     // Beschreibende Attribute
     titel: "",
     beschreibung: "",
     existiert: false,
+    unternehmen: "",
+    beschreibungEx: "",
     // Data für Vorteile und Vorteilslogik
     counter: 0,
     vorteilText: "",
     vorteile: [{}],
-    selected: "",
+    selectedVorteil: [{}],
     selectedIndex: 0,
     // Data für Comboboxen und Comboboxlogik
     ideenTyp: "",
     sparte: "",
-    vertriebsweg: [{ value: "" }],
-    zielgruppe: [{ value: "" }],
+    vertriebsweg: [{}],
+    zielgruppe: [{}],
     handlungsfeld: "",
     // Aktivieren/Deaktivieren
     sparteAktiv: "aktiv",
     vertriebswegAktiv: "aktiv",
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
-    existiertAktiv: "aktiv",
-    // Bootstrap Alert Variablen
-    showSuccess: false,
+    existiertAktiv: "aktiv"
   }),
   methods: {
     // Methode für Abbrechen-Button => Zurück im Browser
@@ -205,8 +196,8 @@ export default Vue.extend({
         if (this.counter < 0) this.counter = 0;
       }
     },
-    vorteilSelection(selected: {}) {
-      this.selectedIndex = this.vorteile.indexOf(selected);
+    vorteilSelection(selectedVorteil: {}) {
+      this.selectedIndex = this.vorteile.indexOf(selectedVorteil);
     },
     // Logik für das Auswählen/Ausblenden von Comboboxen
     ideeSelection() {
@@ -237,16 +228,6 @@ export default Vue.extend({
     },
     ideeSpeichern() {
       if (!this.validiereEingaben()) {
-        this.idee.titel = this.titel;
-        this.idee.beschreibung = this.beschreibung;
-        this.idee.vorteile = this.vorteile;
-        this.idee.existiert = this.existiert;
-        this.idee.ideenTyp = this.ideenTyp;
-        this.idee.sparte = this.sparte;
-        this.idee.vertriebsweg = this.vertriebsweg;
-        this.idee.zielgruppe = this.zielgruppe;
-        this.idee.handlungsfeld = this.handlungsfeld;
-        console.log(this.idee);
 
         var axiosInstance = Helper.getInstance().createAxiosInstance();
         var jwt = require("jsonwebtoken");
@@ -255,23 +236,59 @@ export default Vue.extend({
         const config = {
           headers: { Authorization: `Bearer ${this.token}` },
         };
-        axiosInstance.post(
-          "http://localhost:9090/idee",
-          {
-            titel: this.titel,
-            beschreibung: this.beschreibung,
-            bearbeitungsstatus: "ANGELEGT",
-            typ: this.ideenTyp,
-            erfasser: decode["sub"],
-            vorteile: this.vorteile,
-            existiertBereits: this.existiert,
-            handlungsfeld: this.handlungsfeld,
-            sparten: this.sparte,
-            vertriebsweg: this.vertriebsweg,
-            zielgruppe: this.zielgruppe,
-          },
-          config
-        );
+        if (this.ideenTyp == "PRODUKTIDEE") {
+          if (this.existiert) {
+            axiosInstance.post(
+              "http://localhost:9090/idee",
+              {
+                bearbeitungsstatus: "ANGELEGT",
+                beschreibung: this.beschreibung,
+                titel: this.titel,
+                typ: this.ideenTyp,
+                erfasser: decode["sub"],
+                vorteile: this.vorteile,
+                existiertBereits: true,
+                unternehmensbezeichnung: this.unternehmen,
+                artDerUmsetzung: this.beschreibungEx,
+                sparten: this.sparte,
+                vertriebsweg: this.vertriebsweg,
+                zielgruppe: this.zielgruppe,
+              },
+              config
+            );
+          } else {
+            axiosInstance.post(
+              "http://localhost:9090/idee",
+              {
+                titel: this.titel,
+                beschreibung: this.beschreibung,
+                bearbeitungsstatus: "ANGELEGT",
+                typ: this.ideenTyp,
+                erfasser: decode["sub"],
+                vorteile: this.vorteile,
+                existiertBereits: false,
+                sparten: this.sparte,
+                vertriebsweg: this.vertriebsweg,
+                zielgruppe: this.zielgruppe,
+              },
+              config
+            );
+          }
+        } else {
+          axiosInstance.post(
+            "http://localhost:9090/idee",
+            {
+              titel: this.titel,
+              beschreibung: this.beschreibung,
+              bearbeitungsstatus: "ANGELEGT",
+              typ: this.ideenTyp,
+              erfasser: decode["sub"],
+              vorteile: this.vorteile,
+              handlungsfeld: this.handlungsfeld,
+            },
+            config
+          );
+        }
       }
     },
   },

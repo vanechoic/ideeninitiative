@@ -17,7 +17,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +68,6 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
         when.ideeVeroeffentlichenVomErfasserDerIdeeAufgerufenWird();
         then.istDieIdeeDemFachspezialistenZugewiesen();
         then.dieIdeeBefindetSichImStatusInBearbeitung();*/
-
     }
 
     @Test
@@ -84,7 +82,6 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
 
 
     private class Given{
-
         public void eineGespeicherteInterneIdeeMitHandlungsfeldZUKUNFTSFAEHIGKEIT() {
             idee = IdeeBuilder.anIdee().withTitel("Titel").withBeschreibung("Beschreibung")
                     .withBearbeitungsstatus(Ideenstatus.ANGELEGT).withErfasser(erfasser).withTyp(Ideentyp.INTERNE_IDEE).build();
@@ -136,7 +133,6 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
     }
 
     private class Then{
-
         public void istDieIdeeDemFachspezialistenZugewiesen() {
             verify(ideeRepositoryMock).save(ideeZugewiesenArgumentCaptor.capture());
             assertNotNull(ideeZugewiesenArgumentCaptor.getValue());

@@ -5,10 +5,11 @@
         <p>Meine Ideen</p>
         <div class="listeContainer">
           <ul class="liste">
-            <li v-for="idee in Ideen" :key="idee" v-on:click="showModal = true, selectIdee(idee)">
-              {{idee.titel}} von {{idee.erfasser}} -
-              {{idee.typ == 'PRODUKTIDEE' ? 'Produktidee' : 'INTERNE_IDEE' ? 'Interne Idee' : null}}
-            </li>
+            <li
+              v-for="idee in ideenFiltern()"
+              :key="idee"
+              v-on:click="showModal = true, selectIdee(idee)"
+            >{{idee.titel}} von {{idee.erfasser}}</li>
           </ul>
         </div>
         <!--3 Filter Dropdowns -->
@@ -54,16 +55,12 @@
               <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
             </select>
           </div>
-          <div class="filterElement">
-            <!--Filter Button -->
-            <button id="filterButton" @click="ideenFiltern()">Filter</button>
-          </div>
         </div>
       </div>
       <div class="rechts">
-        <button id="ideeVeroeffentlichen">Idee veröffentlichen</button>
+        <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
         <router-link to="IdeeBearbeiten" tag="button" id="ideeBearbeiten">Bearbeiten</router-link>
-        <button id="ideeLoeschen">Löschen</button>
+        <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
         <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
       </div>
     </div>
@@ -73,6 +70,7 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
+import { Helper } from "../services/helper";
 export default Vue.extend({
   data: () => ({
     // Auth Token
@@ -95,7 +93,8 @@ export default Vue.extend({
     // Ideenliste
     Ideen: [],
     gefilterteIdeen: [],
-    nutzerIdeen: []
+    nutzerIdeen: [],
+    tempIdee: {},
   }),
   methods: {
     goBack() {
@@ -114,41 +113,63 @@ export default Vue.extend({
         this.zielgruppeAktiv = "inaktiv";
       }
     },
-    selectIdee() {
-      // Platzhalter für später
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
     },
     ideenFiltern() {
-      //this.alleIdeenladen();
-      this.Ideen.forEach((idee) => {
-        if ((idee as any).typ == this.ideenTyp) {
-          if ((idee as any).sparten == this.sparte)
-            this.gefilterteIdeen.push(idee);
-          else if ((idee as any).vertriebsweg == this.vertriebsweg)
-            this.gefilterteIdeen.push(idee);
-          else if ((idee as any).zielgruppe == this.zielgruppe)
-            this.gefilterteIdeen.push(idee);
-          else if ((idee as any).handlungsfeld == this.handlungsfeld)
-            this.gefilterteIdeen.push(idee);
-          else this.gefilterteIdeen.push(idee);
-        }
+      var it = this.ideenTyp;
+      var sp = this.sparte;
+      var vw = this.vertriebsweg;
+      var zg = this.zielgruppe;
+      var hf = this.handlungsfeld;
+
+      return this.Ideen.filter(function (idee) {
+        if ((idee as any).typ == it) return true;
+        else if ((idee as any).sparten == sp) return true;
+        else if ((idee as any).vertriebsweg == vw) return true;
+        else if ((idee as any).zielgruppe == zg) return true;
+        else if ((idee as any).handlungsfeld == hf) return true;
       });
-      this.Ideen = this.gefilterteIdeen;
-      this.gefilterteIdeen = [];
     },
     meineIdeenladen() {
       var jwt = require("jsonwebtoken");
       var decode = jwt.decode(this.token);
       var nutzer = decode["sub"];
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
 
-      axios.get("http://localhost:9090/idee").then((res) => {
-        this.Ideen = res.data;
-      });
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axios
+        .get("http://localhost:9090/idee/meineideen", config)
+        .then((res) => {
+          this.Ideen = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-      this.Ideen.forEach(idee => {
-        if ((idee as any).erfasser == nutzer)
-           this.nutzerIdeen.push(idee);
+      this.Ideen.forEach((idee) => {
+        if ((idee as any).erfasser == nutzer) this.nutzerIdeen.push(idee);
       });
       this.Ideen = this.nutzerIdeen;
+    },
+    ideeVeroeffentlichen() {},
+    ideeLoeschen() {
+      // IN ARBEIT
+      console.log(this.tempIdee as any);
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      var titel = (this.tempIdee as any).titel;
+      var erfasser = decode["sub"];
+      var erstelldatum = (this.tempIdee as any).erstellzeitpunkt;
+
+      axiosInstance.delete("http://localhost:9090/idee", {
+        headers: { Authorization: `Bearer ${this.token}` },
+      });
     },
   },
   created() {
@@ -197,6 +218,14 @@ button,
 .filter,
 .filterElement {
   float: left;
+}
+#filter1,
+#filter2,
+#filter3,
+#filter4,
+#filter5 {
+  margin-right: 2px;
+  width: 6em;
 }
 button,
 #filterButton {
