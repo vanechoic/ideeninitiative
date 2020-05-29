@@ -3,7 +3,7 @@
     <div class="container">
       <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild" />
       <button id="profilbildHochladen">Profilbild hochladen</button>
-      <button id="ideen">Zugewiesende Ideen</button>
+      <router-link id="ideen" to="/IdeeBewerten" tag="button">Zugewiesende Ideen</router-link>
       <button id="ideenspeicher">Zum Ideenspeicher</button>
       <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
     </div>

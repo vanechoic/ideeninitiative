@@ -15,7 +15,7 @@
       <div class="filter">
         <div class="filterElement">
           <select id="filter1" v-model="ideenTyp">
-            <option value disabled selected>Ideentyp</option>
+            <option value disabled>Ideentyp</option>
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
@@ -100,11 +100,13 @@ export default Vue.extend({
     // Ideenliste
     Ideen: [],
     gefilterteIdeen: [],
-    tempIdee: {}
+    tempIdee: {},
   }),
   methods: {
     selectIdee(idee: any) {
       this.tempIdee = idee;
+      console.log(idee);
+      localStorage.setItem("idee", JSON.stringify(this.tempIdee));
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -113,29 +115,24 @@ export default Vue.extend({
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
       console.log("Ideen.length ", this.Ideen.length);
-      return this.Ideen.filter(function (idee) {
-        return it == "" || it == null || (idee as any).typ == it;
-      })
-        .filter(function (idee) {
-          return sp == "" || sp == null || (idee as any).sparte == sp;
-        })
-        .filter(function (idee) {
-          return hf == "" || hf == null || (idee as any).handlungsfeld == hf;
-        })
-        .filter(function (idee) {
-          return (
-            vw == "" || vw == null || (idee as any).vertriebsweg.includes(vw)
-          );
-        })
-        .filter(function (idee) {
-          return (
-            zg == "" || zg == null || (idee as any).zielgruppe.includes(zg)
-          );
-        });
+      let ideen: any = [];
+      return this.Ideen.filter(
+        (idee) =>
+          it == "" ||
+          it == null ||
+          ((idee as any).typ == it && !sp) ||
+          ((idee as any).sparte == sp && !hf) ||
+          ((idee as any).handlungsfeld == hf && !vw) ||
+          ((idee as any).vertriebsweg.includes(vw) && !zg) ||
+          (idee as any).zielgruppe.includes(zg)
+      );
     },
     alleIdeenladen() {
-      axios.get("http://localhost:9090/idee").then((res) => {
-        this.Ideen = res.data;
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      console.log(axiosInstance)
+      axiosInstance.get("http://localhost:9090/idee").then((res) => {
+        console.log("response", res);
+        this.Ideen = res.data || [];
       });
     },
     push: function () {
@@ -148,10 +145,9 @@ export default Vue.extend({
     var decode = jwt.decode(this.token);
     var rolle = decode["rollen"][0];
 
-    if (rolle == "ROLE_MITARBEITER")
-      this.component = "registrierter";
-    else if (rolle == "ROLE_FACHSPEZIALIST")
-      this.component = "spezialist";
+    // Entsprechende Component laden, abhängig von Nutzerrolle
+    if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
+    else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
     else this.component = "mitarbeiter";
   },
 });

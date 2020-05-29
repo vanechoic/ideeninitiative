@@ -94,7 +94,7 @@ export default Vue.extend({
     Ideen: [],
     gefilterteIdeen: [],
     nutzerIdeen: [],
-    tempIdee: {}
+    tempIdee: {},
   }),
   methods: {
     goBack() {
@@ -135,19 +135,28 @@ export default Vue.extend({
       var jwt = require("jsonwebtoken");
       var decode = jwt.decode(this.token);
       var nutzer = decode["sub"];
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
 
-      axios.get("http://localhost:9090/idee").then((res) => {
-        this.Ideen = res.data;
-      });
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axios
+        .get("http://localhost:9090/idee/meineideen", config)
+        .then((res) => {
+          this.Ideen = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
       this.Ideen.forEach((idee) => {
         if ((idee as any).erfasser == nutzer) this.nutzerIdeen.push(idee);
       });
       this.Ideen = this.nutzerIdeen;
     },
-    ideeVeroeffentlichen() {
-      
-    },
+    ideeVeroeffentlichen() {},
     ideeLoeschen() {
       // IN ARBEIT
       console.log(this.tempIdee as any);
@@ -156,12 +165,12 @@ export default Vue.extend({
       var decode = jwt.decode(this.token);
       var titel = (this.tempIdee as any).titel;
       var erfasser = decode["sub"];
-      var erstelldatum = (this.tempIdee as any).erstellzeitpunkt
+      var erstelldatum = (this.tempIdee as any).erstellzeitpunkt;
 
       axiosInstance.delete("http://localhost:9090/idee", {
         headers: { Authorization: `Bearer ${this.token}` },
       });
-    }
+    },
   },
   created() {
     this.meineIdeenladen();
