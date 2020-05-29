@@ -6,6 +6,7 @@ import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
+import awe.ideeninitiative.util.DatumUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -31,12 +32,21 @@ public class IdeeMapper {
                 .withTyp(idee.getTyp().toString())
                 .withHandlungsfeld(idee.getInterneIdeeHandlungsfeld() != null ? idee.getInterneIdeeHandlungsfeld().getHandlungsfeld().toString() : null)
                 .withSparten(idee.getProduktideeSparte() != null ? idee.getProduktideeSparte().getSparte().toString() : null)
+                .withErstellzeitpunkt(DatumUtil.formeDatumZuStringUm(idee.getErstellzeitpunkt()))
                 .build();
         if(idee.getProduktideeVertriebsweg() != null && !idee.getProduktideeVertriebsweg().isEmpty()){
             ideeDTO.setVertriebsweg(mappeProduktideeVertriebswegeZuStringListe(idee.getProduktideeVertriebsweg()));
         }
         if(idee.getProduktideeZielgruppe() != null && !idee.getProduktideeZielgruppe().isEmpty()){
             ideeDTO.setZielgruppe(mappeProduktideeZielgruppenZuStringListe(idee.getProduktideeZielgruppe()));
+        }
+        if(idee.getProduktideeZusatzinformation() != null){
+            ideeDTO.setExistiertBereits(idee.getProduktideeZusatzinformation().isExistiertBereits());
+            ideeDTO.setArtDerUmsetzung(idee.getProduktideeZusatzinformation().getArtDerUmsetzung());
+            ideeDTO.setUnternehmensbezeichnung(idee.getProduktideeZusatzinformation().getUnternehmensbezeichnung());
+        }
+        if(idee.getVorteile() != null && !idee.getVorteile().isEmpty()){
+            ideeDTO.setVorteile(idee.getVorteileWerte());
         }
         return ideeDTO;
     }

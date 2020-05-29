@@ -60,6 +60,9 @@ public class Idee extends AbstractEntity {
     @OneToOne(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
     private ProduktideeZusatzinformation produktideeZusatzinformation;
 
+    @OneToMany(mappedBy = "idee", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Vorteil> vorteile;
+
     public Idee() {
         produktideeZielgruppe = new ArrayList<>();
         produktideeVertriebsweg = new ArrayList<>();
@@ -188,5 +191,19 @@ public class Idee extends AbstractEntity {
             this.produktideeZielgruppe.clear();
             this.produktideeZielgruppe.addAll(produktideeZielgruppe);
         }
+    }
+
+    public List<Vorteil> getVorteile() {
+        return vorteile;
+    }
+
+    public List<String> getVorteileWerte(){
+        return vorteile.stream()
+                .map(v -> v.getBeschreibung())
+                .collect(Collectors.toList());
+    }
+
+    public void setVorteile(List<Vorteil> vorteile) {
+        this.vorteile = vorteile;
     }
 }
