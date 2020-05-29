@@ -66,16 +66,16 @@ public class IdeeService {
     }
 
 
-    public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException {
+    public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException, MaximaleAnzahlVorteileUeberschrittenException {
         Idee zuAktualisierendeIdee = ladeIdeeAusDatenbank(idee);
         //Idee aktualisieren - ID und Erstellzeitpunkt werden beibehalten
-        zuAktualisierendeIdee.setTitel(idee.getTitel());
         zuAktualisierendeIdee.setBeschreibung(idee.getBeschreibung());
         zuAktualisierendeIdee.setBearbeitungsstatus(idee.getBearbeitungsstatus());
         zuAktualisierendeIdee.setBegruendung(idee.getBegruendung());
         zuAktualisierendeIdee.setErfasser(idee.getErfasser());
         zuAktualisierendeIdee.setFachspezialist(idee.getFachspezialist());
         zuAktualisierendeIdee.setTyp(idee.getTyp());
+        zuAktualisierendeIdee.setVorteile(idee.getVorteile());
         if(Ideentyp.INTERNE_IDEE == idee.getTyp()){
             zuAktualisierendeIdee.setInterneIdeeHandlungsfeld(idee.getInterneIdeeHandlungsfeld());
         } else{
