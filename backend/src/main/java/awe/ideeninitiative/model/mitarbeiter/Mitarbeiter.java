@@ -270,6 +270,7 @@ public class Mitarbeiter extends AbstractEntity {
 
     public void setZugewieseneIdeen(List<Idee> zugewieseneIdeen) {
         if(zugewieseneIdeen != null && !zugewieseneIdeen.isEmpty()){
+            zugewieseneIdeen.forEach(i -> i.setFachspezialist(this));
             this.zugewieseneIdeen.clear();
             this.zugewieseneIdeen.addAll(zugewieseneIdeen);
         }
@@ -281,6 +282,7 @@ public class Mitarbeiter extends AbstractEntity {
 
     public void setErstellteIdeen(List<Idee> erstellteIdeen) {
         if(erstellteIdeen != null && !erstellteIdeen.isEmpty()){
+            zugewieseneIdeen.forEach(i -> i.setErfasser(this));
             this.erstellteIdeen.clear();
             this.erstellteIdeen.addAll(erstellteIdeen);
         }
