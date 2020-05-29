@@ -1,5 +1,6 @@
 package awe.ideeninitiative.model.repositories;
 
+import awe.ideeninitiative.model.enums.Ideenstatus;
 import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,8 +13,7 @@ import java.util.Optional;
 @Repository
 public interface IdeeRepository extends JpaRepository<Idee, Long> {
     public List<Idee> findAllByErfasserBenutzername(String benutzername);
-
-    public Optional<Idee> findFirstByErfasserAndTitel(Mitarbeiter erfasser, String titel);
+    public List<Idee> findAllByBearbeitungsstatusNotLike(Ideenstatus ideenstatus);
 
     public List<Idee> findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(String titel, LocalDateTime erstellzeitpunkt, String erfasserBenutzername);
 }

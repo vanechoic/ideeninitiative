@@ -43,7 +43,7 @@ export default Vue.extend({
   }
   .container {
     position: absolute;
-    height: calc(100% - 25px);
+    height: calc(100% - 250px);
     top:2%;
     left: 2%;
     right: 2%;
@@ -88,7 +88,7 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     padding: 10px 60px;
-    height: calc(100% - 100px);
+    height: calc(100% - 50px);
     background: linear-gradient(to bottom, #efefef, #ccc);
     transition: all .5s ease-in-out;
   }
@@ -97,7 +97,7 @@ export default Vue.extend({
     font-size: 2rem;
   }
   textarea{
-    height: 100%;
+    height: 80%;
   }
   #abbrechenButton{
     background-color:#ec0b0b;

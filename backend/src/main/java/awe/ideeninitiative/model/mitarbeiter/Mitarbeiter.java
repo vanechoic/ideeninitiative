@@ -1,10 +1,16 @@
 package awe.ideeninitiative.model.mitarbeiter;
 
 import awe.ideeninitiative.model.AbstractEntity;
+import awe.ideeninitiative.model.builder.FachspezialistHandlungsfeldBuilder;
+import awe.ideeninitiative.model.builder.FachspezialistSparteBuilder;
+import awe.ideeninitiative.model.builder.FachspezialistVertriebswegBuilder;
+import awe.ideeninitiative.model.builder.FachspezialistZielgruppeBuilder;
 import awe.ideeninitiative.model.enums.Sparte;
 import awe.ideeninitiative.model.enums.Vertriebskanal;
 import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Zielgruppe;
+import awe.ideeninitiative.model.idee.Idee;
+import awe.ideeninitiative.model.idee.ProduktideeVertriebsweg;
 import awe.ideeninitiative.restapi.security.BenutzerRollen;
 import org.hibernate.validator.constraints.Email;
 
@@ -13,8 +19,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -47,42 +55,43 @@ public class Mitarbeiter extends AbstractEntity {
 
     private boolean istAdmin;
 
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "erfasser", orphanRemoval = true)
+    private List<Idee> erstellteIdeen;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "fachspezialist", orphanRemoval = true)
+    private List<Idee> zugewieseneIdeen;
+
     /**
      * Speichert die Fachkenntnisse über Vertriebskanäle.
      */
-    @ElementCollection(targetClass = Vertriebskanal.class)
-    @CollectionTable(name = "spezialist_vertriebsweg",
-            joinColumns = @JoinColumn(name = "mitarbeiter_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "vertriebsweg")
-    private Set<Vertriebskanal> vertriebswege;
+    @OneToMany(mappedBy = "mitarbeiter", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<FachspezialistVertriebsweg> fachspezialistVertriebswege;
 
     /** Speichert die Fachkenntnisse über Sparten.
      */
-    @ElementCollection(targetClass = Sparte.class)
-    @CollectionTable(name = "spezialist_sparte",
-            joinColumns = @JoinColumn(name = "mitarbeiter_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sparte")
-    private Set<Sparte> sparten;
+    @OneToMany(mappedBy = "mitarbeiter", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<FachspezialistSparte> fachspezialistSparten;
 
     /** Speichert die Fachkenntnisse über Zielgruppen.
      */
-    @ElementCollection(targetClass = Zielgruppe.class)
-    @CollectionTable(name = "spezialist_zielgruppe",
-            joinColumns = @JoinColumn(name = "mitarbeiter_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "zielgruppe")
-    private Set<Handlungsfeld> zielgruppen;
+    @OneToMany(mappedBy = "mitarbeiter", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<FachspezialistZielgruppe> fachspezialistZielgruppen;
 
     /** Speichert die Fachkenntnisse über Handlungsfelder.
      */
-    @ElementCollection(targetClass = Handlungsfeld.class)
-    @CollectionTable(name = "spezialist_handlungsfeld",
-            joinColumns = @JoinColumn(name = "mitarbeiter_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "handlungsfeld")
-    private Set<Handlungsfeld> handlungsfelder;
+    @OneToMany(mappedBy = "mitarbeiter", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<FachspezialistHandlungsfeld> fachspezialistHandlungsfelder;
+
+    public Mitarbeiter() {
+        this.erstellteIdeen = new ArrayList<>();
+        this.zugewieseneIdeen = new ArrayList<>();
+        this.fachspezialistHandlungsfelder = new ArrayList<>();
+        this.fachspezialistSparten = new ArrayList<>();
+        this.fachspezialistVertriebswege = new ArrayList<>();
+        this.fachspezialistZielgruppen  = new ArrayList<>();
+    }
 
     public String getEmail() {
         return email;
@@ -132,44 +141,12 @@ public class Mitarbeiter extends AbstractEntity {
         this.nachname = nachname;
     }
 
-    public Set<Vertriebskanal> getVertriebswege() {
-        return vertriebswege;
-    }
-
-    public void setVertriebswege(Set<Vertriebskanal> vertriebswege) {
-        this.vertriebswege = vertriebswege;
-    }
-
     public boolean istFachspezialist() {
         return istFachspezialist;
     }
 
     public void setIstFachspezialist(boolean istFachspezialist) {
         this.istFachspezialist = istFachspezialist;
-    }
-
-    public Set<Sparte> getSparten() {
-        return sparten;
-    }
-
-    public void setSparten(Set<Sparte> sparten) {
-        this.sparten = sparten;
-    }
-
-    public Set<Handlungsfeld> getZielgruppen() {
-        return zielgruppen;
-    }
-
-    public void setZielgruppen(Set<Handlungsfeld> zielgruppen) {
-        this.zielgruppen = zielgruppen;
-    }
-
-    public Set<Handlungsfeld> getHandlungsfelder() {
-        return handlungsfelder;
-    }
-
-    public void setHandlungsfelder(Set<Handlungsfeld> handlungsfelder) {
-        this.handlungsfelder = handlungsfelder;
     }
 
     public boolean istAdmin() {
@@ -194,5 +171,123 @@ public class Mitarbeiter extends AbstractEntity {
             rollen.add(BenutzerRollen.ADMIN.toString());
         }
         return rollen.toArray(new String[rollen.size()]);
+    }
+
+    public List<FachspezialistSparte> getFachspezialistSparten() {
+        return fachspezialistSparten;
+    }
+
+    public void addFachspezialistSparte(Sparte... sparten){
+        Arrays.stream(sparten).forEach(sp -> fachspezialistSparten.add(FachspezialistSparteBuilder.aFachspezialistSparte().withMitarbeiter(this).withSparte(sp).build()));
+    }
+
+    public void setFachspezialistSparten(List<FachspezialistSparte> fachspezialistSparten) {
+        if(fachspezialistSparten != null && !fachspezialistSparten.isEmpty()){
+            fachspezialistSparten.forEach(vw -> vw.setMitarbeiter(this));
+            this.fachspezialistSparten.clear();
+            this.fachspezialistSparten.addAll(fachspezialistSparten);
+        }
+    }
+
+    public List<Sparte> getFachspezialistSpartenWerte(){
+        return fachspezialistSparten.stream()
+                .map(sp-> sp.getSparte())
+                .collect(Collectors.toList());
+    }
+
+    public List<FachspezialistVertriebsweg> getFachspezialistVertriebswege() {
+        return fachspezialistVertriebswege;
+    }
+
+    public List<Vertriebskanal> getFachspezialistVertriebswegeWerte(){
+        return fachspezialistVertriebswege.stream()
+                .map( vw-> vw.getVertriebsweg())
+                .collect(Collectors.toList());
+    }
+
+    public void setFachspezialistVertriebswege(List<FachspezialistVertriebsweg> fachspezialistVertriebswege) {
+        if(fachspezialistVertriebswege != null && !fachspezialistVertriebswege.isEmpty()){
+            fachspezialistVertriebswege.forEach(vw -> vw.setMitarbeiter(this));
+            this.fachspezialistVertriebswege.clear();
+            this.fachspezialistVertriebswege.addAll(fachspezialistVertriebswege);
+        }
+    }
+
+    public List<FachspezialistZielgruppe> getFachspezialistZielgruppen() {
+        return fachspezialistZielgruppen;
+    }
+
+    public List<Zielgruppe> getFachspezialistZielgruppenWerte(){
+        return fachspezialistZielgruppen.stream()
+                .map(zg -> zg.getZielgruppe())
+                .collect(Collectors.toList());
+    }
+
+    public void setFachspezialistZielgruppen(List<FachspezialistZielgruppe> fachspezialistZielgruppen) {
+        if(fachspezialistZielgruppen != null && !fachspezialistZielgruppen.isEmpty()){
+            fachspezialistZielgruppen.forEach(vw -> vw.setMitarbeiter(this));
+            this.fachspezialistZielgruppen.clear();
+            this.fachspezialistZielgruppen.addAll(fachspezialistZielgruppen);
+        }
+    }
+
+    public void addFachspezialistZielgruppe(Zielgruppe... zielgruppe){
+        Arrays.stream(zielgruppe).forEach(zg -> fachspezialistZielgruppen.add(FachspezialistZielgruppeBuilder.aFachspezialistZielgruppe().withMitarbeiter(this).withZielgruppe(zg).build()));
+    }
+
+    public List<FachspezialistHandlungsfeld> getFachspezialistHandlungsfelder() {
+        return fachspezialistHandlungsfelder;
+    }
+
+    public List<Handlungsfeld> getFachspezialistHandlungsfelderWerte(){
+        return fachspezialistHandlungsfelder.stream()
+                .map(hf -> hf.getHandlungsfeld())
+                .collect(Collectors.toList());
+    }
+
+
+
+    public void setFachspezialistHandlungsfelder(List<FachspezialistHandlungsfeld> fachspezialistHandlungsfelder) {
+        if(fachspezialistHandlungsfelder != null && !fachspezialistHandlungsfelder.isEmpty()){
+            fachspezialistHandlungsfelder.forEach(vw -> vw.setMitarbeiter(this));
+            this.fachspezialistHandlungsfelder.clear();
+            this.fachspezialistHandlungsfelder.addAll(fachspezialistHandlungsfelder);
+        }
+    }
+
+    public void addFachspezialistHandlungsfeld(Handlungsfeld... handlungsfeld){
+        Arrays.stream(handlungsfeld).forEach(hf -> fachspezialistHandlungsfelder.add(FachspezialistHandlungsfeldBuilder
+                .aFachspezialistHandlungsfeld().withHandlungsfeld(hf).withMitarbeiter(this).build()));
+    }
+
+    public List<Idee> getZugewieseneIdeen() {
+        return zugewieseneIdeen;
+    }
+
+    public int getAnzahlZugewieseneIdeen(){
+        return zugewieseneIdeen == null ? 0 : zugewieseneIdeen.size();
+    }
+
+    public void setZugewieseneIdeen(List<Idee> zugewieseneIdeen) {
+        if(zugewieseneIdeen != null && !zugewieseneIdeen.isEmpty()){
+            this.zugewieseneIdeen.clear();
+            this.zugewieseneIdeen.addAll(zugewieseneIdeen);
+        }
+    }
+
+    public List<Idee> getErstellteIdeen() {
+        return erstellteIdeen;
+    }
+
+    public void setErstellteIdeen(List<Idee> erstellteIdeen) {
+        if(erstellteIdeen != null && !erstellteIdeen.isEmpty()){
+            this.erstellteIdeen.clear();
+            this.erstellteIdeen.addAll(erstellteIdeen);
+        }
+    }
+
+    public void addFachspezialistVertriebsweg(Vertriebskanal... vertriebsweg) {
+        Arrays.stream(vertriebsweg).forEach(vw -> fachspezialistVertriebswege.add(FachspezialistVertriebswegBuilder.aFachspezialistVertriebsweg()
+                .withMitarbeiter(this).withVertriebsweg(vw).build()));
     }
 }

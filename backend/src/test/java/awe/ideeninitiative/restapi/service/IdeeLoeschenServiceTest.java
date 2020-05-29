@@ -2,11 +2,11 @@ package awe.ideeninitiative.restapi.service;
 
 import awe.ideeninitiative.exception.IdeeExistiertNichtException;
 import awe.ideeninitiative.model.builder.IdeeBuilder;
+import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.enums.Ideenstatus;
 import awe.ideeninitiative.model.enums.Ideentyp;
 import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
-import awe.ideeninitiative.model.mitarbeiter.MitarbeiterBuilder;
 import awe.ideeninitiative.model.repositories.IdeeRepository;
 import awe.ideeninitiative.util.DatumUtil;
 import org.junit.Before;

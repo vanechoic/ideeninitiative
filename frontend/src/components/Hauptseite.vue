@@ -1,25 +1,25 @@
 <template>
   <div class="container">
     <div class="links">
-      <p>Alle Ideen</p>
+      <p v-on:click="pushDemo()">Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
           <li
-            v-for="idee in Ideen"
+            v-for="idee in ideenFiltern()"
             :key="idee"
-            v-on:click="showModal = true, selectIdee(idee)"
-          >{{idee}}</li>
+            v-on:click="push(), selectIdee(idee)"
+          >{{idee.titel}} von {{idee.erfasser}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
       <div class="filter">
         <div class="filterElement">
-          <select id="filter1" v-model="ideenTyp" @click="selectFilter()">
-            <option value disabled selected>Ideentyp</option>
+          <select id="filter1" v-model="ideenTyp">
+            <option value disabled>Ideentyp</option>
             <option value="PRODUKTIDEE" selected>Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
-          <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
+          <select id="filter2" v-model="sparte" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Sparte</option>
             <option value="KFZ">KFZ</option>
             <option value="UNFALL">Unfall</option>
@@ -29,16 +29,22 @@
             <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
             <option value="HAFTPFLICHT">Haftpflicht</option>
             <option value="HAUSRAT">Hausrat</option>
-            <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+            <option value="WOHNGEBAUEDEVERSICHERUNG"
+              >Wohngebäudeversicherung</option
+            >
           </select>
-          <select id="filter3" v-model="vertriebsweg" v-bind:class="[ vertriebswegAktiv ]">
+          <select id="filter3" v-model="vertriebsweg" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Vertriebsweg</option>
-            <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+            <option value="STATIONAERER_VERTRIEB"
+              >Stationärer Vertrieb in eigenen Geschäftsstelle</option
+            >
             <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-            <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+            <option value="KOOPERATION_MIT_KREDITINSTITUTEN"
+              >Kooperation mit Kreditinstituten</option
+            >
             <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
           </select>
-          <select id="filter4" v-model="zielgruppe" v-bind:class="[ zielgruppeAktiv ]">
+          <select id="filter4" v-model="zielgruppe" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Zielgruppe</option>
             <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
             <option value="FAMILIEN">Familien</option>
@@ -47,54 +53,18 @@
             <option value="PERSONEN_50PLUS">Personen 50+</option>
             <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
           </select>
-          <select id="filter5" v-model="handlungsfeld" v-bind:class="[ handlungsfelderAktiv ]">
+          <select id="filter5" v-model="handlungsfeld" v-if="ideenTyp == 'INTERNE_IDEE'">
             <option value disabled selected>Handlungsfeld</option>
             <option value="KOSTENSENKUNG">Kostensenkung</option>
             <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
             <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
           </select>
         </div>
-        <div class="filterElement">
-          <!--Filter Button -->
-          <button id="filterButton" @click="ideenFiltern()">Filter</button>
-        </div>
       </div>
     </div>
     <div class="rechts">
       <component v-bind:is="component"></component>
     </div>
-    <transition name="fade" appear>
-      <div class="modal-overlay" v-if="showModal">
-        <div class="kopfzeile">
-          <label id="ideeName">
-            Idee Name
-            <!--{{}}-->
-          </label>
-          <div class="erstellInfos">
-            <label class="erstellerLbl" for="ersteller">Ersteller:</label>
-            <div id="ersteller">
-              <!--{{}}-->
-              gggg
-            </div>
-            <label id="erstellDatumLbl">Erstellt am:</label>
-            <div id="erstellDatum">
-              <!--{{}}-->
-              20.12.20
-            </div>
-          </div>
-        </div>
-        <div class="hauptteil">
-          <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
-          <div id="beschreibung">
-            <!--{{}}-->
-            adadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-          </div>
-        </div>
-        <div class="fußzeile">
-          <button class="zurueckBtn" v-on:click="showModal =false">Zurück</button>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -102,17 +72,21 @@
 import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
-import { properties } from "@syncfusion/ej2-vue-dropdowns/src/drop-down-list/dropdownlist.component";
+import Mitarbeiter from "@/components/Mitarbeiter.vue";
+import Spezialist from "@/components/Spezialist.vue";
 import { Params } from "../services/params-service";
-import { Idee } from "../classes/idea";
 import { Helper } from "../services/helper";
 
 export default Vue.extend({
   name: "Hauptseite",
   components: {
     registrierter: Registrierter,
+    mitarbeiter: Mitarbeiter,
+    spezialist: Spezialist,
   },
   data: () => ({
+    // Auth Token
+    token: localStorage.getItem("token"),
     // Filterwerte
     sparte: "",
     vertriebsweg: "",
@@ -125,127 +99,131 @@ export default Vue.extend({
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
     ideenTyp: "",
+    selektierterTyp: "",
     // Modalfenster und Componentenlogik
     showModal: false,
-    component: "registrierter",
-    // Demodaten anlegen
-    Ideen: Helper.getInstance().erzeugeDemoDaten(),
+    component: "mitarbeiter",
+    // Ideenliste
+    Ideen: [],
+    gefilterteIdeen: [],
+    tempIdee: {},
   }),
   methods: {
-    selectFilter() {
-      if (this.ideenTyp == "PRODUKTIDEE") {
-        this.handlungsfelderAktiv = "inaktiv";
-        this.sparteAktiv = "aktiv";
-        this.vertriebswegAktiv = "aktiv";
-        this.zielgruppeAktiv = "aktiv";
-      } else {
-        this.handlungsfelderAktiv = "aktiv";
-        this.sparteAktiv = "inaktiv";
-        this.vertriebswegAktiv = "inaktiv";
-        this.zielgruppeAktiv = "inaktiv";
-      }
-    },
-    selectIdee(){
-      console.log(this.Ideen[0].IdeenTyp)
+    selectIdee(idee: any) {
+      this.tempIdee = idee;
+      console.log(idee);
+      localStorage.setItem("idee", JSON.stringify(this.tempIdee));
     },
     ideenFiltern() {
-      // TODO: Wenn erneut gefiltert wird muss die Liste vorher resetted werden #############
-      var ideeArray = new Array();
-      this.Ideen.forEach((idee) => {
-        if (idee.IdeenTyp === this.ideenTyp) ideeArray.push(idee);
-        console.log(idee.IdeenTyp)
-        console.log(idee)
+      var it = this.ideenTyp;
+      var sp = this.sparte;
+      var vw = this.vertriebsweg;
+      var zg = this.zielgruppe;
+      var hf = this.handlungsfeld;
+      console.log("Ideen.length ", this.Ideen.length);
+      let ideen: any = [];
+      return this.Ideen.filter(
+        (idee) =>
+          it == "" ||
+          it == null ||
+          ((idee as any).typ == it && !sp) ||
+          ((idee as any).sparte == sp && !hf) ||
+          ((idee as any).handlungsfeld == hf && !vw) ||
+          ((idee as any).vertriebsweg.includes(vw) && !zg) ||
+          (idee as any).zielgruppe.includes(zg)
+      );
+    },
+    alleIdeenladen() {
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      console.log(axiosInstance)
+      axiosInstance.get("http://localhost:9090/idee").then((res) => {
+        console.log("response", res);
+        this.Ideen = res.data || [];
       });
-      this.Ideen = ideeArray;
-    }
-  }
+    },
+    push: function () {
+      this.$router.push({ path: "/Idee" });
+    },
+    pushDemo: function () {
+      this.$router.push({ path: "/IdeeBewerten" });
+    },
+  },
+  mounted() {
+    this.alleIdeenladen();
+    var jwt = require("jsonwebtoken");
+    var decode = jwt.decode(this.token);
+    var rolle = decode["rollen"][0];
+
+    // Entsprechende Component laden, abhängig von Nutzerrolle
+    if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
+    else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
+    else this.component = "mitarbeiter";
+  },
 });
 </script>
 
 <style lang="scss" scoped>
-.container,
 .rechts,
-.hauptteil {
+.container {
   position: relative;
 }
-.links,
-.modal-overlay,
-.fußzeile {
+.links {
   position: absolute;
 }
 .container,
-.hauptteil,
 .listeContainer,
-.filter,
-.fußzeile,
-#beschreibung {
+.filter {
   width: 100%;
 }
-.container,
 .rechts,
-.links,
-.erstellInfos,
-#beschreibung {
+.links {
   height: 100%;
 }
 .rechts,
 .links,
-.erstellInfos,
-.filter,
-#ideeName {
+.filter {
   display: flex;
   justify-content: space-around;
 }
 p,
 .links,
-.rechts,
-.modal-overlay {
+.rechts {
   top: 0;
 }
 .links,
 .rechts {
   width: 50%;
 }
-li,
-#beschreibung,
-#ersteller,
-#erstellDatum {
+li {
   color: black;
 }
 li,
-.listeContainer,
-#beschreibung {
+.listeContainer {
   border: 0.5px solid #000;
 }
 .links,
-.rechts,
-.modal-overlay {
+.rechts {
   padding: 2%;
 }
-.container,
-.modal-overlay {
+.container {
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
 .links,
-.rechts,
-#ideeName {
+.rechts {
   align-items: center;
 }
 button,
-.container,
-#beschreibung {
+.container {
   border-radius: 20px;
 }
 button,
 .rechts {
   background-color: #00894d;
 }
-.links,
-#ideeName {
+.links {
   flex-direction: column;
 }
-.rechts,
-#ideeName {
+.rechts {
   text-align: center;
 }
 ul,
@@ -257,16 +235,8 @@ ul,
 #filter3,
 #filter4,
 #filter5 {
-  margin: 2px;
-  width: 5.5em;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+  margin-right: 2px;
+  width: 6em;
 }
 #beschreibung {
   display: block;
@@ -277,6 +247,8 @@ ul,
 }
 .container {
   overflow: hidden;
+  height: 500px;
+  width: 800px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 .rechts {
@@ -284,21 +256,6 @@ ul,
 }
 .hauptteil {
   height: 65%;
-}
-.zurueckBtn {
-  background-color: #f80303;
-  right: 5%;
-}
-.fußzeile {
-  bottom: 5%;
-}
-#ideeName {
-  font-size: 1.5rem;
-}
-.modal-overlay {
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 p {
   margin: 8px 0 8px;
