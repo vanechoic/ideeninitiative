@@ -52,16 +52,12 @@ const routes: Array<RouteConfig> = [
     path: '/Idee',
     name: 'Idee',
     component: Idee
-<<<<<<< HEAD
   },
   {
     path: '/IdeeBewerten',
     name: 'IdeeBewerten',
     component: IdeeBewerten
   },
-=======
-  }
->>>>>>> frontend
 ]
 
 const router = new VueRouter({
