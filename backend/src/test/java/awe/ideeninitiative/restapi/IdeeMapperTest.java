@@ -1,6 +1,8 @@
 package awe.ideeninitiative.restapi;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
+import awe.ideeninitiative.exception.ApiException;
+import awe.ideeninitiative.exception.InterneIdeeOhneHandlungsfeldException;
 import awe.ideeninitiative.exception.MaximaleAnzahlVorteileUeberschrittenException;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
@@ -55,21 +57,21 @@ public class IdeeMapperTest {
     }
 
     @Test
-    public void mappeIdeeDTOZuInternerIdee() throws MaximaleAnzahlVorteileUeberschrittenException {
+    public void mappeIdeeDTOZuInternerIdee() throws ApiException {
         given.vollstaendigeEingabenFuerEineInterneIdee();
         when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdEineIdeeMitDenWertenDerInternenIdeeZurueckgegeben();
     }
 
     @Test
-    public void mappeIdeeDTOZuProduktidee() throws MaximaleAnzahlVorteileUeberschrittenException {
+    public void mappeIdeeDTOZuProduktidee() throws ApiException {
         given.vollstaendigeEingabenFuerEineProduktidee();
         when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdEineIdeeMitDenWertenDerProduktideeZurueckgegeben();
     }
 
     @Test
-    public void mappeIdeeDTOOhneTyp() throws MaximaleAnzahlVorteileUeberschrittenException {
+    public void mappeIdeeDTOOhneTyp() throws ApiException {
         given.eingabenOhneIdeentyp();
         when.derMapperIdeeDTOZuIdeeAufgerufenWird();
         then.wirdKeineIdeeZurueckGegeben();
@@ -227,7 +229,7 @@ public class IdeeMapperTest {
 
     private class When{
 
-        public void derMapperIdeeDTOZuIdeeAufgerufenWird() throws MaximaleAnzahlVorteileUeberschrittenException {
+        public void derMapperIdeeDTOZuIdeeAufgerufenWird() throws ApiException {
             idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
         }
 

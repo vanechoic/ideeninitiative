@@ -1,7 +1,7 @@
 package awe.ideeninitiative.restapi.mapper;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
-import awe.ideeninitiative.exception.MaximaleAnzahlVorteileUeberschrittenException;
+import awe.ideeninitiative.exception.*;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
@@ -79,7 +79,7 @@ public class IdeeMapper {
         return null;
     }
 
-    public Idee mappeIdeeDTOZuIdee(IdeeDTO ideeDTO) throws MaximaleAnzahlVorteileUeberschrittenException {
+    public Idee mappeIdeeDTOZuIdee(IdeeDTO ideeDTO) throws ApiException {
         if(ideeDTO.getTyp() == null || StringUtils.isEmpty(ideeDTO.getTyp())){
             return null;
         }
@@ -97,7 +97,7 @@ public class IdeeMapper {
 
         switch (ideentyp){
             case INTERNE_IDEE:
-                mappeIdeeDTOZuInterneIdeeHandlungsfeld(ideeDTO, idee);
+                mappeIdeeDTOHandlungsfeldZuInterneIdeeHandlungsfeld(ideeDTO, idee);
                 break;
             case PRODUKTIDEE:
                 mappeIdeeDTOZuProduktideeSparte(ideeDTO, idee);
@@ -126,20 +126,24 @@ public class IdeeMapper {
         return null;
     }
 
-    private void mappeIdeeDTOZuInterneIdeeHandlungsfeld(IdeeDTO ideeDTO, Idee idee) {
+    private void mappeIdeeDTOHandlungsfeldZuInterneIdeeHandlungsfeld(IdeeDTO ideeDTO, Idee idee) throws InterneIdeeOhneHandlungsfeldException {
         if(ideeDTO.getHandlungsfeld() != null && !StringUtils.isEmpty(ideeDTO.getHandlungsfeld())){
             InterneIdeeHandlungsfeld interneIdeeHandlungsfeld = InterneIdeeHandlungsfeldBuilder.anInterneIdeeHandlungsfeld()//
                     .withIdee(idee)
                     .withHandlungsfeld(Handlungsfeld.valueOf(ideeDTO.getHandlungsfeld().toUpperCase())).build();
             idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld);
+        } else {
+            throw new InterneIdeeOhneHandlungsfeldException(idee);
         }
     }
 
-    private void mappeIdeeDTOZuProduktideeSparte(IdeeDTO ideeDTO, Idee idee) {
+    private void mappeIdeeDTOZuProduktideeSparte(IdeeDTO ideeDTO, Idee idee) throws ProduktideeOhneSparteException {
         if(ideeDTO.getSparten() != null && !StringUtils.isEmpty(ideeDTO.getSparten())){
             ProduktideeSparte produktideeSparte = ProduktideeSparteBuilder.aProduktideeSparte()//
             .withIdee(idee).withSparte(Sparte.valueOf(ideeDTO.getSparten().toUpperCase())).build();
             idee.setProduktideeSparte(produktideeSparte);
+        } else{
+            throw new ProduktideeOhneSparteException(idee);
         }
     }
 
@@ -149,9 +153,11 @@ public class IdeeMapper {
         }
     }
 
-    private void mappeIdeeDTOZuProduktideeZielgruppen(IdeeDTO ideeDTO, Idee idee) {
-        if(ideeDTO.getZielgruppe() != null){
+    private void mappeIdeeDTOZuProduktideeZielgruppen(IdeeDTO ideeDTO, Idee idee) throws ProduktideeOhneZielgruppeException {
+        if(ideeDTO.getZielgruppe() != null && !ideeDTO.getZielgruppe().isEmpty()){
             idee.setProduktideeZielgruppe(mappeStringListeZuProduktideeZielgruppe(idee, ideeDTO.getZielgruppe()));
+        } else{
+            throw new ProduktideeOhneZielgruppeException(idee);
         }
     }
 
