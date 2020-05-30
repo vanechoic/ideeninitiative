@@ -28,8 +28,20 @@ public class IdeeService {
 
     public List<Idee> meineIdeenAbrufen(String benutzername) {
         logger.warn("IdeeService.meineIdeenAbrufen()");
+        //Prüfung, ob ein Mitarbeiter existiert geschieht im JwtRequestFilter
         List<Idee> ideenZuErfasser = ideeRepository.findAllByErfasserBenutzername(benutzername);
         return ideenZuErfasser;
+    }
+
+    public List<Idee> meineZugewiesenenIdeenAbrufen(String benutzername) throws FehlendeRolleFachspezialistException {
+        //TODO: Prüfen, dass für den Benutzernamen aus dem Token ein Mitarbeiter existiert. Exception, wenn nicht.
+        //TODO: WERDEN ALLE STATI GELADEN ODER NUR DIEJENIGEN, DIE NOCH BEWERTET WERDEN MÜSSEN??
+        pruefeDassDerBenutzerEinFachspezialistIst(benutzername);
+        return ideeRepository.findAllByFachspezialistBenutzername(benutzername);
+    }
+
+    private void pruefeDassDerBenutzerEinFachspezialistIst(String benutzername) throws FehlendeRolleFachspezialistException {
+        mitarbeiterRepository.findFirstByBenutzernameAndIstFachspezialistTrue(benutzername).orElseThrow(() -> new FehlendeRolleFachspezialistException(benutzername));
     }
 
     public List<Idee> alleIdeenAbrufen() {
@@ -50,6 +62,27 @@ public class IdeeService {
         ideeRepository.delete(zutreffendeIdeen.get(0));
     }
 
+    public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException, MaximaleAnzahlVorteileUeberschrittenException {
+        Idee zuAktualisierendeIdee = ladeIdeeAusDatenbank(idee);
+        //Idee aktualisieren - ID und Erstellzeitpunkt werden beibehalten
+        zuAktualisierendeIdee.setBeschreibung(idee.getBeschreibung());
+        zuAktualisierendeIdee.setBearbeitungsstatus(idee.getBearbeitungsstatus());
+        zuAktualisierendeIdee.setBegruendung(idee.getBegruendung());
+        zuAktualisierendeIdee.setErfasser(idee.getErfasser());
+        zuAktualisierendeIdee.setFachspezialist(idee.getFachspezialist());
+        zuAktualisierendeIdee.setTyp(idee.getTyp());
+        zuAktualisierendeIdee.setVorteile(idee.getVorteile());
+        if(Ideentyp.INTERNE_IDEE == idee.getTyp()){
+            zuAktualisierendeIdee.setInterneIdeeHandlungsfeld(idee.getInterneIdeeHandlungsfeld());
+        } else{
+            zuAktualisierendeIdee.setProduktideeVertriebsweg(idee.getProduktideeVertriebsweg());
+            zuAktualisierendeIdee.setProduktideeZielgruppe(idee.getProduktideeZielgruppe());
+            zuAktualisierendeIdee.setProduktideeZusatzinformation(idee.getProduktideeZusatzinformation());
+            zuAktualisierendeIdee.setProduktideeSparte(idee.getProduktideeSparte());
+        }
+        ideeRepository.save(zuAktualisierendeIdee);
+    }
+
     private void pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(String benutzername, Idee idee) throws KeineBefugnisFuerIdeeAenderungenException {
         if(idee.getErfasser() == null || !idee.getErfasser().getBenutzername().equals(benutzername)){
             throw new KeineBefugnisFuerIdeeAenderungenException(idee, benutzername);
@@ -65,27 +98,6 @@ public class IdeeService {
         }
     }
 
-
-    public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException {
-        Idee zuAktualisierendeIdee = ladeIdeeAusDatenbank(idee);
-        //Idee aktualisieren - ID und Erstellzeitpunkt werden beibehalten
-        zuAktualisierendeIdee.setTitel(idee.getTitel());
-        zuAktualisierendeIdee.setBeschreibung(idee.getBeschreibung());
-        zuAktualisierendeIdee.setBearbeitungsstatus(idee.getBearbeitungsstatus());
-        zuAktualisierendeIdee.setBegruendung(idee.getBegruendung());
-        zuAktualisierendeIdee.setErfasser(idee.getErfasser());
-        zuAktualisierendeIdee.setFachspezialist(idee.getFachspezialist());
-        zuAktualisierendeIdee.setTyp(idee.getTyp());
-        if(Ideentyp.INTERNE_IDEE == idee.getTyp()){
-            zuAktualisierendeIdee.setInterneIdeeHandlungsfeld(idee.getInterneIdeeHandlungsfeld());
-        } else{
-            zuAktualisierendeIdee.setProduktideeVertriebsweg(idee.getProduktideeVertriebsweg());
-            zuAktualisierendeIdee.setProduktideeZielgruppe(idee.getProduktideeZielgruppe());
-            zuAktualisierendeIdee.setProduktideeZusatzinformation(idee.getProduktideeZusatzinformation());
-            zuAktualisierendeIdee.setProduktideeSparte(idee.getProduktideeSparte());
-        }
-        ideeRepository.save(zuAktualisierendeIdee);
-    }
 
     protected Idee ladeIdeeAusDatenbank(Idee ideeWerteAusDTO) throws IdeeExistiertNichtException {
         List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(ideeWerteAusDTO.getTitel(), ideeWerteAusDTO.getErstellzeitpunkt(), ideeWerteAusDTO.getErfasser().getBenutzername());

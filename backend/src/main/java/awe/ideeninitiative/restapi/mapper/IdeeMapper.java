@@ -163,14 +163,12 @@ public class IdeeMapper {
     }
 
     private void mappeIdeeDTOZuProduktideeZusatzinformation(IdeeDTO ideeDTO, Idee idee) {
-        if(ideeDTO.getExistiertBereits()){
             ProduktideeZusatzinformation produktideeZusatzinformation = ProduktideeZusatzinformationBuilder.aProduktideeZusatzinformation()//
                     .withIdee(idee)//
                     .withArtDerUmsetzung(ideeDTO.getArtDerUmsetzung())//
                     .withUnternehmensbezeichnung(ideeDTO.getUnternehmensbezeichnung())//
                     .withExistiertBereits(ideeDTO.getExistiertBereits()).build();
             idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
-        }
     }
 
     private Mitarbeiter ermittleMitarbeiterZuBenutzernamen(String benutzername) {

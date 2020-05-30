@@ -67,6 +67,13 @@ public class IdeeController implements IdeeApi {
     }
 
     @Override
+    public ResponseEntity<List<IdeeDTO>> meineZugewiesenenIdeenAbrufen(String authorization) throws Exception {
+        String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
+        List<IdeeDTO> zugewieseneIdeeDTOs = ideeMapper.mappeIdeeZuIdeeDTO(ideeService.meineZugewiesenenIdeenAbrufen(benutzername));
+        return ResponseEntity.ok(zugewieseneIdeeDTOs);
+    }
+
+    @Override
     public ResponseEntity<String> neueIdeeAnlegen(IdeeDTO ideeDTO) throws Exception {
         Idee idee = ideeMapper.mappeIdeeDTOZuIdee(ideeDTO);
         ideeService.neueIdeeAnlegen(idee);

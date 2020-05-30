@@ -1,5 +1,6 @@
 package awe.ideeninitiative.restapi.service;
 
+import awe.ideeninitiative.exception.ApiException;
 import awe.ideeninitiative.exception.IdeeExistiertNichtException;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
@@ -13,6 +14,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,7 +43,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
     }
 
     @Test
-    public void aktualisiereInterneIdee() throws IdeeExistiertNichtException {
+    public void aktualisiereInterneIdee() throws ApiException {
         given.eineGespeicherteInterneIdee();
         given.benutzereingabenZurBearbeitungDerInternenIdee();
         given.einGemocktesIdeeRepository();
@@ -50,7 +52,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
     }
 
     @Test
-    public void aktualisiereProduktidee() throws IdeeExistiertNichtException {
+    public void aktualisiereProduktidee() throws ApiException {
         given.eineGespeicherteProduktidee();
         given.benutzereingabenZurBearbeitungDerProduktdee();
         given.einGemocktesIdeeRepository();
@@ -59,7 +61,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
     }
 
     @Test
-    public void formeInterneZuProduktideeUm() throws IdeeExistiertNichtException {
+    public void formeInterneZuProduktideeUm() throws ApiException {
         given.eineGespeicherteInterneIdee();
         given.benutzereingabenZurBearbeitungDerProduktdee();
         given.einGemocktesIdeeRepository();
@@ -68,7 +70,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
     }
 
     @Test(expected = IdeeExistiertNichtException.class)
-    public void ideeExistiertNicht() throws IdeeExistiertNichtException {
+    public void ideeExistiertNicht() throws ApiException {
         given.benutzereingabenZurBearbeitungEinerNichtExistentenIdee();
         when.ideeBearbeitenMitDerIdeeAufgerufenWird();
 
@@ -82,6 +84,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
                     .withBearbeitungsstatus(Ideenstatus.ANGELEGT)
                     .withErfasser(erfasser)
                     .withTyp(Ideentyp.INTERNE_IDEE)
+                    .withErstellzeitpunkt(LocalDateTime.now())
                     .build();
         }
 
@@ -89,6 +92,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
             benutzerEingabenIdee = IdeeBuilder.anIdee()
                     .withTitel(zuAktualisierendeIdee.getTitel())
                     .withErfasser(zuAktualisierendeIdee.getErfasser())
+                    .withErstellzeitpunkt(zuAktualisierendeIdee.getErstellzeitpunkt())
                     .withBeschreibung("Eine bearbeitete Beschreibung!")
                     .withTyp(Ideentyp.INTERNE_IDEE)
                     .withBearbeitungsstatus(Ideenstatus.AKZEPTIERT)
@@ -118,6 +122,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
             benutzerEingabenIdee = IdeeBuilder.anIdee()
                     .withTitel(zuAktualisierendeIdee.getTitel())
                     .withErfasser(zuAktualisierendeIdee.getErfasser())
+                    .withErstellzeitpunkt(zuAktualisierendeIdee.getErstellzeitpunkt())
                     .withBeschreibung("Eine bearbeitete Beschreibung!")
                     .withTyp(Ideentyp.PRODUKTIDEE)
                     .withBearbeitungsstatus(Ideenstatus.ABGELEHNT)
@@ -150,7 +155,7 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
 
     private class When{
 
-        public void ideeBearbeitenMitDerIdeeAufgerufenWird() throws IdeeExistiertNichtException {
+        public void ideeBearbeitenMitDerIdeeAufgerufenWird() throws ApiException {
             ideeService.ideeBearbeiten(benutzerEingabenIdee);
         }
     }
@@ -173,6 +178,8 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
             assertEquals(benutzerEingabenIdee.getBearbeitungsstatus(), gespeicherteIdee.getBearbeitungsstatus());
             assertEquals(benutzerEingabenIdee.getBegruendung(), gespeicherteIdee.getBegruendung());
             assertEquals(benutzerEingabenIdee.getFachspezialist(), gespeicherteIdee.getFachspezialist());
+            assertEquals(benutzerEingabenIdee.getVorteile(), gespeicherteIdee.getVorteile());
+            assertEquals(zuAktualisierendeIdee.getErstellzeitpunkt(), gespeicherteIdee.getErstellzeitpunkt());
         }
     }
 }

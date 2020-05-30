@@ -1,9 +1,6 @@
 package awe.ideeninitiative.restapi.service;
 
-import awe.ideeninitiative.exception.IdeeBereitsVeroeffentlichtException;
-import awe.ideeninitiative.exception.IdeeExistiertNichtException;
-import awe.ideeninitiative.exception.KeinFachspezialistVerfuegbarException;
-import awe.ideeninitiative.exception.KeineBefugnisFuerIdeeAenderungenException;
+import awe.ideeninitiative.exception.*;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
@@ -45,6 +42,8 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
     private ArgumentCaptor<Handlungsfeld> interneIdeeHandlungsfeldCaptor;
     private Idee idee;
 
+    private Mitarbeiter fachspezialist2, fachspezialist3;
+
     @Before
     public void setup() throws Exception {
         super.setup();
@@ -64,20 +63,20 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
     public void produktideeErfolgreichVeroeffentlicht() throws IdeeExistiertNichtException, IdeeBereitsVeroeffentlichtException, KeineBefugnisFuerIdeeAenderungenException, KeinFachspezialistVerfuegbarException {
         given.eineGespeicherteProduktideeMitSparteZusatzinformationZielgruppeUndVertriebsweg();
         given.einGemocktesIdeeRepositoryMitEinerIdee();
-       /* given.einGemocktesMitarbeiterRepoMitEinemFachspezialistenFuer();
+        given.einGemocktesMitarbeiterRepoMitEinemFachspezialistenFuerDieProduktideeVorgaben();
         when.ideeVeroeffentlichenVomErfasserDerIdeeAufgerufenWird();
         then.istDieIdeeDemFachspezialistenZugewiesen();
-        then.dieIdeeBefindetSichImStatusInBearbeitung();*/
+        then.dieIdeeBefindetSichImStatusInBearbeitung();
     }
 
     @Test
-    public void produktideeErfolgreichVeroeffentlichtMehrereVertriebswege(){
-
-    }
-
-    @Test
-    public void produktideeErfolgreichVeroeffentlichtBeiMehrerenInfragekommendenSpezialisten(){
-
+    public void produktideeErfolgreichVeroeffentlichtBeiMehrerenInfragekommendenSpezialisten() throws ApiException {
+        given.eineGespeicherteProduktideeMitSparteZusatzinformationZielgruppeUndVertriebsweg();
+        given.einGemocktesIdeeRepositoryMitEinerIdee();
+        given.einGemocktesMitarbeiterRepoMitDreiMoeglichenFachspezialistenFuerDieProduktideeVorgaben();
+        when.ideeVeroeffentlichenVomErfasserDerIdeeAufgerufenWird();
+        then.istDieIdeeDemFachspezialistenZugewiesen();
+        then.dieIdeeBefindetSichImStatusInBearbeitung();
     }
 
 
@@ -122,6 +121,53 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
             idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
             ProduktideeSparte produktideeSparte = ProduktideeSparteBuilder.aProduktideeSparte().withSparte(Sparte.HAFTPFLICHT).build();
             idee.setProduktideeSparte(produktideeSparte);
+        }
+
+        public void einGemocktesMitarbeiterRepoMitEinemFachspezialistenFuerDieProduktideeVorgaben() {
+            List<Mitarbeiter> spezialisten = new ArrayList<>();
+            einFachSpezialistMitVertriebswegDIREKTVERSICHERUNGZielgruppeSINGLESUndSparteHAFTPFLICHT();
+            spezialisten.add(fachspezialist);
+            when(mitarbeiterRepositoryMock.findDistinctByIstFachspezialistTrueAndFachspezialistVertriebswegeVertriebswegInOrFachspezialistSpartenSparteInOrFachspezialistZielgruppenZielgruppeIn(any(), any(), any())).thenReturn(spezialisten);
+        }
+
+        private void einFachSpezialistMitVertriebswegDIREKTVERSICHERUNGZielgruppeSINGLESUndSparteHAFTPFLICHT(){
+            fachspezialist.addFachspezialistVertriebsweg(Vertriebskanal.DIREKTVERSICHERUNG);
+            fachspezialist.addFachspezialistZielgruppe(Zielgruppe.SINGLES);
+            fachspezialist.addFachspezialistSparte(Sparte.HAFTPFLICHT);
+        }
+
+        private void einZweiterFachSpezialistMitEinerZugewiesenenIdee(){
+            fachspezialist2 = MitarbeiterBuilder.aMitarbeiter().withIstFachspezialist(true)
+                    .withVorname("Spezi").withBenutzername("spezi2").withNachname("Alist").withPasswort("ichkanns")
+                    .withEmail("fach2@spezi.a").build();
+            fachspezialist2.addFachspezialistVertriebsweg(Vertriebskanal.DIREKTVERSICHERUNG, Vertriebskanal.KOOPERATION_MIT_KREDITINSTITUTEN);
+            fachspezialist2.addFachspezialistZielgruppe(Zielgruppe.SINGLES, Zielgruppe.GEWERBETREIBENDE);
+            fachspezialist2.addFachspezialistSparte(Sparte.HAFTPFLICHT, Sparte.HAUSRAT);
+            Idee zugewieseneIdee = IdeeBuilder.anIdee().withTyp(Ideentyp.INTERNE_IDEE).withFachspezialist(fachspezialist2).withTitel("Zugewiesene Idee").withBearbeitungsstatus(Ideenstatus.IN_BEARBEITUNG).withBeschreibung("Toll").withErfasser(erfasser).build();
+            fachspezialist2.setZugewieseneIdeen(Arrays.asList(zugewieseneIdee));
+        }
+
+        private void einDritterFachspezialistMitZweiZugewiesenenIdeen(){
+            fachspezialist3 = MitarbeiterBuilder.aMitarbeiter().withIstFachspezialist(true)
+                    .withVorname("Spezi").withBenutzername("spezi3").withNachname("Alist").withPasswort("ichkanns")
+                    .withEmail("fach3@spezi.a").build();
+            fachspezialist3.addFachspezialistVertriebsweg(Vertriebskanal.DIREKTVERSICHERUNG, Vertriebskanal.STATIONAERER_VERTRIEB);
+            fachspezialist3.addFachspezialistZielgruppe(Zielgruppe.SINGLES, Zielgruppe.KINDER_JUGENDLICHE);
+            fachspezialist3.addFachspezialistSparte(Sparte.HAFTPFLICHT, Sparte.KFZ);
+            Idee zugewieseneIdee = IdeeBuilder.anIdee().withTyp(Ideentyp.INTERNE_IDEE).withFachspezialist(fachspezialist3).withTitel("Zugewiesene Idee1").withBearbeitungsstatus(Ideenstatus.IN_BEARBEITUNG).withBeschreibung("Toll").withErfasser(erfasser).build();
+            Idee zugewieseneIdee2 = IdeeBuilder.anIdee().withTyp(Ideentyp.INTERNE_IDEE).withFachspezialist(fachspezialist3).withTitel("Zugewiesene Idee2").withBearbeitungsstatus(Ideenstatus.IN_BEARBEITUNG).withBeschreibung("Toll").withErfasser(erfasser).build();
+            fachspezialist3.setZugewieseneIdeen(Arrays.asList(zugewieseneIdee, zugewieseneIdee2));
+        }
+
+        public void einGemocktesMitarbeiterRepoMitDreiMoeglichenFachspezialistenFuerDieProduktideeVorgaben() {
+            List<Mitarbeiter> spezialisten = new ArrayList<>();
+            einFachSpezialistMitVertriebswegDIREKTVERSICHERUNGZielgruppeSINGLESUndSparteHAFTPFLICHT();
+            spezialisten.add(fachspezialist);
+            einZweiterFachSpezialistMitEinerZugewiesenenIdee();
+            spezialisten.add(fachspezialist2);
+            einDritterFachspezialistMitZweiZugewiesenenIdeen();
+            spezialisten.add(fachspezialist3);
+            when(mitarbeiterRepositoryMock.findDistinctByIstFachspezialistTrueAndFachspezialistVertriebswegeVertriebswegInOrFachspezialistSpartenSparteInOrFachspezialistZielgruppenZielgruppeIn(any(), any(), any())).thenReturn(spezialisten);
         }
     }
 
