@@ -184,7 +184,7 @@ export default Vue.extend({
       this.$router.push({ path: "/Startseite" });
     },
   },
-  created() {
+  mounted() {
     this.idee = JSON.parse(localStorage.getItem("idee") as string);
     console.log(this.idee);
 

@@ -1,33 +1,31 @@
 <template>
   <div class="container">
-      <h2 v-if="showDetails">Bewertung</h2>
-      <div class="idee">
-        <component v-bind:is="component" v-if="showDetails"></component>
-      </div>
-      <div class="bewertungsTeil" v-if="showDetails">
-        <button id="späterBtn" v-on:click="push()" >Später bewerten</button>
-        <button id="jetztBewertenBtn" v-on:click="showModal=true, showDetails=false">Jetzt bewerten</button>
-      </div>
-      <!-- Modal.....-->
-      <transition name="fade" appear>
+    <h2 v-if="showDetails">Bewertung</h2>
+    <div class="idee">
+      <component v-bind:is="component" v-if="showDetails"></component>
+    </div>
+    <div class="bewertungsTeil" v-if="showDetails">
+      <button id="späterBtn" v-on:click="push()">Später bewerten</button>
+      <button id="jetztBewertenBtn" v-on:click="showModal=true, showDetails=false">Jetzt bewerten</button>
+    </div>
+    <!-- Modal.....-->
+    <transition name="fade" appear>
       <div class="modal-overlay" v-if="showModal">
         <div class="kopfzeile">
-          <h2>
-            Bewertung
-          </h2>
+          <h2>Bewertung</h2>
         </div>
         <div class="hauptteil">
           <!--Idee annehmen oder ablehnen-->
           <div class="entscheidung">
             <div class="annehmen">
               <label for="ideeAnnehnmen">Idee annehnmen</label>
-              <input type="radio" id="ideeAnnehmen"/>
+              <input type="radio" id="ideeAnnehmen" />
             </div>
             <div class="ablehnen">
               <label for="ideeAblehnen">Idee ablehnen</label>
-              <input type="radio" id="ideeAblehnen"/>
+              <input type="radio" id="ideeAblehnen" />
             </div>
-          </div> 
+          </div>
           <!--Bewertung der Idee-->
           <div class="bewertung">
             <label for="bewertung">Begründung:</label>
@@ -36,7 +34,10 @@
         </div>
         <div class="fußzeile">
           <button class="zurueckBtn" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
-          <button class="bewertenBtn" v-on:click="(showModal = false), (showDetails = true)">Bewertung veröffentlichen</button>
+          <button
+            class="bewertenBtn"
+            v-on:click="(showModal = false), (showDetails = true)"
+          >Bewertung veröffentlichen</button>
         </div>
       </div>
     </transition>
@@ -61,17 +62,46 @@ export default Vue.extend({
     // Modalfenster und Componentenlogik
     showModal: false,
     component: "idee",
-    showDetails:true,
+    showDetails: true,
+    // Ideevariablen
+    Ideen: [],
+    ideeObjekt: {},
   }),
   methods: {
     selectIdee() {
       // Platzhalter für später
     },
-     push: function () {
+    push: function () {
       this.$router.push({ path: "/Startseite" });
+    },
+    ladeIdee() {
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axiosInstance
+        .get("http://localhost:9090/idee/zugewiesene", config)
+        .then((res) => {
+          this.Ideen = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      this.Ideen.forEach((idee) => {
+        var json = JSON.stringify(idee)
+        localStorage.setItem("token", json);
+        console.log(json);
+      });
     },
   },
   created() {
+    this.ladeIdee();
+    this.ideeObjekt = this.Ideen[0];
   },
 });
 </script>
@@ -82,41 +112,45 @@ export default Vue.extend({
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   position: relative;
 }
-.bewertungsTeil{
+.bewertungsTeil {
   position: relative;
   display: flex;
   justify-content: space-between;
   margin: 3%;
 }
-h2{
+h2 {
   width: 100%;
   margin: auto;
   margin-bottom: 4%;
   text-align: center;
   position: relative;
 }
-.idee{
+.idee {
   text-align: left;
   position: relative;
   border: 1px solid rgb(99, 91, 91);
   padding: 1%;
 }
-.modal-overlay{
-  position:relative;
+.modal-overlay {
+  position: relative;
   width: 900px;
 }
-#bewertung{
-  width:100%;
+#bewertung {
+  width: 100%;
   height: 400px;
 }
-.hauptteil{
+.hauptteil {
   width: 100%;
 }
-.fußzeile, .annehmen, .ablehnen, .entscheidung{
+.fußzeile,
+.annehmen,
+.ablehnen,
+.entscheidung {
   display: flex;
-  
 }
-.fußzeile, .annehmen, .ablehnen{
+.fußzeile,
+.annehmen,
+.ablehnen {
   justify-content: space-between;
 }
 button {
@@ -135,42 +169,48 @@ button {
     outline: none;
   }
 }
-.entscheidung{
+.entscheidung {
   justify-content: space-around;
 }
-.annehmen{
-  color:  #00894d;
+.annehmen {
+  color: #00894d;
   width: 30%;
 }
-.ablehnen{
+.ablehnen {
   color: #f80303;
   width: 30%;
 }
-button, #bewertung, .modal-overlay, .container, .idee{
+button,
+#bewertung,
+.modal-overlay,
+.container,
+.idee {
   border-radius: 20px;
 }
-.container, .modal-overlay{
+.container,
+.modal-overlay {
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
 .zurueckBtn {
   background-color: #f80303;
 }
-.bewertenBtn{
+.bewertenBtn {
   background-color: #00894d;
 }
-.fußzeile{
+.fußzeile {
   padding: 1%;
 }
-#ideeAnnehmen, #ideeAblehnen{
+#ideeAnnehmen,
+#ideeAblehnen {
   height: 20px;
   width: 20px;
   margin-left: 10px;
   margin-top: 2px;
 }
-#jetztBewertenBtn{
+#jetztBewertenBtn {
   background-color: #00894d;
 }
-#späterBtn{
+#späterBtn {
   background-color: black;
 }
 </style>
