@@ -89,6 +89,7 @@ public class IdeeMapper {
                 .withBeschreibung(ideeDTO.getBeschreibung())
                 .withTitel(ideeDTO.getTitel())
                 .withErfasser(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getErfasser()))
+                .withErstellzeitpunkt(DatumUtil.formeStringZuDatumUm(ideeDTO.getErstellzeitpunkt()))
                 .withFachspezialist(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getFachspezialist()))
                 .withTyp(ideentyp)
         .build();

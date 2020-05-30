@@ -88,7 +88,7 @@
         <div class="zielgruppe">
           <label id="zielgruppeLbl" for="zielgruppe">Zielgruppe:</label>
           <ul id="zielgruppe" v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">
-            <li>{{ ideeZielgruppe }}</li>
+            <li>{{ zielgruppe }}</li>
           </ul>
         </div>
       </div>

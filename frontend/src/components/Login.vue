@@ -119,6 +119,7 @@ export default Vue.extend({
         .then(function (response) {});
     },
     anmelden: function (event: Event) {
+
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer/login", {
@@ -129,7 +130,6 @@ export default Vue.extend({
           const token = resp.data;
           localStorage.setItem("token", token);
           axiosInstance.defaults.headers.common["Authorization"] = token;
-
           var jwt = require("jsonwebtoken");
           var decode = jwt.decode(token);
           Params.getInstance().tokenSubject.next(decode);
