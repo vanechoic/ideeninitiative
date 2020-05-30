@@ -249,6 +249,38 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
   /benutzer:
+    get:
+      tags:
+        - benutzer
+      summary: Der Admin lädt eine Liste aller Benutzer.
+      operationId: alleBenutzerLaden
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenutzerDTO'
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: Nicht autorisiert. Sind Sie angemeldet?
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
     post:
       tags:
         - benutzer
@@ -273,6 +305,37 @@ paths:
           description: Fehlende Eingabe
           content:
             application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+    put:
+      tags:
+        - benutzer
+      summary: Die Mitarbeiterdaten (z.B. Rolle und Spezialisierungen) werden aktualisiert.
+      operationId: mitarbeiterAktualisieren
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/BenutzerDTO"
+        description: Zu aktualisierender Benutzer
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        "400":
+          description: Fehlerhafte Eingabe
+          content:
+            application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
   /benutzer/login:
@@ -329,80 +392,6 @@ paths:
       responses:
         default:
           description: erfolgreich
-  "/benutzer/{benutzername}":
-    get:
-      tags:
-        - benutzername
-      summary: Benutzerdaten zu Benutzernamen laden
-      description: ""
-      operationId: benutzerdatenAusgeben
-      parameters:
-        - name: benutzername
-          in: path
-          description: "The name that needs to be fetched. Use user1 for testing. "
-          required: true
-          schema:
-            type: string
-            pattern: '^[\wäüöÄÜÖß]+$'
-            minLength: 1
-      responses:
-        "200":
-          description: erfolgreich
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BenutzerDTO"
-        "400":
-          description: Invalid username supplied
-        "404":
-          description: User not found
-    put:
-      tags:
-        - benutzer
-      summary: Benutzerdaten aktualisieren
-      description: This can only be done by the logged in user.
-      operationId: benutzerdatenAktualisieren
-      parameters:
-        - name: benutzername
-          in: path
-          description: name that need to be updated
-          required: true
-          schema:
-            type: string
-            pattern: '^[\wäüöÄÜÖß]+$'
-            minLength: 1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/BenutzerDTO"
-        description: Updated user object
-        required: true
-      responses:
-        "400":
-          description: Invalid user supplied
-        "404":
-          description: User not found
-    delete:
-      tags:
-        - benutzer
-      summary: Benutzer löschen
-      description: This can only be done by the logged in user.
-      operationId: benutzerdatenLoeschen
-      parameters:
-        - name: benutzername
-          in: path
-          description: The name that needs to be deleted
-          required: true
-          schema:
-            type: string
-            pattern: '^[\wäüöÄÜÖß]+$'
-            minLength: 1
-      responses:
-        "400":
-          description: Invalid username supplied
-        "404":
-          description: User not found
   /systemnachricht:
     post:
       tags:
@@ -474,6 +463,26 @@ components:
         passwort:
           type: string
           minLength: 8
+        fachspezialistVertriebswege:
+          type: array
+          items:
+            type: string
+        fachspezialistHandlungsfelder:
+          type: array
+          items:
+            type: string
+        fachspezialistSparten:
+          type: array
+          items:
+            type: string
+        fachspezialistZielgruppen:
+          type: array
+          items:
+            type: string
+        istFachspezialist:
+          type: boolean
+        istAdmin:
+          type: boolean
       xml:
         name: Mitarbeiter
     IdeeDTO:
