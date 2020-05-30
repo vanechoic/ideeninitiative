@@ -33,11 +33,15 @@ public class IdeeService {
         return ideenZuErfasser;
     }
 
+    /**
+     * Stellt sicher, dass der aufrufende Benutzer ein Fachspezialist ist und gibt alle ihm zur Bearbeitung zugewiesenen Ideen zurück.
+     * @param benutzername
+     * @return Zugewiesene Ideen im Status IN_BEARBEITUNG
+     * @throws FehlendeRolleFachspezialistException
+     */
     public List<Idee> meineZugewiesenenIdeenAbrufen(String benutzername) throws FehlendeRolleFachspezialistException {
-        //TODO: Prüfen, dass für den Benutzernamen aus dem Token ein Mitarbeiter existiert. Exception, wenn nicht.
-        //TODO: WERDEN ALLE STATI GELADEN ODER NUR DIEJENIGEN, DIE NOCH BEWERTET WERDEN MÜSSEN??
         pruefeDassDerBenutzerEinFachspezialistIst(benutzername);
-        return ideeRepository.findAllByFachspezialistBenutzername(benutzername);
+        return ideeRepository.findAllByFachspezialistBenutzernameAndBearbeitungsstatusLike(benutzername, Ideenstatus.IN_BEARBEITUNG);
     }
 
     private void pruefeDassDerBenutzerEinFachspezialistIst(String benutzername) throws FehlendeRolleFachspezialistException {
@@ -49,8 +53,6 @@ public class IdeeService {
     }
 
     public Idee neueIdeeAnlegen(Idee idee){
-        //TODO: Interne Idee MUSS Handlungsfeld haben
-        //TODO: Produktidee MUSS Sparte, Zusatzinformationen und Zielgruppe haben
         return ideeRepository.save(idee);
     }
 
