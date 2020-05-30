@@ -107,7 +107,6 @@ export default Vue.extend({
   methods: {
     selectIdee(idee: any) {
       this.tempIdee = idee;
-      console.log(idee);
       localStorage.setItem("idee", JSON.stringify(this.tempIdee));
     },
     ideenFiltern() {
@@ -116,7 +115,6 @@ export default Vue.extend({
       var vw = this.vertriebsweg;
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
-      console.log("Ideen.length ", this.Ideen.length);
       return this.Ideen.filter(function (idee) {
         return it == '' || it == null || (idee as any).typ == it
       }).filter(function(idee){
@@ -131,9 +129,7 @@ export default Vue.extend({
     },
     alleIdeenladen() {
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      console.log(axiosInstance)
       axiosInstance.get("http://localhost:9090/idee").then((res) => {
-        console.log("response", res);
         this.Ideen = res.data || [];
       });
     },

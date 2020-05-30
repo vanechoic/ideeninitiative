@@ -1,6 +1,7 @@
 package awe.ideeninitiative.restapi.mapper;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
+import awe.ideeninitiative.exception.*;
 import awe.ideeninitiative.model.builder.*;
 import awe.ideeninitiative.model.enums.*;
 import awe.ideeninitiative.model.idee.*;
@@ -78,7 +79,7 @@ public class IdeeMapper {
         return null;
     }
 
-    public Idee mappeIdeeDTOZuIdee(IdeeDTO ideeDTO){
+    public Idee mappeIdeeDTOZuIdee(IdeeDTO ideeDTO) throws ApiException {
         if(ideeDTO.getTyp() == null || StringUtils.isEmpty(ideeDTO.getTyp())){
             return null;
         }
@@ -88,14 +89,16 @@ public class IdeeMapper {
                 .withBeschreibung(ideeDTO.getBeschreibung())
                 .withTitel(ideeDTO.getTitel())
                 .withErfasser(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getErfasser()))
+                .withErstellzeitpunkt(DatumUtil.formeStringZuDatumUm(ideeDTO.getErstellzeitpunkt()))
                 .withFachspezialist(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getFachspezialist()))
                 .withTyp(ideentyp)
         .build();
         //TODO: Muss ID auch gemappt werden?
+        mappeIdeeDTOVorteileZuIdeeVorteile(ideeDTO, idee);
 
         switch (ideentyp){
             case INTERNE_IDEE:
-                mappeIdeeDTOZuInterneIdeeHandlungsfeld(ideeDTO, idee);
+                mappeIdeeDTOHandlungsfeldZuInterneIdeeHandlungsfeld(ideeDTO, idee);
                 break;
             case PRODUKTIDEE:
                 mappeIdeeDTOZuProduktideeSparte(ideeDTO, idee);
@@ -109,20 +112,39 @@ public class IdeeMapper {
         return idee;
     }
 
-    private void mappeIdeeDTOZuInterneIdeeHandlungsfeld(IdeeDTO ideeDTO, Idee idee) {
+    private void mappeIdeeDTOVorteileZuIdeeVorteile(IdeeDTO ideeDTO, Idee idee) throws MaximaleAnzahlVorteileUeberschrittenException {
+        if(ideeDTO.getVorteile() != null && !ideeDTO.getVorteile().isEmpty()){
+            idee.setVorteile(mappeStringListeZuVorteile(idee, ideeDTO.getVorteile()));
+        }
+    }
+
+    private List<Vorteil> mappeStringListeZuVorteile(Idee idee, List<String> vorteileStringListe) {
+        if(idee != null && vorteileStringListe != null && !vorteileStringListe.isEmpty()){
+            List<Vorteil> vorteile = new ArrayList<>();
+            vorteileStringListe.stream().forEach(vorteilString -> vorteile.add(VorteilBuilder.aVorteil().withIdee(idee).withBeschreibung(vorteilString).build()));
+            return vorteile;
+        }
+        return null;
+    }
+
+    private void mappeIdeeDTOHandlungsfeldZuInterneIdeeHandlungsfeld(IdeeDTO ideeDTO, Idee idee) throws InterneIdeeOhneHandlungsfeldException {
         if(ideeDTO.getHandlungsfeld() != null && !StringUtils.isEmpty(ideeDTO.getHandlungsfeld())){
             InterneIdeeHandlungsfeld interneIdeeHandlungsfeld = InterneIdeeHandlungsfeldBuilder.anInterneIdeeHandlungsfeld()//
                     .withIdee(idee)
                     .withHandlungsfeld(Handlungsfeld.valueOf(ideeDTO.getHandlungsfeld().toUpperCase())).build();
             idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld);
+        } else {
+            throw new InterneIdeeOhneHandlungsfeldException(idee);
         }
     }
 
-    private void mappeIdeeDTOZuProduktideeSparte(IdeeDTO ideeDTO, Idee idee) {
+    private void mappeIdeeDTOZuProduktideeSparte(IdeeDTO ideeDTO, Idee idee) throws ProduktideeOhneSparteException {
         if(ideeDTO.getSparten() != null && !StringUtils.isEmpty(ideeDTO.getSparten())){
             ProduktideeSparte produktideeSparte = ProduktideeSparteBuilder.aProduktideeSparte()//
             .withIdee(idee).withSparte(Sparte.valueOf(ideeDTO.getSparten().toUpperCase())).build();
             idee.setProduktideeSparte(produktideeSparte);
+        } else{
+            throw new ProduktideeOhneSparteException(idee);
         }
     }
 
@@ -132,9 +154,11 @@ public class IdeeMapper {
         }
     }
 
-    private void mappeIdeeDTOZuProduktideeZielgruppen(IdeeDTO ideeDTO, Idee idee) {
-        if(ideeDTO.getZielgruppe() != null){
+    private void mappeIdeeDTOZuProduktideeZielgruppen(IdeeDTO ideeDTO, Idee idee) throws ProduktideeOhneZielgruppeException {
+        if(ideeDTO.getZielgruppe() != null && !ideeDTO.getZielgruppe().isEmpty()){
             idee.setProduktideeZielgruppe(mappeStringListeZuProduktideeZielgruppe(idee, ideeDTO.getZielgruppe()));
+        } else{
+            throw new ProduktideeOhneZielgruppeException(idee);
         }
     }
 

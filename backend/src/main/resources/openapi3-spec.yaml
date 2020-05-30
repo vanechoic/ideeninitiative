@@ -337,10 +337,50 @@ paths:
           description: Invalid username supplied
         "404":
           description: User not found
+  /systemnachricht:
+    post:
+      tags:
+        - systemnachricht
+      summary: Systemnachricht anlegen
+      operationId: systemnachrichtAnlegen
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/SystemnachrichtDTO"
+        description: Neue Systemnachricht anlegen
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
 servers:
   - url: /v2
 components:
   schemas:
+    SystemnachrichtDTO:
+      type: object
+      required:
+        - titel
+        - beschreibung
+      properties:
+        titel:
+          type: string
+          pattern: '^[^\^°=*#~,;:(){}§$%<>|''`´\/\\]*$'
+          minLength: 1
+        beschreibung:
+          type: string
+          pattern: '^[^\^°=*#~;(){}§$%<>|''`´\/\\]*$'
+          minLength: 1
     BenutzerDTO:
       type: object
       required:
