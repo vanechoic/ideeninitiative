@@ -167,7 +167,7 @@ public class IdeeMapper {
                     .withIdee(idee)//
                     .withArtDerUmsetzung(ideeDTO.getArtDerUmsetzung())//
                     .withUnternehmensbezeichnung(ideeDTO.getUnternehmensbezeichnung())//
-                    .withExistiertBereits(ideeDTO.getExistiertBereits()).build();
+                    .withExistiertBereits(ideeDTO.getExistiertBereits() == null ? false : ideeDTO.getExistiertBereits()).build();
             idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
     }
 
