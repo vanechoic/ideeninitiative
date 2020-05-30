@@ -28,8 +28,20 @@ public class IdeeService {
 
     public List<Idee> meineIdeenAbrufen(String benutzername) {
         logger.warn("IdeeService.meineIdeenAbrufen()");
+        //Prüfung, ob ein Mitarbeiter existiert geschieht im JwtRequestFilter
         List<Idee> ideenZuErfasser = ideeRepository.findAllByErfasserBenutzername(benutzername);
         return ideenZuErfasser;
+    }
+
+    public List<Idee> meineZugewiesenenIdeenAbrufen(String benutzername) throws FehlendeRolleFachspezialistException {
+        //TODO: Prüfen, dass für den Benutzernamen aus dem Token ein Mitarbeiter existiert. Exception, wenn nicht.
+        //TODO: WERDEN ALLE STATI GELADEN ODER NUR DIEJENIGEN, DIE NOCH BEWERTET WERDEN MÜSSEN??
+        pruefeDassDerBenutzerEinFachspezialistIst(benutzername);
+        return ideeRepository.findAllByFachspezialistBenutzername(benutzername);
+    }
+
+    private void pruefeDassDerBenutzerEinFachspezialistIst(String benutzername) throws FehlendeRolleFachspezialistException {
+        mitarbeiterRepository.findFirstByBenutzernameAndIstFachspezialistTrue(benutzername).orElseThrow(() -> new FehlendeRolleFachspezialistException(benutzername));
     }
 
     public List<Idee> alleIdeenAbrufen() {
@@ -49,22 +61,6 @@ public class IdeeService {
         pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(benutzername, zuLoeschendeIdee);
         ideeRepository.delete(zutreffendeIdeen.get(0));
     }
-
-    private void pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(String benutzername, Idee idee) throws KeineBefugnisFuerIdeeAenderungenException {
-        if(idee.getErfasser() == null || !idee.getErfasser().getBenutzername().equals(benutzername)){
-            throw new KeineBefugnisFuerIdeeAenderungenException(idee, benutzername);
-        }
-    }
-
-    private void pruefeObZuModifizierendeIdeeExistiert(List<Idee> zutreffendeIdeen, Idee zuModifizierendeIdee) throws IdeeExistiertNichtException{
-        if(zutreffendeIdeen == null || zutreffendeIdeen.isEmpty()){
-            throw new IdeeExistiertNichtException(zuModifizierendeIdee, 0);
-        }
-        if(zutreffendeIdeen.size() > 1){
-            throw new IdeeExistiertNichtException(zuModifizierendeIdee, zutreffendeIdeen.size());
-        }
-    }
-
 
     public void ideeBearbeiten(Idee idee) throws IdeeExistiertNichtException, MaximaleAnzahlVorteileUeberschrittenException {
         Idee zuAktualisierendeIdee = ladeIdeeAusDatenbank(idee);
@@ -86,6 +82,22 @@ public class IdeeService {
         }
         ideeRepository.save(zuAktualisierendeIdee);
     }
+
+    private void pruefeDassDieIdeeVomAuthentifiziertenBenutzerErstelltWurde(String benutzername, Idee idee) throws KeineBefugnisFuerIdeeAenderungenException {
+        if(idee.getErfasser() == null || !idee.getErfasser().getBenutzername().equals(benutzername)){
+            throw new KeineBefugnisFuerIdeeAenderungenException(idee, benutzername);
+        }
+    }
+
+    private void pruefeObZuModifizierendeIdeeExistiert(List<Idee> zutreffendeIdeen, Idee zuModifizierendeIdee) throws IdeeExistiertNichtException{
+        if(zutreffendeIdeen == null || zutreffendeIdeen.isEmpty()){
+            throw new IdeeExistiertNichtException(zuModifizierendeIdee, 0);
+        }
+        if(zutreffendeIdeen.size() > 1){
+            throw new IdeeExistiertNichtException(zuModifizierendeIdee, zutreffendeIdeen.size());
+        }
+    }
+
 
     protected Idee ladeIdeeAusDatenbank(Idee ideeWerteAusDTO) throws IdeeExistiertNichtException {
         List<Idee> zutreffendeIdeen = ideeRepository.findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(ideeWerteAusDTO.getTitel(), ideeWerteAusDTO.getErstellzeitpunkt(), ideeWerteAusDTO.getErfasser().getBenutzername());

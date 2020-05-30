@@ -24,5 +24,7 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
 
     public List<Mitarbeiter> findAllByIstFachspezialistTrueAndFachspezialistHandlungsfelderHandlungsfeldLike(Handlungsfeld handlungsfeld);
     public List<Mitarbeiter> findDistinctByIstFachspezialistTrueAndFachspezialistVertriebswegeVertriebswegInOrFachspezialistSpartenSparteInOrFachspezialistZielgruppenZielgruppeIn(List<Vertriebskanal> vertriebswege, List<Sparte> sparte, List<Zielgruppe> zielgruppen);
+
+    public Optional<Mitarbeiter> findFirstByBenutzernameAndIstFachspezialistTrue(String benutzername);
 }
 
