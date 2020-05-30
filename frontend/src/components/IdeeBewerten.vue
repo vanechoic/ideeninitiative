@@ -2,7 +2,7 @@
   <div class="container">
     <h2 v-if="showDetails">Bewertung</h2>
     <div class="idee">
-      <component v-bind:is="component" v-if="showDetails"></component>
+      <component v-bind:is="component" v-if="showDetails" :key="componentKey"></component>
     </div>
     <div class="bewertungsTeil" v-if="showDetails">
       <button id="späterBtn" v-on:click="push()">Später bewerten</button>
@@ -75,6 +75,7 @@ export default Vue.extend({
     showModal: false,
     component: "idee",
     showDetails: true,
+    componentKey: 0,
     // Ideevariablen
     ideeObjekt: {},
     Ideen: [],
@@ -114,7 +115,7 @@ export default Vue.extend({
         });
       if (ideenListe) {
         localStorage.setItem("idee", JSON.stringify(ideenListe[0]));
-        this.$forceUpdate();
+        this.forceRenderer();
 
         this.ideeObjekt = ideenListe[0];
         if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
@@ -140,6 +141,10 @@ export default Vue.extend({
   methods: {
     push: function () {
       this.$router.push({ path: "/Startseite" });
+    },
+    forceRenderer()
+    {
+      this.componentKey += 1;
     },
     bewertungVeroeffentlichen() {
       var jwt = require("jsonwebtoken");
