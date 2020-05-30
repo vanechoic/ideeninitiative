@@ -41,6 +41,7 @@
         </div>
       </div>
     </transition>
+    <button id="späterBtn" v-on:click="test()">TEST</button>
   </div>
 </template>
 
@@ -64,17 +65,13 @@ export default Vue.extend({
     component: "idee",
     showDetails: true,
     // Ideevariablen
-    Ideen: [],
+    //Ideen: this.ladeIdee(),
     ideeObjekt: {},
+    Ideen: [],
   }),
-  methods: {
-    selectIdee() {
-      // Platzhalter für später
-    },
-    push: function () {
-      this.$router.push({ path: "/Startseite" });
-    },
-    ladeIdee() {
+  asyncComputed: {
+    // a computed getter
+    async Ideen(){
       var jwt = require("jsonwebtoken");
       var decode = jwt.decode(this.token);
       let config = {
@@ -83,26 +80,36 @@ export default Vue.extend({
         },
       };
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axiosInstance
+      var ideenListe =  await axiosInstance
         .get("http://localhost:9090/idee/zugewiesene", config)
         .then((res) => {
-          this.Ideen = res.data || [];
+          return res.data || [];
         })
         .catch((err) => {
           console.log(err);
         });
-
-      this.Ideen.forEach((idee) => {
-        var json = JSON.stringify(idee)
-        localStorage.setItem("token", json);
-        console.log(json);
-      });
-    },
+        if(ideenListe){
+          localStorage.setItem("idee", JSON.stringify(ideenListe[0]));
+          this.ideeObjekt = ideenListe[0];
+        }
+        return ideenListe;
+    }
   },
-  created() {
+  methods: {
+    selectIdee() {
+      // Platzhalter für später
+    },
+    push: function () {
+      this.$router.push({ path: "/Startseite" });
+    },
+    test(){
+      console.log(this.Ideen);
+    }
+  },
+  /*created() {
     this.ladeIdee();
     this.ideeObjekt = this.Ideen[0];
-  },
+  },*/
 });
 </script>
 
