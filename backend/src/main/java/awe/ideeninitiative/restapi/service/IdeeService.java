@@ -44,6 +44,11 @@ public class IdeeService {
         return ideeRepository.findAllByFachspezialistBenutzernameAndBearbeitungsstatusLike(benutzername, Ideenstatus.IN_BEARBEITUNG);
     }
 
+    public List<Idee> meinenIdeenspeicherLaden(String benutzername) throws FehlendeRolleFachspezialistException {
+        pruefeDassDerBenutzerEinFachspezialistIst(benutzername);
+        return ideeRepository.findAllByFachspezialistBenutzernameAndBearbeitungsstatusLike(benutzername, Ideenstatus.GESPEICHERT);
+    }
+
     private void pruefeDassDerBenutzerEinFachspezialistIst(String benutzername) throws FehlendeRolleFachspezialistException {
         mitarbeiterRepository.findFirstByBenutzernameAndIstFachspezialistTrue(benutzername).orElseThrow(() -> new FehlendeRolleFachspezialistException(benutzername));
     }
