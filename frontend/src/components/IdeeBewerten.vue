@@ -19,29 +19,40 @@
           <div class="entscheidung">
             <div class="annehmen">
               <label for="ideeAnnehnmen">Idee annehnmen</label>
-              <input type="radio" id="ideeAnnehmen" />
+              <input
+                type="radio"
+                id="ideeAnnehmen"
+                name="bewerten"
+                value="AKZEPTIERT"
+                v-model="radiobutton"
+              />
             </div>
             <div class="ablehnen">
               <label for="ideeAblehnen">Idee ablehnen</label>
-              <input type="radio" id="ideeAblehnen" />
+              <input
+                type="radio"
+                id="ideeAblehnen"
+                name="bewerten"
+                value="ABGELEHNT"
+                v-model="radiobutton"
+              />
             </div>
           </div>
           <!--Bewertung der Idee-->
           <div class="bewertung">
             <label for="bewertung">Begründung:</label>
-            <textarea id="bewertung"></textarea>
+            <textarea id="bewertung" v-model="begruendung"></textarea>
           </div>
         </div>
         <div class="fußzeile">
           <button class="zurueckBtn" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
           <button
             class="bewertenBtn"
-            v-on:click="(showModal = false), (showDetails = true)"
+            v-on:click="(showModal = false), (showDetails = true), bewertungVeroeffentlichen()"
           >Bewertung veröffentlichen</button>
         </div>
       </div>
     </transition>
-    <button id="späterBtn" v-on:click="test()">TEST</button>
   </div>
 </template>
 
@@ -65,13 +76,26 @@ export default Vue.extend({
     component: "idee",
     showDetails: true,
     // Ideevariablen
-    //Ideen: this.ladeIdee(),
     ideeObjekt: {},
     Ideen: [],
+    titel: "",
+    beschreibung: "",
+    existiert: false,
+    unternehmen: "",
+    beschreibungEx: "",
+    vorteile: [],
+    ideenTyp: "",
+    sparte: "",
+    vertriebsweg: [],
+    zielgruppe: [],
+    handlungsfeld: "",
+    // Spezialist Variablen
+    radiobutton: "",
+    begruendung: "",
   }),
   asyncComputed: {
     // a computed getter
-    async Ideen(){
+    async getIdeen() {
       var jwt = require("jsonwebtoken");
       var decode = jwt.decode(this.token);
       let config = {
@@ -80,7 +104,7 @@ export default Vue.extend({
         },
       };
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      var ideenListe =  await axiosInstance
+      var ideenListe = await axiosInstance
         .get("http://localhost:9090/idee/zugewiesene", config)
         .then((res) => {
           return res.data || [];
@@ -88,28 +112,69 @@ export default Vue.extend({
         .catch((err) => {
           console.log(err);
         });
-        if(ideenListe){
-          localStorage.setItem("idee", JSON.stringify(ideenListe[0]));
-          this.ideeObjekt = ideenListe[0];
-        }
-        return ideenListe;
-    }
+      if (ideenListe) {
+        localStorage.setItem("idee", JSON.stringify(ideenListe[0]));
+        this.$forceUpdate();
+
+        this.ideeObjekt = ideenListe[0];
+        if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
+        else this.existiert = false;
+        this.ideeTyp = (this.ideeObjekt as any).typ;
+        this.titel = (this.ideeObjekt as any).titel;
+        this.erfasser = (this.ideeObjekt as any).erfasser;
+        this.beschreibung = (this.ideeObjekt as any).beschreibung;
+        this.vorteile = (this.ideeObjekt as any).vorteile;
+        this.unternehmen = (this.ideeObjekt as any).unternehmensbezeichnung;
+        this.beschreibungEx = (this.ideeObjekt as any).artDerUmsetzung;
+        this.sparte = (this.ideeObjekt as any).sparten;
+        this.vertriebsweg = (this.ideeObjekt as any).vertriebsweg;
+        this.zielgruppe = (this.ideeObjekt as any).zielgruppe;
+        this.handlungsfeld = (this.ideeObjekt as any).handlungsfeld;
+        this.ideeBearbeitungszustand = (this.ideeObjekt as any).bearbeitungsstatus;
+        this.erstelldatum = (this.ideeObjekt as any).erstellzeitpunkt;
+        if (this.vorteile == null) this.vorteile = [];
+      }
+      return ideenListe;
+    },
   },
   methods: {
-    selectIdee() {
-      // Platzhalter für später
-    },
     push: function () {
       this.$router.push({ path: "/Startseite" });
     },
-    test(){
-      console.log(this.Ideen);
-    }
+    bewertungVeroeffentlichen() {
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+
+      axiosInstance.put(
+        "http://localhost:9090/idee",
+        {
+          typ: this.ideeTyp,
+          existiertBereits: this.existiert,
+          titel: this.titel,
+          erfasser: this.erfasser,
+          erstellzeitpunkt: this.erstelldatum,
+          beschreibung: this.beschreibung,
+          vorteile: this.vorteile,
+          unternehmensbezeichnung: this.unternehmensbezeichnung,
+          artDerUmsetzung: this.beschreibungEx,
+          sparten: this.sparte,
+          vertriebsweg: this.vertriebsweg,
+          zielgruppe: this.zielgruppe,
+          handlungsfeld: this.handlungsfeld,
+          // Daten vom Spezialisten
+          bearbeitungsstatus: this.radiobutton,
+          begruendung: this.begruendung,
+        },
+        config
+      );
+    },
   },
-  /*created() {
-    this.ladeIdee();
-    this.ideeObjekt = this.Ideen[0];
-  },*/
 });
 </script>
 
