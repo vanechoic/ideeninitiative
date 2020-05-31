@@ -14,6 +14,8 @@ public final class BenutzerDTOBuilder {
     private List<String> fachspezialistHandlungsfelder = null;
     private List<String> fachspezialistSparten = null;
     private List<String> fachspezialistZielgruppen = null;
+    private Boolean istFachspezialist;
+    private Boolean istAdmin;
 
     private BenutzerDTOBuilder() {
     }
@@ -67,6 +69,16 @@ public final class BenutzerDTOBuilder {
         return this;
     }
 
+    public BenutzerDTOBuilder withIstFachspezialist(Boolean istFachspezialist) {
+        this.istFachspezialist = istFachspezialist;
+        return this;
+    }
+
+    public BenutzerDTOBuilder withIstAdmin(Boolean istAdmin) {
+        this.istAdmin = istAdmin;
+        return this;
+    }
+
     public BenutzerDTO build() {
         BenutzerDTO benutzerDTO = new BenutzerDTO();
         benutzerDTO.setBenutzername(benutzername);
@@ -78,6 +90,8 @@ public final class BenutzerDTOBuilder {
         benutzerDTO.setFachspezialistHandlungsfelder(fachspezialistHandlungsfelder);
         benutzerDTO.setFachspezialistSparten(fachspezialistSparten);
         benutzerDTO.setFachspezialistZielgruppen(fachspezialistZielgruppen);
+        benutzerDTO.setIstFachspezialist(istFachspezialist);
+        benutzerDTO.setIstAdmin(istAdmin);
         return benutzerDTO;
     }
 }

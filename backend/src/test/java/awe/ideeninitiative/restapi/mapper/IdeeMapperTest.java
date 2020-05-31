@@ -1,4 +1,4 @@
-package awe.ideeninitiative.restapi;
+package awe.ideeninitiative.restapi.mapper;
 
 import awe.ideeninitiative.api.model.IdeeDTO;
 import awe.ideeninitiative.exception.ApiException;

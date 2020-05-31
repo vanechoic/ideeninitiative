@@ -37,6 +37,8 @@ public class BenutzerMapper {
         }
         BenutzerDTO benutzer = BenutzerDTOBuilder.aBenutzerDTO().withBenutzername(mitarbeiter.getBenutzername())//
                 .withEmail(mitarbeiter.getEmail()).withVorname(mitarbeiter.getVorname())
+                .withIstFachspezialist(mitarbeiter.istFachspezialist())
+                .withIstAdmin(mitarbeiter.istAdmin())
                 .withNachname(mitarbeiter.getNachname())
                 .build();
         //Passwort wird bewusst nicht mit ans Frontend gegeben
@@ -53,8 +55,8 @@ public class BenutzerMapper {
                 .withBenutzername(benutzerDTO.getBenutzername()).withEmail(benutzerDTO.getEmail())
                 .withVorname(benutzerDTO.getVorname()).withNachname(benutzerDTO.getNachname())
                 .withPasswort(benutzerDTO.getPasswort())
-                .withIstFachspezialist(benutzerDTO.getIstFachspezialist())
-                .withIstAdmin(benutzerDTO.getIstAdmin())
+                .withIstFachspezialist(benutzerDTO.getIstFachspezialist() == null ? false : benutzerDTO.getIstFachspezialist())
+                .withIstAdmin(benutzerDTO.getIstAdmin() == null ? false : benutzerDTO.getIstAdmin())
                 //.TODO: withProfilbild(benutzerDTO.getProfilbild())
                 .build();
         mappeBenutzerDTOSpartenZuMitarbeiterSparten(benutzerDTO, mitarbeiter);
