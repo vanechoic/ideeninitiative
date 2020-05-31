@@ -108,6 +108,7 @@ export default Vue.extend({
     selectIdee(idee: any) {
       this.tempIdee = idee;
       localStorage.setItem("idee", JSON.stringify(this.tempIdee));
+      localStorage.setItem("bewerten", JSON.stringify(false));
     },
     ideenFiltern() {
       var it = this.ideenTyp;

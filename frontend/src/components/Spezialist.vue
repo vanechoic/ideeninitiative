@@ -13,8 +13,9 @@
 <script>
 import Vue from "vue"
 export default Vue.extend({
-  name: 'Spezialist'
-  
+  name: 'Spezialist',
+  methods: {
+  }
 })
 </script>
 
