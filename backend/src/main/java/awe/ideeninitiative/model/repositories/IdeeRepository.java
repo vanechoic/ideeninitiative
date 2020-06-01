@@ -13,7 +13,8 @@ import java.util.Optional;
 @Repository
 public interface IdeeRepository extends JpaRepository<Idee, Long> {
     public List<Idee> findAllByErfasserBenutzername(String benutzername);
-    public List<Idee> findAllByFachspezialistBenutzername(String benutzername);
+    public List<Idee> findAllByFachspezialistBenutzernameAndBearbeitungsstatusLike(String benutzername, Ideenstatus bearbeitungsstatus);
     public List<Idee> findAllByBearbeitungsstatusNotLike(Ideenstatus ideenstatus);
     public List<Idee> findAllByTitelAndErstellzeitpunktAndErfasserBenutzername(String titel, LocalDateTime erstellzeitpunkt, String erfasserBenutzername);
+    public Optional<Idee> findFirstByTitelAndErfasserBenutzername(String titel, String erfasser);
 }

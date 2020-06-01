@@ -33,11 +33,20 @@ public class IdeeService {
         return ideenZuErfasser;
     }
 
+    /**
+     * Stellt sicher, dass der aufrufende Benutzer ein Fachspezialist ist und gibt alle ihm zur Bearbeitung zugewiesenen Ideen zurück.
+     * @param benutzername
+     * @return Zugewiesene Ideen im Status IN_BEARBEITUNG
+     * @throws FehlendeRolleFachspezialistException
+     */
     public List<Idee> meineZugewiesenenIdeenAbrufen(String benutzername) throws FehlendeRolleFachspezialistException {
-        //TODO: Prüfen, dass für den Benutzernamen aus dem Token ein Mitarbeiter existiert. Exception, wenn nicht.
-        //TODO: WERDEN ALLE STATI GELADEN ODER NUR DIEJENIGEN, DIE NOCH BEWERTET WERDEN MÜSSEN??
         pruefeDassDerBenutzerEinFachspezialistIst(benutzername);
-        return ideeRepository.findAllByFachspezialistBenutzername(benutzername);
+        return ideeRepository.findAllByFachspezialistBenutzernameAndBearbeitungsstatusLike(benutzername, Ideenstatus.IN_BEARBEITUNG);
+    }
+
+    public List<Idee> meinenIdeenspeicherLaden(String benutzername) throws FehlendeRolleFachspezialistException {
+        pruefeDassDerBenutzerEinFachspezialistIst(benutzername);
+        return ideeRepository.findAllByFachspezialistBenutzernameAndBearbeitungsstatusLike(benutzername, Ideenstatus.GESPEICHERT);
     }
 
     private void pruefeDassDerBenutzerEinFachspezialistIst(String benutzername) throws FehlendeRolleFachspezialistException {
@@ -48,10 +57,13 @@ public class IdeeService {
         return ideeRepository.findAllByBearbeitungsstatusNotLike(Ideenstatus.ANGELEGT);
     }
 
-    public Idee neueIdeeAnlegen(Idee idee){
-        //TODO: Interne Idee MUSS Handlungsfeld haben
-        //TODO: Produktidee MUSS Sparte, Zusatzinformationen und Zielgruppe haben
+    public Idee neueIdeeAnlegen(Idee idee) throws IdeeExistiertBereitsException {
+        pruefeDassNochKeineIdeeMitGleichemTitelExistiert(idee);
         return ideeRepository.save(idee);
+    }
+
+    private void pruefeDassNochKeineIdeeMitGleichemTitelExistiert(Idee idee) throws IdeeExistiertBereitsException {
+        ideeRepository.findFirstByTitelAndErfasserBenutzername(idee.getTitel(), idee.getErfasser().getBenutzername()).orElseThrow(() -> new IdeeExistiertBereitsException(idee));
     }
 
     public void ideeLoeschen(String benutzername, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {

@@ -6,14 +6,15 @@
           <div class="overlay-links">
             <h2>Zur Anmeldung!</h2>
             <p>Bitte Benutzernamen und Passwort angeben</p>
-            <button class="invert" id="zurAnmeldung" @click="signUp = !signUp">
-              Anmelden
-            </button>
+            <button class="invert" id="zurAnmeldung" @click="signUp = !signUp">Anmelden</button>
           </div>
           <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
             <p>Bitte ihre Daten eingeben</p>
-            <button class="nichtRegistriert" @click="weiterOhneAnmeldung()">Weiter ohne Registrierung</button>
+            <button
+              class="nichtRegistriert"
+              @click="weiterOhneAnmeldung()"
+            >Weiter ohne Registrierung</button>
             <button class="invert" id="zurRegistrierung" @click="signUp = !signUp">Registrieren</button>
           </div>
         </div>
@@ -27,57 +28,23 @@
           id="benutzernameReg"
           v-model="benutzernameReg"
         />
-        <input
-          type="text"
-          placeholder="Vorname"
-          id="vorname"
-          v-model="vorname"
-        />
-        <input
-          type="text"
-          placeholder="Nachname"
-          id="nachname"
-          v-model="nachname"
-        />
-        <input
-          type="email"
-          placeholder="beispiel@email.de"
-          id="emailReg"
-          v-model="emailReg"
-        />
-        <input
-          type="password"
-          placeholder="Passwort"
-          id="passwortReg"
-          v-model="passwortReg"
-        />
+        <input type="text" placeholder="Vorname" id="vorname" v-model="vorname" />
+        <input type="text" placeholder="Nachname" id="nachname" v-model="nachname" />
+        <input type="email" placeholder="beispiel@email.de" id="emailReg" v-model="emailReg" />
+        <input type="password" placeholder="Passwort" id="passwortReg" v-model="passwortReg" />
         <button
           class="registrierung"
           id="registrierungButton"
           v-on:click="registrieren()"
           @click="signUp = !signUp"
-        >
-          Registrieren
-        </button>
+        >Registrieren</button>
       </form>
       <form class="anmelden" action="#">
         <h2>Anmeldung</h2>
         <div>Bitte geben sie ihre Benutzerdaten ein</div>
-        <input
-          type="text"
-          placeholder="Benutzername"
-          id="benutzernameAn"
-          v-model="benutzernameAn"
-        />
-        <input
-          type="password"
-          placeholder="Passwort"
-          id="passwortAn"
-          v-model="passwortAn"
-        />
-        <button class="login" id="anmeldungButton" v-on:click="anmelden()">
-          Anmelden
-        </button>
+        <input type="text" placeholder="Benutzername" id="benutzernameAn" v-model="benutzernameAn" />
+        <input type="password" placeholder="Passwort" id="passwortAn" v-model="passwortAn" />
+        <button class="login" id="anmeldungButton" v-on:click="anmelden()">Anmelden</button>
       </form>
     </div>
   </article>
@@ -100,26 +67,12 @@ export default Vue.extend({
     passwortReg: "",
     benutzernameAn: "",
     passwortAn: "",
-
-    dismissSecs: 10,
-    dismissCountDown: 0,
-    showDismissibleAlert: false,
+    // Alert Variablen
+    res: "",
+    hasError: "",
   }),
   methods: {
-    registrieren: function (event: Event) {
-      var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axiosInstance
-        .post("http://localhost:9090/benutzer", {
-          benutzername: this.benutzernameReg,
-          vorname: this.vorname,
-          nachname: this.nachname,
-          email: this.emailReg,
-          passwort: this.passwortReg,
-        })
-        .then(function (response) {});
-    },
     anmelden: function (event: Event) {
-
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
         .post("http://localhost:9090/benutzer/login", {
@@ -136,9 +89,26 @@ export default Vue.extend({
           this.$router.push("Startseite");
         });
     },
-    weiterOhneAnmeldung(){
+    registrieren() {
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axiosInstance
+        .post("http://localhost:9090/benutzer", {
+          benutzername: this.benutzernameReg,
+          vorname: this.vorname,
+          nachname: this.nachname,
+          email: this.emailReg,
+          passwort: this.passwortReg,
+        })
+        .then((response) =>
+          this.$alert(response.data, "Erfolgreich registriert", "success")
+        )
+        .catch((error) =>
+          this.$alert(error.response.data.fehlertext, "Fehler beim Registrieren", "error")
+        );
+    },
+    weiterOhneAnmeldung() {
       this.$router.push("Startseite-Mitarbeiter");
-    }
+    },
   },
   beforeCreate() {
     window.localStorage.clear();
