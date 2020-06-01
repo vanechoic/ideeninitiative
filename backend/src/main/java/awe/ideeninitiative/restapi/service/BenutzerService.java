@@ -1,6 +1,8 @@
 package awe.ideeninitiative.restapi.service;
 
-import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
+import awe.ideeninitiative.api.model.BenutzerDTO;
+import awe.ideeninitiative.exception.*;
+import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
 import awe.ideeninitiative.model.repositories.MitarbeiterRepository;
 import awe.ideeninitiative.restapi.security.JwtUtil;
@@ -15,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,5 +72,36 @@ public class BenutzerService {
         } catch (BadCredentialsException e) {
             throw new Exception("Die Kombination aus Benutzername und Passwort stimmt nicht überein.", e);
         }
+    }
+
+    public List<Mitarbeiter> alleBenutzerLaden(String benutzername) throws FehlendeRolleAdminException {
+        pruefeDassDerBenutzerEinAdminIst(benutzername);
+        return mitarbeiterRepository.findAll();
+    }
+    private void pruefeDassDerBenutzerEinAdminIst(String benutzername) throws FehlendeRolleAdminException {
+        mitarbeiterRepository.findFirstByBenutzernameAndIstAdminTrue(benutzername).orElseThrow(() -> new FehlendeRolleAdminException(benutzername));
+    }
+
+    public void mitarbeiterAktualisieren(String benutzername, Mitarbeiter mitarbeiter) throws FehlendeRolleAdminException, MitarbeiterExistiertNichtException {
+        pruefeDassDerBenutzerEinAdminIst(benutzername);
+        Mitarbeiter zuAktualisierenderMitarbeiter = ladeMitarbeiterAusDatenbank(mitarbeiter.getBenutzername());
+        //Benutzername, ID, Erstelldatum können nicht modifiziert werden. Zugewiesene und angelegte Ideen bleiben unverändert.
+        zuAktualisierenderMitarbeiter.setVorname(mitarbeiter.getVorname());
+        zuAktualisierenderMitarbeiter.setNachname(mitarbeiter.getNachname());
+        zuAktualisierenderMitarbeiter.setEmail(mitarbeiter.getEmail());
+        zuAktualisierenderMitarbeiter.setProfilbild(mitarbeiter.getProfilbild());
+        //Spezialisierungen
+        zuAktualisierenderMitarbeiter.setFachspezialistZielgruppen(mitarbeiter.getFachspezialistZielgruppen());
+        zuAktualisierenderMitarbeiter.setFachspezialistVertriebswege(mitarbeiter.getFachspezialistVertriebswege());
+        zuAktualisierenderMitarbeiter.setFachspezialistSparten(mitarbeiter.getFachspezialistSparten());
+        zuAktualisierenderMitarbeiter.setFachspezialistHandlungsfelder(mitarbeiter.getFachspezialistHandlungsfelder());
+        //Rollen
+        zuAktualisierenderMitarbeiter.setIstAdmin(mitarbeiter.istAdmin());
+        zuAktualisierenderMitarbeiter.setIstFachspezialist(mitarbeiter.istFachspezialist());
+        mitarbeiterRepository.save(zuAktualisierenderMitarbeiter);
+    }
+
+    protected Mitarbeiter ladeMitarbeiterAusDatenbank(String benutzername) throws MitarbeiterExistiertNichtException {
+        return mitarbeiterRepository.findFirstByBenutzername(benutzername).orElseThrow(() -> new MitarbeiterExistiertNichtException(benutzername));
     }
 }

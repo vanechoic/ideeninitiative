@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class FehlendeRolleFachspezialistException extends ApiException {
     public FehlendeRolleFachspezialistException(String benutzername) {
-        super(erstelleFehlertext(benutzername), HttpStatus.INTERNAL_SERVER_ERROR);
+        super(erstelleFehlertext(benutzername), HttpStatus.UNAUTHORIZED);
     }
 
     private static String erstelleFehlertext(String benutzername){
