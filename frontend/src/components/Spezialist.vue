@@ -1,10 +1,11 @@
 <template>
   <article>
     <div class="container">
+      <p class="rolle">Eingeloggt als Spezialist</p>
       <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild" />
       <button id="profilbildHochladen">Profilbild hochladen</button>
       <router-link id="ideen" to="/IdeeBewerten" tag="button">Zugewiesende Ideen</router-link>
-      <button id="ideenspeicher">Zum Ideenspeicher</button>
+      <button id="ideenspeicher" v-on:click="push()">Zum Ideenspeicher</button>
       <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
     </div>
   </article>
@@ -14,8 +15,11 @@
 import Vue from "vue"
 export default Vue.extend({
   name: 'Spezialist',
-  methods: {
-  }
+  methods:{
+    push: function () {
+      this.$router.push({ path: "/IdeenSpeicher" });
+  },
+  },
 })
 </script>
 
@@ -39,12 +43,8 @@ button {
     outline: none;
   }
 }
-#zurSystemnachricht,
 #profilbildHochladen {
   background-color: #0a0404;
-}
-#zurückZurAnmeldung {
-  background-color: #f80303;
 }
 #ideen {
   margin-right: 2px;
@@ -52,8 +52,16 @@ button {
 #ideen,
 #ideenspeicher {
   color: #000;
+  background-color: #ffdd00;
+  border: none;
 }
 #abmelden {
   background-color: #f80303;
+}
+#abmelden, #ideen, #ideenspeicher, #profilbildHochladen {
+ width: 85%;
+}
+.rolle{
+  color: #000;
 }
 </style>

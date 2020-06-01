@@ -1,10 +1,14 @@
 <template>
   <article>
     <div class="container">
-        <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild">
-        <button id="profilbildHochladen">Profilbild hochladen</button>
+      <p>Eingeloggt als Admin</p>
+      <!---->
+
+      <label for="liste">Mitarbeiter:</label>
+        <ul class="liste">
+          <li v-on:click="showModal=true"> beispiel</li>
+        </ul>
         <button id="nachrichten">Systemnachrichten lesen</button>
-        <button id="lMitabeiter">Liste der Mitarbeiter</button>
     </div>
   </article>
 </template>
