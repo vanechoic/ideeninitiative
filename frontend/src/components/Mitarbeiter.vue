@@ -1,8 +1,11 @@
 <template>
   <article>
     <div class="container">
-        <router-link to="/Systemnachricht" tag="button" id="zurSystemnachricht">Systemnachricht verfassen</router-link>
-        <router-link to="/" tag="button" id="zurückZurAnmeldung">Zurück zur Anmeldung</router-link>
+        <p class="rollen">Sie sind nicht eingeloggt</p>
+        <div class="buttons">
+          <router-link to="/Systemnachricht" tag="button" id="zurSystemnachricht">Systemnachricht verfassen</router-link>
+          <router-link to="/" tag="button" id="zurückZurAnmeldung">Zurück zur Anmeldung</router-link>
+        </div>
     </div>
   </article>
 </template>
@@ -38,5 +41,22 @@ export default {
   }
   #zurückZurAnmeldung{
     background-color:#f80303;
+  }
+  #zurückZurAnmeldung,  #zurSystemnachricht{
+    width: 80%;
+  }
+  .rollen{
+    color: black;
+    margin-top: 1%
+  }
+  .buttons{
+    margin-top:55%;
+    height: 40%;
+  }
+  .container{
+    top:0;
+    left: 0;
+    position:absolute;
+    height: 100%;
   }
 </style>

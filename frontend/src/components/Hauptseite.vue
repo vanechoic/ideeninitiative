@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="rechts">
+    <div class="rechts" id="rechts">
       <component v-bind:is="component"></component>
     </div>
   </div>
@@ -69,6 +69,7 @@ import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
 import Mitarbeiter from "@/components/Mitarbeiter.vue";
+import Admin from "@/components/Admin.vue";
 import Spezialist from "@/components/Spezialist.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
@@ -79,6 +80,7 @@ export default Vue.extend({
     registrierter: Registrierter,
     mitarbeiter: Mitarbeiter,
     spezialist: Spezialist,
+    admin: Admin,
   },
   data: () => ({
     // Auth Token
@@ -145,10 +147,17 @@ export default Vue.extend({
     var jwt = require("jsonwebtoken");
     var decode = jwt.decode(this.token);
     var rolle = decode["rollen"][0];
+    console.log(rolle);
 
     // Entsprechende Component laden, abhängig von Nutzerrolle
     if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
     else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
+    else if (rolle == "ROLE_ADMIN"){
+      this.component = "admin";
+      document.getElementById("rechts").style.width = '100%';
+      document.getElementById("rechts").style.marginLeft = '0';
+      document.getElementById("rechts").style.background = 'linear-gradient(to bottom, #efefef, #ccc)';
+    } 
     else this.component = "mitarbeiter";
   },
 });
@@ -239,7 +248,7 @@ ul,
 }
 .container {
   overflow: hidden;
-  height: 500px;
+  height: 550px;
   width: 800px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
