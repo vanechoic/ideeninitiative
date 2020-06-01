@@ -159,7 +159,7 @@ export default Vue.extend({
     showAngenommen: false,
     showAbgelehnt: false,
     showNichtBewertet: true,
-    wirdBewertet: false,
+    wirdBewertet: true,
     // Idee-Objekt
     idee: {},
     // Seitenattribute für Ideendetails
@@ -184,8 +184,11 @@ export default Vue.extend({
       this.$router.push({ path: "/Startseite" });
     },
   },
-  created() {
+  mounted() {
     this.idee = JSON.parse(localStorage.getItem("idee") as string);
+    var etc = localStorage.getItem("bewerten")
+    if (etc)
+      this.wirdBewertet = false;
     console.log(this.idee);
 
     this.ideeTyp = (this.idee as any).typ;
@@ -216,6 +219,7 @@ export default Vue.extend({
     this.ideeZielgruppe = (this.idee as any).zielgruppe;
     this.ideeHandlungsfeld = (this.idee as any).handlungsfeld;
     this.ideeBearbeitungszustand = (this.idee as any).bearbeitungsstatus;
+    localStorage.removeItem("bewerten")
   },
 });
 </script>
@@ -276,6 +280,7 @@ button,
   padding: 0.2% 1%;
   overflow: scroll;
   border: 0.5px solid #000;
+  overflow: hidden;
 }
 #ideeName,
 #bewertungLbl {
