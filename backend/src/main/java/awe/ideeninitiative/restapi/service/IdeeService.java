@@ -63,7 +63,10 @@ public class IdeeService {
     }
 
     private void pruefeDassNochKeineIdeeMitGleichemTitelExistiert(Idee idee) throws IdeeExistiertBereitsException {
-        ideeRepository.findFirstByTitelAndErfasserBenutzername(idee.getTitel(), idee.getErfasser().getBenutzername()).orElseThrow(() -> new IdeeExistiertBereitsException(idee));
+        Optional<Idee> gefundeneIdee =  ideeRepository.findFirstByTitelAndErfasserBenutzername(idee.getTitel(), idee.getErfasser().getBenutzername());
+        if(gefundeneIdee != null && gefundeneIdee.isPresent()){
+            throw new IdeeExistiertBereitsException(idee);
+        }
     }
 
     public void ideeLoeschen(String benutzername, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
