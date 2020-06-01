@@ -57,8 +57,13 @@ public class IdeeService {
         return ideeRepository.findAllByBearbeitungsstatusNotLike(Ideenstatus.ANGELEGT);
     }
 
-    public Idee neueIdeeAnlegen(Idee idee){
+    public Idee neueIdeeAnlegen(Idee idee) throws IdeeExistiertBereitsException {
+        pruefeDassNochKeineIdeeMitGleichemTitelExistiert(idee);
         return ideeRepository.save(idee);
+    }
+
+    private void pruefeDassNochKeineIdeeMitGleichemTitelExistiert(Idee idee) throws IdeeExistiertBereitsException {
+        ideeRepository.findFirstByTitelAndErfasserBenutzername(idee.getTitel(), idee.getErfasser().getBenutzername()).orElseThrow(() -> new IdeeExistiertBereitsException(idee));
     }
 
     public void ideeLoeschen(String benutzername, Idee zuLoeschendeIdee) throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {

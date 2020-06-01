@@ -56,7 +56,7 @@ public class BenutzerController implements BenutzerApi {
                 .withEmail(benutzer.getEmail())//
                 .withPasswort(benutzer.getPasswort()).build(); //TODO: Passwort verschlüsseln!
         benutzerService.mitarbeiterRegistrieren(neuerMitarbeiter);
-        return ResponseEntity.ok(neuerMitarbeiter.toString());
+        return ResponseEntity.ok(String.format("Benutzer %s wurde erfolgreich registriert.", neuerMitarbeiter.getBenutzername()));
     }
 
     @Override

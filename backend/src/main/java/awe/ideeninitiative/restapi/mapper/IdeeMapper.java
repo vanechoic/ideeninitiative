@@ -171,9 +171,8 @@ public class IdeeMapper {
             idee.setProduktideeZusatzinformation(produktideeZusatzinformation);
     }
 
-    private Mitarbeiter ermittleMitarbeiterZuBenutzernamen(String benutzername) {
-        Optional<Mitarbeiter> mitarbeiterOptional = mitarbeiterRepository.findFirstByBenutzername(benutzername);
-        return mitarbeiterOptional.isPresent() ? mitarbeiterOptional.get() : null;
+    private Mitarbeiter ermittleMitarbeiterZuBenutzernamen(String benutzername) throws MitarbeiterExistiertNichtException {
+        return mitarbeiterRepository.findFirstByBenutzername(benutzername).orElseThrow(() -> new MitarbeiterExistiertNichtException(benutzername));
     }
 
     private List<ProduktideeVertriebsweg> mappeStringListeZuProduktideeVertriebsweg(Idee idee, List<String> stringListe){
