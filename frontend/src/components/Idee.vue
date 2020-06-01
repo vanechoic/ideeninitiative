@@ -280,6 +280,7 @@ button,
   padding: 0.2% 1%;
   overflow: scroll;
   border: 0.5px solid #000;
+  overflow: hidden;
 }
 #ideeName,
 #bewertungLbl {
