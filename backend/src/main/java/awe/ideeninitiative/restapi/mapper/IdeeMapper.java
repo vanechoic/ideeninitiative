@@ -90,7 +90,7 @@ public class IdeeMapper {
                 .withTitel(ideeDTO.getTitel())
                 .withErfasser(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getErfasser()))
                 .withErstellzeitpunkt(DatumUtil.formeStringZuDatumUm(ideeDTO.getErstellzeitpunkt()))
-                .withFachspezialist(ermittleMitarbeiterZuBenutzernamen(ideeDTO.getFachspezialist()))
+                .withFachspezialist(ideeDTO.getFachspezialist() != null ? ermittleMitarbeiterZuBenutzernamen(ideeDTO.getFachspezialist()) : null)
                 .withTyp(ideentyp)
         .build();
         //TODO: Muss ID auch gemappt werden?
