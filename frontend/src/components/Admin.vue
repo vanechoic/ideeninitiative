@@ -1,135 +1,174 @@
 <template>
-  <article>
-    <div class="container">
-      <p v-if="showNachrichtenModal==false">Eingeloggt als Admin</p>
-      <!--Liste der Mitarbieter-->
-      <div class=listenTeil v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
-        <label for="liste">Mitarbeiter:</label>
-        <ul class="liste">
-          <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        </ul>
-      </div>
-      <!--Buttons-->
-      <div class="buttons" v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
+  <div class="container-fluid" name="AdminContainer">
+    <p id="anzeige-aktuelle-seite" v-if="showNachrichtenModal==false">Eingeloggt als Admin</p>
+    <!--Liste der Mitarbieter-->
+    <div class="row mitarbeiterListe" v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
+      <label class="grid-item" for="liste">Mitarbeiter:</label>
+      <ul class="liste grid-item">
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+      </ul>
+    </div>
+    <!--Buttons-->
+    <div class="row" v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
+      <div class="buttons">
         <button id="rollenBtn" v-if="mitarbeiterAusgewählt" v-on:click="showMitarbeiterModal=true">Rolle bearbeiten</button>
         <button id="nachrichten" v-on:click="showNachrichtenModal = true">Systemnachrichten lesen</button>
-      </div> 
-
-
-      <!--Mitarbeiter Modal-->
-      <transition name="fade" appear>
-        <div class="mitarbeiterModal" v-if="showMitarbeiterModal">
-          <div class="rollen">
-            <div class="rolleRegistrierter">
-              <label for="registrierter">Mitarbeiter</label>
+      </div>
+    </div> 
+    <!--Mitarbeiter Modal-->
+    <transition name="fade" appear>
+      <div class="mitarbeiterModal" v-if="showMitarbeiterModal">
+        <div class="rollen">
+          <div class="row">
+            <p class="grid-item" id="mitarbeiterName"><!--{{}}--> Hier soll der Name stehen</p>
+          </div>
+          <div class="row">
+            <div class="rolleMitarbeiter">
+              <label for="registrierter" class="grid-item rolleLbl">Mitarbeiter:</label>
               <input
                 type="radio"
                 id="registrierter"
+                class="grid item"
                 name="Nutzerrollen"
                 value="ROLE_MITARBEITER"
                 v-model="radiobutton"
-                v-on:click="showSpezialisierung = false"
+                v-on:click="showSpezialisierung = false, showAuenderungBestätigt=true"
               />
             </div>
+          </div>
+          <div class="row">
             <div class="rolleSpezialist">
-              <label for="spezialist">Fachspezialist</label>
+              <label for="spezialist" class="grid-item rolleLbl">Fachspezialist:</label>
               <input
                 type="radio"
                 id="spezialist"
+                class="grid-item"
                 name="Nutzerrollen"
                 value="ROLE_FACHSPEZIALIST"
                 v-model="radiobutton"
-                v-on:click="showSpezialisierung = true"
+                v-on:click="showSpezialisierung = true, showAuenderungBestätigt=true"
               />
             </div>
+          </div>
+          <div class="row rolleAdmin">
             <div class="rolleAdmin">
-              <label for="admin">Admin</label>
+              <label for="admin" class="grid-item rolleLbl">Admin:</label>
               <input
                 type="radio"
                 id="admin"
+                class="grid-item"
                 name="Nutzerrollen"
                 value="ROLE_ADMIN"
                 v-model="radiobutton"
-                v-on:click="showSpezialisierung = false"
+                v-on:click="showSpezialisierung = false, showAuenderungBestätigt=true"
               />
             </div>
           </div>
-          <!--Spezialisierungen Dropdown-->
-          <div class="spezialisierungen" v-if="showSpezialisierung == true">
-            <label for="spezialisierung1">Sparte:</label>
-            <select id="spezialisierung1" v-model="sparte">
-              <option value disabled selected>Sparte</option>
-              <option value="KFZ">KFZ</option>
-              <option value="UNFALL">Unfall</option>
-              <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
-              <option value="RECHTSSCHUTZ">Rechtsschutz</option>
-              <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
-              <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
-              <option value="HAFTPFLICHT">Haftpflicht</option>
-              <option value="HAUSRAT">Hausrat</option>
-              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
-            </select>
-            <label for="spezialisierung2">Vertriebsweg:</label>
-            <select id="spezialisierung2" v-model="vertriebsweg">
-              <option value disabled selected>Vertriebsweg</option>
-              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
-              <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
-              <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
-            </select>
-            <label for="spezialisierung3">Zielgruppe:</label>
-            <select id="spezialisierung3" v-model="zielgruppe">
-              <option value disabled selected>Zielgruppe</option>
-              <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
-              <option value="FAMILIEN">Familien</option>
-              <option value="SINGLES">Singles</option>
-              <option value="PAARE">Paare</option>
-              <option value="PERSONEN_50PLUS">Personen 50+</option>
-              <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
-            </select>
-            <label for="spezialisierung4">Handlungsfeld:</label>
-            <select id="spezialisierung4" v-model="handlungsfeld">
-              <option value disabled selected>Handlungsfeld</option>
-              <option value="KOSTENSENKUNG">Kostensenkung</option>
-              <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
-              <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
-            </select>
-          </div>
-          <!--MitarbeiterModal Buttons-->
-          <div class="mitarbeiterModalButtons">
-            <button class="zurückBtn" v-on:click="showMitarbeiterModal = false">Zurück</button>
-            <button id="rolleBestätigenBtn">Änderung bestätigen</button>
+        </div>
+        <!--Spezialisierungen Dropdown-->
+        <div class="row" v-if="showSpezialisierung == true">
+          <div class="spezialisierungsDropdown">
+            <div class="combobox">
+              <label for="spezialisierung1" class="grid-item">Sparte:</label>
+              <select id="spezialisierung1" class="grid-item" v-model="sparte" multiple>
+                <option value="KFZ">KFZ</option>
+                <option value="UNFALL">Unfall</option>
+                <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
+                <option value="RECHTSSCHUTZ">Rechtsschutz</option>
+                <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
+                <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
+                <option value="HAFTPFLICHT">Haftpflicht</option>
+                <option value="HAUSRAT">Hausrat</option>
+                <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+              </select>
+            </div>
+            <div class="combobox">
+              <label for="spezialisierung2" class="grid-item">Vertriebsweg:</label>
+              <select id="spezialisierung2" class="grid-item" v-model="vertriebsweg" multiple>
+                <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+                <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
+                <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+                <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
+              </select>
+            </div>
+            <div class="combobox">
+              <label for="spezialisierung3" class="grid-item">Zielgruppe:</label>
+              <select id="spezialisierung3" class="grid-item" v-model="zielgruppe" multiple>
+                <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+                <option value="FAMILIEN">Familien</option>
+                <option value="SINGLES">Singles</option>
+                <option value="PAARE">Paare</option>
+                <option value="PERSONEN_50PLUS">Personen 50+</option>
+                <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
+              </select>
+            </div>
+            <div class="combobox">
+              <label for="spezialisierung4" class="grid-item">Handlungsfeld:</label>
+              <select id="spezialisierung4" class="grid-item" v-model="handlungsfeld" multiple>
+                <option value="KOSTENSENKUNG">Kostensenkung</option>
+                <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
+                <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
+              </select>
+            </div>
           </div>
         </div>
-      </transition>
-      <!--Nachrichten Modal-->
-      <transition name="fade" appear>
-        <div class="NachrichtenModal" v-if="showNachrichtenModal">
-          <p>Systemnachrichten</p>
-          <!--Nachrichen Liste-->
-          <div class="systemnachrichten" v-if="nachrichtLesen == false">
-            <label for="liste">Empfangende Nachrichten:</label>
-            <ul class="liste">
-              <li v-on:click="systemnachrichtAusgewählt = true"> beispiel</li>
-            </ul>
+        <!--MitarbeiterModal Buttons-->
+        <div class="row">
+          <div class="buttons">
+            <button class="zurueckBtn grid-item" v-on:click="showMitarbeiterModal = false, mitarbeiterAusgewählt= false, showAuenderungBestätigt=false">Zurück</button>
+            <button id="rolleBestätigenBtn" class="grid-item" v-if="showAuenderungBestätigt">Änderung bestätigen</button>
           </div>
-          <div class="systemnachrichtDarstellen" v-if="nachrichtLesen == true">
-            <div id="Betreff"><!--{{}}-->Toller Betreff</div>
-            <div id="text"><!--{{}}-->Text der Nachricht</div>
-            <button class="zurückButton" v-on:click="nachrichtLesen=false">Zurück</button>
-          </div>
-          <div class="systemnachrichtButtons" v-if="systemnachrichtAusgewählt == true && nachrichtLesen==false">
-            <button id="nachrichtLöschenBtn">Nachricht löschen</button>
-            <button id="nachrichtLesenBtn" v-on:click="nachrichtLesen= true">Nachricht lesen</button>
-          </div>
-          <button class="zurückButton" v-on:click="showNachrichtenModal=false" v-if="nachrichtLesen==false">Zurück</button>
         </div>
-      </transition>
-      <div class="abmelden" v-if="showNachrichtenModal == false && showMitarbeiterModal==false">
-        <router-link id="abmelden" :to="{ path: '/' }" replace tag="button" @click="logout()">Abmelden</router-link>
+      </div>
+    </transition>
+    <!--Nachrichten Modal-->
+    <transition name="fade" appear>
+      <div class="nachrichtenModal" v-if="showNachrichtenModal">
+        <p class="anzeige-aktuelle-seite">Systemnachrichten</p>
+        <!--Nachrichen Liste-->
+        <div class="row nachrichtenListe" v-if="nachrichtLesen == false">
+          <label for="liste" class="grid-item">Empfangende Nachrichten:</label>
+          <ul class="liste grid-item">
+            <li v-on:click="systemnachrichtAusgewählt = true"> beispiel</li>
+          </ul>
+        </div>
+        <!--Nachricht Details-->
+        <div class="row nachrichtLesen" v-if="nachrichtLesen == true">
+          <div class="nachrichtDetails">
+            <label for="betreff" id="betreffLbl">Betreff:</label>
+            <div id="betreff" class="grid-item"><!--{{}}-->Toller Betreff</div>
+            <label for="text">Nachricht:</label>
+            <div id="text" class="grid-item"><!--{{}}-->Text der Nachricht</div>
+            <div class="buttons">
+              <button class="zurueckBtn  grid-item" v-on:click="nachrichtLesen=false, systemnachrichtAusgewählt=false">Zurück</button>
+            </div>
+          </div>
+        </div>
+        <div class="row" v-if="systemnachrichtAusgewählt == true && nachrichtLesen==false">
+          <div class="buttons">
+            <button id="nachrichtLöschenBtn" class="grid-item">Nachricht löschen</button>
+            <button id="nachrichtLesenBtn" class="grid-item" v-on:click="nachrichtLesen= true">Nachricht lesen</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="buttons">
+            <button class="zurueckBtn grid-item" v-on:click="showNachrichtenModal=false, systemnachrichtAusgewählt=false" v-if="nachrichtLesen==false">Zurück</button>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <div class="row" v-if="showNachrichtenModal == false && showMitarbeiterModal==false">
+      <div class="buttons">
+        <router-link id="abmelden" :to="{ path: '/' }" replace tag="button" @click="logout()" class="grid-item">Abmelden</router-link>
       </div>
     </div>
-  </article>
+  </div>
 </template>
 <script>
 import Vue from "vue";
@@ -145,6 +184,7 @@ export default Vue.extend({
     showSpezialisierung: false,
     systemnachrichtAusgewählt: false,
     nachrichtLesen: false,
+    showAuenderungBestätigt: false
   }),
   methods:{
     logout: function(){
@@ -155,14 +195,130 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
- .container{
-    position: relative;
-    background: linear-gradient(to bottom, #efefef, #ccc);
-    border-radius: 20px;
-    overflow: hidden;
-    height: 550px;
-    width: 800px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+$medium-green: #00894d;
+$light-green: #69a82f;
+.spezialisierungsDropdown,
+select {
+  width: 100%;
 }
+p,
+label,
+button {
+  font-size: 1rem;
+}
+.container-fluid {
+  height: 100%;
+}
+.container-fluid,
+button, #betreff, #text {
+  border-radius: 20px;
+}
+.container-fluid {
+  overflow: hidden;
+}
+.combobox{
+  margin-right: 2px;
+}
+.container-fluid {
+  width: 800px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #efefef, #ccc);
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.spezialisierungsDropdown {
+  display: flex;
+  justify-content: space-between;
+}
+.buttons {
+  padding: 1%;
+  margin: auto;
+}
+#rollenBtn, #nachrichtLesenBtn, #rolleBestätigenBtn {
+  background-color: $light-green;
+  border: none;
+}
+#nachrichten, #nachrichtLöschenBtn {
+  border: 1.5px solid #8300008e;
+  color: #830000d5;
+  font-size: 1rem;
+}
+button {
+  border: 1px solid #fff;
+  font-weight: bold;
+  padding: 2px 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+select {
+  font-size: 0.8rem;
+}
+#anzeige-aktuelle-seite {
+  text-align: center;
+  color: grey;
+  line-height: 2;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+}
+.zurueckBtn, #abmelden {
+  color: #fff;
+  background-color: #f80303;
+}
+#betreff, #text {
+  background: #fff;
+  border: 1px solid #ccc;
+  width: 100%;
+  padding: 1%;
+}
+#text{
+  height: 80%;
 
+}
+.nachrichtDetails{
+  width: 100%;
+  height:100%
+}
+ul{
+  width: 100%;
+  height: 85%;
+  background: #fff;
+  margin: 0;
+  padding-bottom: 0;
+  overflow:hidden; 
+  overflow-y:scroll;
+}
+li{
+  padding: 1px;
+}
+.row{
+  display:flex;
+  justify-content: space-between;
+}
+.mitarbeiterListe{
+  height: 68%;
+}
+#mitarbeiterName{
+  margin: auto;
+  font-size: 1.2rem;
+}
+.mitarbeiterModal{
+  height: 85%;
+}
+.rolleMitarbeiter, .rolleSpezialist, .rolleAdmin{
+  width: 100%;
+}
+.nachrichtenModal,.nachrichtenListe{
+  height: 85%;
+}
+.nachrichtLesen{
+  height: 85%;
+}
 </style>

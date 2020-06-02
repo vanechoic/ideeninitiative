@@ -6,6 +6,8 @@
 </template>
 
 <style lang="scss">
+$medium-green: #00894d;
+$light-green: #69a82f;
 body {
   margin: 0;
   padding: 0;
@@ -21,7 +23,6 @@ h1, h2, h3, h4, h5, h6{
   color: #00894d;
   background-color: #104227;
   width: 100%;
-  //height: 80em;
   height: 100%;
   padding: 1%;
   display: flex;
@@ -45,5 +46,21 @@ select{
   border: none;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;
   border-radius: 20px;
+}
+ul {
+  height: 100%;
+  border-radius: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-indent: 10px;
+}
+li {
+  border: none;
+  line-height: 30px;
+  color: $medium-green;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 </style>
