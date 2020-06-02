@@ -196,30 +196,36 @@ export default Vue.extend({
       };
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axios.post(
-        "http://localhost:9090/idee/veroeffentlichen",
-        {
-          typ: this.ideeTyp,
-          existiertBereits: this.ideeExistiert,
-          titel: this.ideeTitel,
-          erfasser: this.ideeErsteller,
-          erstellzeitpunkt: this.ideeErstellt,
-          beschreibung: this.ideeBeschreibung,
-          vorteile: this.ideeVorteile,
-          unternehmensbezeichnung: this.ideeUnternehmen,
-          artDerUmsetzung: this.ideeExistiertBeschreibung,
-          sparten: this.ideeSparte,
-          vertriebsweg: this.ideeVertriebskanal,
-          zielgruppe: this.ideeZielgruppe,
-          handlungsfeld: this.ideeHandlungsfeld,
-          bearbeitungsstatus: this.ideeBearbeitungszustand,
-        },
-        config
-      ).then((response) =>
-          this.$alert("", "Idee erfolgreich veröffentlicht", "success")
+      axios
+        .post(
+          "http://localhost:9090/idee/veroeffentlichen",
+          {
+            typ: this.ideeTyp,
+            existiertBereits: this.ideeExistiert,
+            titel: this.ideeTitel,
+            erfasser: this.ideeErsteller,
+            erstellzeitpunkt: this.ideeErstellt,
+            beschreibung: this.ideeBeschreibung,
+            vorteile: this.ideeVorteile,
+            unternehmensbezeichnung: this.ideeUnternehmen,
+            artDerUmsetzung: this.ideeExistiertBeschreibung,
+            sparten: this.ideeSparte,
+            vertriebsweg: this.ideeVertriebskanal,
+            zielgruppe: this.ideeZielgruppe,
+            handlungsfeld: this.ideeHandlungsfeld,
+            bearbeitungsstatus: this.ideeBearbeitungszustand,
+          },
+          config
         )
+        .then((response) => {
+          this.$alert("", "Idee erfolgreich veröffentlicht", "success");
+        })
         .catch((error) =>
-          this.$alert(error.response.data.fehlertext, "Fehler beim Veröffentlichen", "error")
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Veröffentlichen",
+            "error"
+          )
         );
     },
     ideeLoeschen() {
@@ -237,27 +243,38 @@ export default Vue.extend({
         },
       };
 
-      axiosInstance.post(
-        "http://localhost:9090/idee/loeschen",
-        {
-          typ: this.ideeTyp,
-          existiertBereits: this.ideeExistiert,
-          titel: this.ideeTitel,
-          erfasser: this.ideeErsteller,
-          erstellzeitpunkt: this.ideeErstellt,
-          beschreibung: this.ideeBeschreibung,
-          vorteile: this.ideeVorteile,
-          unternehmensbezeichnung: this.ideeUnternehmen,
-          artDerUmsetzung: this.ideeExistiertBeschreibung,
-          sparten: this.ideeSparte,
-          vertriebsweg: this.ideeVertriebskanal,
-          zielgruppe: this.ideeZielgruppe,
-          handlungsfeld: this.ideeHandlungsfeld,
-          bearbeitungsstatus: this.ideeBearbeitungszustand,
-        },
-        config
-      );
-      this.meineIdeenladen();
+      axiosInstance
+        .post(
+          "http://localhost:9090/idee/loeschen",
+          {
+            typ: this.ideeTyp,
+            existiertBereits: this.ideeExistiert,
+            titel: this.ideeTitel,
+            erfasser: this.ideeErsteller,
+            erstellzeitpunkt: this.ideeErstellt,
+            beschreibung: this.ideeBeschreibung,
+            vorteile: this.ideeVorteile,
+            unternehmensbezeichnung: this.ideeUnternehmen,
+            artDerUmsetzung: this.ideeExistiertBeschreibung,
+            sparten: this.ideeSparte,
+            vertriebsweg: this.ideeVertriebskanal,
+            zielgruppe: this.ideeZielgruppe,
+            handlungsfeld: this.ideeHandlungsfeld,
+            bearbeitungsstatus: this.ideeBearbeitungszustand,
+          },
+          config
+        )
+        .then((response) => {
+          this.$alert("", "Idee erfolgreich gelöscht", "success");
+          this.meineIdeenladen();
+        })
+        .catch((error) =>
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Löschen",
+            "error"
+          )
+        );
     },
   },
   created() {
@@ -269,7 +286,8 @@ export default Vue.extend({
 <style lang="scss" scoped>
 $medium-green: #00894d;
 $light-green: #69a82f;
-.container, .links,
+.container,
+.links,
 .rechts {
   height: 100%;
 }
@@ -386,7 +404,7 @@ button {
   //border: 1px solid #fff;
   padding: 10px 40px;
   margin-top: 10px;
-  &:hover{
+  &:hover {
     background-color: #555;
   }
 }

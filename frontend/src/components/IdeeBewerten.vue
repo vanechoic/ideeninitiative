@@ -118,6 +118,9 @@ export default Vue.extend({
         this.forceRenderer();
 
         this.ideeObjekt = ideenListe[0];
+        console.log("ideeObjekt: " , this.ideeObjekt)
+        console.log("spezi: " , this.fachspezialist)
+        this.fachspezialist = (this.ideeObjekt as any).fachspezialist;
         if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
         else this.existiert = false;
         this.ideeTyp = (this.ideeObjekt as any).typ;
@@ -131,8 +134,7 @@ export default Vue.extend({
         this.vertriebsweg = (this.ideeObjekt as any).vertriebsweg;
         this.zielgruppe = (this.ideeObjekt as any).zielgruppe;
         this.handlungsfeld = (this.ideeObjekt as any).handlungsfeld;
-        this.ideeBearbeitungszustand = (this
-          .ideeObjekt as any).bearbeitungsstatus;
+        this.ideeBearbeitungszustand = (this.ideeObjekt as any).bearbeitungsstatus;
         this.erstelldatum = (this.ideeObjekt as any).erstellzeitpunkt;
         if (this.vorteile == null) this.vorteile = [];
       }
@@ -149,10 +151,11 @@ export default Vue.extend({
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       };
-
+      console.log(this.ideeObjekt)
       axiosInstance.put(
         "http://localhost:9090/idee",
         {
+          fachspezialist: this.fachspezialist,
           typ: this.ideeTyp,
           existiertBereits: this.existiert,
           titel: this.titel,
@@ -188,6 +191,7 @@ export default Vue.extend({
       axiosInstance.put(
         "http://localhost:9090/idee",
         {
+          fachspezialist: this.fachspezialist,
           typ: this.ideeTyp,
           existiertBereits: this.existiert,
           titel: this.titel,
