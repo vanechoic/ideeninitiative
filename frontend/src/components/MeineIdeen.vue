@@ -9,7 +9,7 @@
               v-for="idee in ideenFiltern()"
               :key="idee"
               v-on:click="showModal = true, selectIdee(idee)"
-            >{{idee.titel}} von {{idee.erfasser}}</li>
+            >{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus}}</li>
           </ul>
         </div>
         <!--3 Filter Dropdowns -->
@@ -216,7 +216,12 @@ export default Vue.extend({
           bearbeitungsstatus: this.ideeBearbeitungszustand,
         },
         config
-      );
+      ).then((response) =>
+          this.$alert("", "Idee erfolgreich veröffentlicht", "success")
+        )
+        .catch((error) =>
+          this.$alert(error.response.data.fehlertext, "Fehler beim Veröffentlichen", "error")
+        );
     },
     ideeLoeschen() {
       console.log(this.tempIdee as any);
