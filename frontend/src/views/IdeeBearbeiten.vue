@@ -1,5 +1,5 @@
 <template>
-  <div class="Ideebearbeiten">
+  <div class="idee-bearbeiten">
     <IdeeBearbeiten msg=""/>
   </div>
 </template>
@@ -14,3 +14,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.idee-bearbeiten{
+  height: 90%; //größer, weil mehr Inhalt
+  margin: auto;
+}
+</style>

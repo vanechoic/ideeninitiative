@@ -10,14 +10,19 @@ body {
   margin: 0;
   padding: 0;
 }
+h1, h2, h3, h4, h5, h6{
+  width: 100%;
+  text-align: center;
+}
 #app {
   position: absolute;
-  font-family: Tahoma;
+  font-family: Tahoma, sans-serif;
   font-size: 1.2rem;
   color: #00894d;
   background-color: #104227;
   width: 100%;
-  height: 80em;
+  //height: 80em;
+  height: 100%;
   padding: 1%;
   display: flex;
   justify-content: center;
@@ -27,5 +32,18 @@ body {
 }
 .example::-webkit-scrollbar {
   display: none;
+}
+input, textarea{
+  padding: 5px 15px;
+  border: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;
+  border-radius: 20px;
+}
+select{
+  font-size: 14px !important;
+  padding: 5px;
+  border: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;
+  border-radius: 20px;
 }
 </style>

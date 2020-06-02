@@ -1,128 +1,123 @@
 <template>
-  <article>
-    <div class="container-fluid" name="IdeeBearbeitenContainer">
-      <h1>Idee bearbeiten</h1>
-      <div class="row">
-        <!-- Ideen Titel/Name -->
-        <h2>Titel</h2>
-        <div class="titel">
-          <label id="ideeName">{{ titel }}</label>
-        </div>
+  <div class="container-fluid" name="IdeeBearbeitenContainer">
+    <div id="anzeige-aktuelle-seite">Idee bearbeiten</div>
+    <!-- Ideen Titel/Name -->
+    <h3 id="titel">{{titel}}</h3>
+    <div>
+      <!-- Beschreibungstext -->
+      Beschreibung
+      <div class="beschreibung grid-item">
+        <textarea id="beschreibungsText" v-model="beschreibung"></textarea>
       </div>
-      <div class="row">
-        <!-- Beschreibungstext -->
-        <h2>Beschreibungstext</h2>
-        <div class="beschreibung">
-          <textarea id="beschreibungsText" v-model="beschreibung"></textarea>
-        </div>
-      </div>
-      <!--  <div class="row">
+    </div>
+    <!--  <div class="row">
         Datei Upload 
         <h2>Datei Upload</h2>
         <div class="dateien">
           <input type="file" />
         </div>
-      </div>-->
-      <div class="row">
-        <!-- Vorteile -->
-        <h2>Vorteile</h2>
-        <div class="vorteile">
-          <input id="vorteile" type="text" v-model="vorteilText" />
-          <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">-</button>
-          <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+</button>
-          <br />
-          <select v-model="selectedVorteil" multiple id="selectVorteile">
-            <option
-              v-for="vorteil in vorteile"
-              :key="vorteil"
-              @click="vorteilSelection(vorteil)"
-            >{{ vorteil }}</option>
-          </select>
-        </div>
+    </div>-->
+
+    <!-- Vorteile -->
+    Vorteile
+    <div class="grid-row">
+      <div class="vorteile grid-item vorteile-input">
+        <input id="vorteile" type="text" v-model="vorteilText"/>
+        <select v-model="selectedVorteil" multiple id="selectVorteile">
+          <option
+            v-for="vorteil in vorteile"
+            :key="vorteil"
+            @click="vorteilSelection(vorteil)"
+          >{{ vorteil }}</option>
+        </select>
       </div>
-      <div class="row">
-        <!-- Existierende Idee - Checkbox -->
-        <div class="existiert" v-bind:class="[existiertAktiv]">
-          <p for="existiertBereits">Existiert eine vergleichbare Idee?</p>
-          <input
-            type="checkbox"
-            v-model="existiert"
-            id="existiertBereits"
-            v-on:click="existiert = true"
-          />
-          <div class="existiertInfo" v-if="existiert">
-            <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
-            <input type="text" id="unternehmen" v-model="unternehmen" />
-            <label
-              id="beschreibungsTextExistiertLbl"
-              for="beschreibungsTextExistiert"
-            >Beschreibung wie die diese Idee schon umgesetzt ist:</label>
-            <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx"></textarea>
-          </div>
-        </div>
+      <div class="grid-item">
+        <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+ hinzufügen</button>
+        <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">- entfernen</button>
       </div>
-      <div class="row">
-        <!--Comboboxen zur Ideen-Spezifikation -->
-        <div class="ideenDropdowns">
-          <div class="combobox">
-            <p>Ideen-Typ</p>
-            <select v-model="ideenTyp" @click="ideeSelection()">
-              <option value="PRODUKTIDEE">Produktidee</option>
-              <option value="INTERNE_IDEE">Interne Idee</option>
-            </select>
-          </div>
-          <div class="combobox" v-bind:class="[sparteAktiv]">
-            <p>Sparte</p>
-            <select v-model="sparte">
-              <option value="KFZ">KFZ</option>
-              <option value="UNFALL">Unfall</option>
-              <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
-              <option value="RECHTSSCHUTZ">Rechtsschutz</option>
-              <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
-              <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
-              <option value="HAFTPFLICHT">Haftpflicht</option>
-              <option value="HAUSRAT">Hausrat</option>
-              <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
-            </select>
-          </div>
-          <div class="combobox" v-bind:class="[vertriebswegAktiv]">
-            <p>Vertriebsweg</p>
-            <select v-model="vertriebsweg" multiple>
-              <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
-              <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
-              <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
-              <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
-            </select>
-          </div>
-          <div class="combobox" v-bind:class="[zielgruppeAktiv]">
-            <p>Zielgruppen</p>
-            <select v-model="zielgruppe" multiple>
-              <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
-              <option value="FAMILIEN">Familien</option>
-              <option value="SINGLES">Singles</option>
-              <option value="PAARE">Paare</option>
-              <option value="PERSONEN_50PLUS">Personen 50+</option>
-              <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
-            </select>
-          </div>
-          <div class="combobox" v-bind:class="[handlungsfelderAktiv]">
-            <p>Handlungsfelder</p>
-            <select v-model="handlungsfeld">
-              <option value="KOSTENSENKUNG">Kostensenkung</option>
-              <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
-              <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="buttons">
-          <button id="entfernen" @click="goBack()">Abbrechen</button>
-          <button id="hinzu" @click="ideeSpeichern()">Speichern</button>
+    </div>
+    <div class="row">
+      <!-- Existierende Idee - Checkbox -->
+      <div class="existiert" v-bind:class="[existiertAktiv]">
+        <p for="existiertBereits">Existiert eine vergleichbare Idee?</p>
+        <input
+          type="checkbox"
+          v-model="existiert"
+          id="existiertBereits"
+          v-on:click="existiert = true"
+        />
+        <div class="existiertInfo" v-if="existiert">
+          <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
+          <input type="text" id="unternehmen" v-model="unternehmen" />
+          <label
+            id="beschreibungsTextExistiertLbl"
+            for="beschreibungsTextExistiert"
+          >Beschreibung wie die diese Idee schon umgesetzt ist:</label>
+          <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx"></textarea>
         </div>
       </div>
     </div>
-  </article>
+    <div class="row">
+      <!--Comboboxen zur Ideen-Spezifikation -->
+      <div class="ideenDropdowns">
+        <div class="combobox">
+          <p>Ideen-Typ</p>
+          <select v-model="ideenTyp" @click="ideeSelection()">
+            <option value="PRODUKTIDEE">Produktidee</option>
+            <option value="INTERNE_IDEE">Interne Idee</option>
+          </select>
+        </div>
+        <div class="combobox" v-bind:class="[sparteAktiv]">
+          <p>Sparte</p>
+          <select v-model="sparte">
+            <option value="KFZ">KFZ</option>
+            <option value="UNFALL">Unfall</option>
+            <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
+            <option value="RECHTSSCHUTZ">Rechtsschutz</option>
+            <option value="LEBENSVERSICHERUNG">Lebensversicherung</option>
+            <option value="RENTENVERSICHERUNG">Rentenversicherung</option>
+            <option value="HAFTPFLICHT">Haftpflicht</option>
+            <option value="HAUSRAT">Hausrat</option>
+            <option value="WOHNGEBAUEDEVERSICHERUNG">Wohngebäudeversicherung</option>
+          </select>
+        </div>
+        <div class="combobox" v-bind:class="[vertriebswegAktiv]">
+          <p>Vertriebsweg</p>
+          <select v-model="vertriebsweg" multiple>
+            <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+            <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
+            <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
+            <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
+          </select>
+        </div>
+        <div class="combobox" v-bind:class="[zielgruppeAktiv]">
+          <p>Zielgruppen</p>
+          <select v-model="zielgruppe" multiple>
+            <option selected value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
+            <option value="FAMILIEN">Familien</option>
+            <option value="SINGLES">Singles</option>
+            <option value="PAARE">Paare</option>
+            <option value="PERSONEN_50PLUS">Personen 50+</option>
+            <option value="GEWERBETREIBENDE">Gewerbetreibende</option>
+          </select>
+        </div>
+        <div class="combobox" v-bind:class="[handlungsfelderAktiv]">
+          <p>Handlungsfelder</p>
+          <select v-model="handlungsfeld">
+            <option value="KOSTENSENKUNG">Kostensenkung</option>
+            <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
+            <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="buttons">
+        <button id="entfernen" @click="goBack()">Abbrechen</button>
+        <button id="hinzu" @click="ideeSpeichern()">Speichern</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -272,11 +267,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+$medium-green: #00894d;
+$light-green: #69a82f;
 .beschreibung,
 .beschreibung textarea,
-.dateien,
-.row,
-.titel,
+.dateien, .ideeButton
 .ideenDropdowns,
 #selectVorteile,
 select {
@@ -286,14 +281,14 @@ select {
 #vorteile,
 #titel {
   height: 30px;
+  width: 100%;
 }
 p,
 label,
 button {
   font-size: 1rem;
 }
-.container-fluid,
-.beschreibung {
+.container-fluid {
   height: 100%;
 }
 .container-fluid,
@@ -306,7 +301,6 @@ button {
 }
 #vorteile,
 #titel {
-  width: 88%;
   margin-bottom: 2px;
 }
 #entfernen,
@@ -321,6 +315,8 @@ button {
   width: 800px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   background: linear-gradient(to bottom, #efefef, #ccc);
+  padding-left: 30px;
+  padding-right: 30px;
 }
 .vorteile button {
   padding: 5px;
@@ -330,15 +326,6 @@ h1 {
 }
 .beschreibung textarea {
   height: 200px;
-}
-.ideeButton {
-  width: 30px;
-}
-.vorteile {
-  width: 650px;
-}
-.row {
-  padding-left: 3%;
 }
 .ideenDropdowns {
   display: flex;
@@ -354,10 +341,13 @@ h1 {
   margin: auto;
 }
 #hinzu {
-  background-color: #00894d;
+  background-color: $light-green;
+  border: none;
 }
 #entfernen {
-  background-color: #f80303;
+  border: 1.5px solid #8300008e;
+  color: #830000d5;
+  font-size: 1rem;
 }
 button {
   border: 1px solid #fff;
@@ -379,5 +369,30 @@ select {
 }
 .inaktiv {
   display: none;
+}
+#titel {
+  text-align: center;
+}
+#anzeige-aktuelle-seite {
+  text-align: center;
+  color: grey;
+  line-height: 2;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+}
+.grid-row {
+  display: grid;
+  grid-template-columns: 75% auto;
+  grid-template-rows: 100%;
+}
+.vorteile-input input {
+  border-radius: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.vorteile-input select {
+  border-radius: 0;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 </style>
