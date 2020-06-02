@@ -207,7 +207,7 @@ export default Vue.extend({
             erstellzeitpunkt: this.erstelldatum,
             beschreibung: this.beschreibung,
             vorteile: this.vorteile,
-            unternehmensbezeichnung: this.unternehmensbezeichnung,
+            unternehmensbezeichnung: this.unternehmen,
             artDerUmsetzung: this.beschreibungEx,
             sparten: this.sparte,
             vertriebsweg: this.vertriebsweg,
@@ -309,7 +309,6 @@ button {
   justify-content: space-between;
   & div{
     padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
   }
 }
 .vorteile button {
@@ -358,18 +357,8 @@ button {
 select {
   font-size: 0.8rem;
 }
-.inaktiv {
-  display: none;
-}
 #titel {
   text-align: center;
-}
-#anzeige-aktuelle-seite {
-  text-align: center;
-  color: grey;
-  line-height: 2;
-  font-size: 0.9rem;
-  padding-top: 1rem;
 }
 .grid-row {
   display: grid;
@@ -393,11 +382,6 @@ select {
   border-radius: 0;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-}
-.grauer-text {
-  color: grey;
-  line-height: 1.4;
-  font-size: 0.9rem;
 }
 .existiert{
   flex: 1;

@@ -6,6 +6,8 @@
 </template>
 
 <style lang="scss">
+$medium-green: #00894d;
+$light-green: #69a82f;
 body {
   margin: 0;
   padding: 0;
@@ -61,5 +63,17 @@ select{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+#anzeige-aktuelle-seite {
+  text-align: center;
+  color: grey;
+  line-height: 2;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+}
+.grauer-text {
+  color: grey;
+  line-height: 1.4;
+  font-size: 0.9rem;
 }
 </style>
