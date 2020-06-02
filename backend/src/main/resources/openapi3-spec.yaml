@@ -393,6 +393,38 @@ paths:
         default:
           description: erfolgreich
   /systemnachricht:
+    get:
+      tags:
+        - systemnachricht
+      summary: Der Admin lädt eine Liste aller eingereichten Systemnachrichten.
+      operationId: alleSystemnachrichtenLaden
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemnachrichtDTO'
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: Nicht autorisiert. Sind Sie als Admin angemeldet?
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
     post:
       tags:
         - systemnachricht
@@ -404,6 +436,38 @@ paths:
             schema:
               $ref: "#/components/schemas/SystemnachrichtDTO"
         description: Neue Systemnachricht anlegen
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+  /systemnachricht/loeschen:
+    post:
+      tags:
+        - systemnachricht
+      summary: Systemnachricht loeschen
+      operationId: systemnachrichtLoeschen
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: "#/components/schemas/SystemnachrichtDTO"
+        description: Systemnachricht loeschen
         required: true
       responses:
         "200":

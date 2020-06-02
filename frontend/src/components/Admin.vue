@@ -2,31 +2,44 @@
   <div class="container-fluid" name="AdminContainer">
     <p id="anzeige-aktuelle-seite" v-if="showNachrichtenModal==false">Eingeloggt als Admin</p>
     <!--Liste der Mitarbieter-->
-    <div class="row mitarbeiterListe" v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
+    <div
+      class="row mitarbeiterListe"
+      v-if="showMitarbeiterModal==false && showNachrichtenModal==false"
+    >
       <label class="grid-item" for="liste">Mitarbeiter:</label>
       <ul class="liste grid-item">
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
-        <li v-on:click="mitarbeiterAusgewählt=true"> beispiel</li>
+        <li
+          v-for="mitarbeiter in mitarbeiterListe"
+          :key="mitarbeiter"
+          v-on:click="selectMitarbeiter(mitarbeiter), mitarbeiterAusgewählt=true"
+        >
+          {{mitarbeiter.benutzername}} hat Rolle: Mitarbeiter
+          <span
+            v-if="mitarbeiter.istFachspezialist"
+          >; Fachspezialist</span>
+          <span v-if="mitarbeiter.istAdmin">; Admin</span>
+        </li>
       </ul>
     </div>
     <!--Buttons-->
     <div class="row" v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
       <div class="buttons">
-        <button id="rollenBtn" v-if="mitarbeiterAusgewählt" v-on:click="showMitarbeiterModal=true">Rolle bearbeiten</button>
+        <button
+          id="rollenBtn"
+          v-if="mitarbeiterAusgewählt"
+          v-on:click="showMitarbeiterModal=true"
+        >Rolle bearbeiten</button>
         <button id="nachrichten" v-on:click="showNachrichtenModal = true">Systemnachrichten lesen</button>
       </div>
-    </div> 
+    </div>
     <!--Mitarbeiter Modal-->
     <transition name="fade" appear>
       <div class="mitarbeiterModal" v-if="showMitarbeiterModal">
         <div class="rollen">
           <div class="row">
-            <p class="grid-item" id="mitarbeiterName"><!--{{}}--> Hier soll der Name stehen</p>
+            <p class="grid-item" id="mitarbeiterName">
+              Ausgewählter Mitarbeiter: {{ aktiverMitarbeiter.benutzername }}
+            </p>
           </div>
           <div class="row">
             <div class="rolleMitarbeiter">
@@ -91,7 +104,9 @@
             <div class="combobox">
               <label for="spezialisierung2" class="grid-item">Vertriebsweg:</label>
               <select id="spezialisierung2" class="grid-item" v-model="vertriebsweg" multiple>
-                <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
+                <option
+                  value="STATIONAERER_VERTRIEB"
+                >Stationärer Vertrieb in eigenen Geschäftsstelle</option>
                 <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
                 <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
                 <option value="DIREKTVERSICHERUNG">Direktversicherung</option>
@@ -121,8 +136,19 @@
         <!--MitarbeiterModal Buttons-->
         <div class="row">
           <div class="buttons">
-            <button class="zurueckBtn grid-item" v-on:click="showMitarbeiterModal = false, mitarbeiterAusgewählt= false, showAuenderungBestätigt=false">Zurück</button>
-            <button id="rolleBestätigenBtn" class="grid-item" v-if="showAuenderungBestätigt">Änderung bestätigen</button>
+            <button
+              class="zurueckBtn grid-item"
+              v-on:click="showMitarbeiterModal = false, 
+              mitarbeiterAusgewählt= false, 
+              showAuenderungBestätigt=false,
+              ladeMitarbeiter()"
+            >Zurück</button>
+            <button
+              id="rolleBestätigenBtn"
+              class="grid-item"
+              v-if="showAuenderungBestätigt"
+              @click="speichereMitarbeiter()"
+            >Änderung bestätigen</button>
           </div>
         </div>
       </div>
@@ -135,37 +161,61 @@
         <div class="row nachrichtenListe" v-if="nachrichtLesen == false">
           <label for="liste" class="grid-item">Empfangende Nachrichten:</label>
           <ul class="liste grid-item">
-            <li v-on:click="systemnachrichtAusgewählt = true"> beispiel</li>
+            <li v-on:click="systemnachrichtAusgewählt = true">beispiel</li>
           </ul>
         </div>
         <!--Nachricht Details-->
         <div class="row nachrichtLesen" v-if="nachrichtLesen == true">
           <div class="nachrichtDetails">
             <label for="betreff" id="betreffLbl">Betreff:</label>
-            <div id="betreff" class="grid-item"><!--{{}}-->Toller Betreff</div>
+            <div id="betreff" class="grid-item">
+              <!--{{}}-->
+              Toller Betreff
+            </div>
             <label for="text">Nachricht:</label>
-            <div id="text" class="grid-item"><!--{{}}-->Text der Nachricht</div>
+            <div id="text" class="grid-item">
+              <!--{{}}-->
+              Text der Nachricht
+            </div>
             <div class="buttons">
-              <button class="zurueckBtn  grid-item" v-on:click="nachrichtLesen=false, systemnachrichtAusgewählt=false">Zurück</button>
+              <button
+                class="zurueckBtn grid-item"
+                v-on:click="nachrichtLesen=false, systemnachrichtAusgewählt=false"
+              >Zurück</button>
             </div>
           </div>
         </div>
         <div class="row" v-if="systemnachrichtAusgewählt == true && nachrichtLesen==false">
           <div class="buttons">
             <button id="nachrichtLöschenBtn" class="grid-item">Nachricht löschen</button>
-            <button id="nachrichtLesenBtn" class="grid-item" v-on:click="nachrichtLesen= true">Nachricht lesen</button>
+            <button
+              id="nachrichtLesenBtn"
+              class="grid-item"
+              v-on:click="nachrichtLesen= true"
+            >Nachricht lesen</button>
           </div>
         </div>
         <div class="row">
           <div class="buttons">
-            <button class="zurueckBtn grid-item" v-on:click="showNachrichtenModal=false, systemnachrichtAusgewählt=false" v-if="nachrichtLesen==false">Zurück</button>
+            <button
+              class="zurueckBtn grid-item"
+              v-on:click="showNachrichtenModal=false, systemnachrichtAusgewählt=false"
+              v-if="nachrichtLesen==false"
+            >Zurück</button>
           </div>
         </div>
       </div>
     </transition>
     <div class="row" v-if="showNachrichtenModal == false && showMitarbeiterModal==false">
       <div class="buttons">
-        <router-link id="abmelden" :to="{ path: '/' }" replace tag="button" @click="logout()" class="grid-item">Abmelden</router-link>
+        <router-link
+          id="abmelden"
+          :to="{ path: '/' }"
+          replace
+          tag="button"
+          @click="logout()"
+          class="grid-item"
+        >Abmelden</router-link>
       </div>
     </div>
   </div>
@@ -178,19 +228,148 @@ import { Helper } from "../services/helper";
 export default Vue.extend({
   name: 'Admin',
   data: () => ({
+    // Component spezifische Variablen
     mitarbeiterAusgewählt :false,
     showNachrichtenModal: false,
     showMitarbeiterModal: false,
     showSpezialisierung: false,
     systemnachrichtAusgewählt: false,
     nachrichtLesen: false,
-    showAuenderungBestätigt: false
+    showAuenderungBestätigt: false,
+    // Logik-Variablen
+    mitarbeiterListe: [],
+    aktiverMitarbeiter: {},
+    // Frontend-Element Variablen
+    sparte: [],
+    vertriebsweg: [],
+    zielgruppe: [],
+    handlungsfeld: [],
+    radiobutton: "",
   }),
   methods:{
     logout: function(){
       localStorage.clear();
     },
+    ladeMitarbeiter(){
+      var jwt = require("jsonwebtoken");
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axios.get("http://localhost:9090/benutzer", config)
+        .then((res) => {
+          this.mitarbeiterListe = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    selectMitarbeiter(mitarbeiter)
+    {
+      this.aktiverMitarbeiter = mitarbeiter
+      console.log(this.aktiverMitarbeiter)
+    },
+    speichereMitarbeiter(){
+      var jwt = require("jsonwebtoken");
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+
+      if (this.radiobutton == "ROLE_MITARBEITER")
+      {
+        axiosInstance.put("http://localhost:9090/benutzer",
+          {
+            benutzername: this.aktiverMitarbeiter.benutzername,
+            vorname: this.aktiverMitarbeiter.vorname,
+            nachname: this.aktiverMitarbeiter.nachname,
+            email: this.aktiverMitarbeiter.email,
+            fachspezialistVertriebswege: null,
+            fachspezialistHandlungsfelder: null,
+            fachspezialistSparten: null,
+            fachspezialistZielgruppen: null,
+            istFachspezialist: false,
+            istAdmin: false,
+          },
+          config
+        )
+        .then((response) => {
+          this.$alert("", "Benutzer erfolgreich aktualisiert", "success");
+        })
+        .catch((error) =>
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Aktualisieren",
+            "error"
+          )
+        );
+      }
+      else if(this.radiobutton == "ROLE_FACHSPEZIALIST")
+      {
+        axiosInstance.put("http://localhost:9090/benutzer",
+          {
+            benutzername: this.aktiverMitarbeiter.benutzername,
+            vorname: this.aktiverMitarbeiter.vorname,
+            nachname: this.aktiverMitarbeiter.nachname,
+            email: this.aktiverMitarbeiter.email,
+            fachspezialistVertriebswege: this.vertriebsweg,
+            fachspezialistHandlungsfelder: this.handlungsfeld,
+            fachspezialistSparten: this.sparte,
+            fachspezialistZielgruppen: this.zielgruppe,
+            istFachspezialist: true,
+            istAdmin: false,
+          },
+          config
+        )
+        .then((response) => {
+          this.$alert("", "Benutzer erfolgreich aktualisiert", "success");
+        })
+        .catch((error) =>
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Aktualisieren",
+            "error"
+          )
+        );
+      }
+      else if(this.radiobutton == "ROLE_ADMIN")
+      {
+        axiosInstance.put("http://localhost:9090/benutzer",
+          {
+            benutzername: this.aktiverMitarbeiter.benutzername,
+            vorname: this.aktiverMitarbeiter.vorname,
+            nachname: this.aktiverMitarbeiter.nachname,
+            email: this.aktiverMitarbeiter.email,
+            fachspezialistVertriebswege: null,
+            fachspezialistHandlungsfelder: null,
+            fachspezialistSparten: null,
+            fachspezialistZielgruppen: null,
+            istFachspezialist: false,
+            istAdmin: true,
+          },
+          config
+        )
+        .then((response) => {
+          this.$alert("", "Benutzer erfolgreich aktualisiert", "success");
+        })
+        .catch((error) =>
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Aktualisieren",
+            "error"
+          )
+        );
+      }
+    }
   },
+  created() {
+    this.ladeMitarbeiter();
+  }
 });
 </script>
 
@@ -210,13 +389,15 @@ button {
   height: 100%;
 }
 .container-fluid,
-button, #betreff, #text {
+button,
+#betreff,
+#text {
   border-radius: 20px;
 }
 .container-fluid {
   overflow: hidden;
 }
-.combobox{
+.combobox {
   margin-right: 2px;
 }
 .container-fluid {
@@ -234,11 +415,14 @@ button, #betreff, #text {
   padding: 1%;
   margin: auto;
 }
-#rollenBtn, #nachrichtLesenBtn, #rolleBestätigenBtn {
+#rollenBtn,
+#nachrichtLesenBtn,
+#rolleBestätigenBtn {
   background-color: $light-green;
   border: none;
 }
-#nachrichten, #nachrichtLöschenBtn {
+#nachrichten,
+#nachrichtLöschenBtn {
   border: 1.5px solid #8300008e;
   color: #830000d5;
   font-size: 1rem;
@@ -268,57 +452,61 @@ select {
   font-size: 0.9rem;
   padding-top: 1rem;
 }
-.zurueckBtn, #abmelden {
+.zurueckBtn,
+#abmelden {
   color: #fff;
   background-color: #f80303;
 }
-#betreff, #text {
+#betreff,
+#text {
   background: #fff;
   border: 1px solid #ccc;
   width: 100%;
   padding: 1%;
 }
-#text{
+#text {
   height: 80%;
-
 }
-.nachrichtDetails{
+.nachrichtDetails {
   width: 100%;
-  height:100%
+  height: 100%;
 }
-ul{
+ul {
   width: 100%;
   height: 85%;
   background: #fff;
   margin: 0;
   padding-bottom: 0;
-  overflow:hidden; 
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
-li{
+li {
   padding: 1px;
 }
-.row{
-  display:flex;
+.row {
+  display: flex;
   justify-content: space-between;
 }
-.mitarbeiterListe{
+.mitarbeiterListe {
   height: 68%;
 }
-#mitarbeiterName{
+#mitarbeiterName {
   margin: auto;
   font-size: 1.2rem;
 }
-.mitarbeiterModal{
+.mitarbeiterModal {
   height: 85%;
 }
-.rolleMitarbeiter, .rolleSpezialist, .rolleAdmin{
+.rolleMitarbeiter,
+.rolleSpezialist,
+.rolleAdmin {
   width: 100%;
 }
-.nachrichtenModal,.nachrichtenListe{
+.nachrichtenModal,
+.nachrichtenListe {
   height: 85%;
 }
-.nachrichtLesen{
+.nachrichtLesen {
   height: 85%;
 }
 </style>
