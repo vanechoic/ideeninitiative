@@ -29,7 +29,10 @@
           v-if="mitarbeiterAusgewählt"
           v-on:click="showMitarbeiterModal=true"
         >Rolle bearbeiten</button>
-        <button id="nachrichten" v-on:click="showNachrichtenModal = true">Systemnachrichten lesen</button>
+        <button
+          id="nachrichten"
+          v-on:click="showNachrichtenModal = true, ladeSystemnachrichten()"
+        >Systemnachrichten lesen</button>
       </div>
     </div>
     <!--Mitarbeiter Modal-->
@@ -37,9 +40,10 @@
       <div class="mitarbeiterModal" v-if="showMitarbeiterModal">
         <div class="rollen">
           <div class="row">
-            <p class="grid-item" id="mitarbeiterName">
-              Ausgewählter Mitarbeiter: {{ aktiverMitarbeiter.benutzername }}
-            </p>
+            <p
+              class="grid-item"
+              id="mitarbeiterName"
+            >Ausgewählter Mitarbeiter: {{ aktiverMitarbeiter.benutzername }}</p>
           </div>
           <div class="row">
             <div class="rolleMitarbeiter">
@@ -157,11 +161,16 @@
     <transition name="fade" appear>
       <div class="nachrichtenModal" v-if="showNachrichtenModal">
         <p class="anzeige-aktuelle-seite">Systemnachrichten</p>
-        <!--Nachrichen Liste-->
+        <!--Nachrichten Liste-->
         <div class="row nachrichtenListe" v-if="nachrichtLesen == false">
           <label for="liste" class="grid-item">Empfangende Nachrichten:</label>
           <ul class="liste grid-item">
-            <li v-on:click="systemnachrichtAusgewählt = true">beispiel</li>
+            <li
+              v-for="systemnachricht in systemnachrichtListe"
+              :key="systemnachricht"
+              v-on:click="selectSystemnachricht(systemnachricht),
+               systemnachrichtAusgewählt = true"
+            >{{ systemnachricht.titel }}</li>
           </ul>
         </div>
         <!--Nachricht Details-->
@@ -170,12 +179,12 @@
             <label for="betreff" id="betreffLbl">Betreff:</label>
             <div id="betreff" class="grid-item">
               <!--{{}}-->
-              Toller Betreff
+              {{ aktiveSystemnachricht.titel }}
             </div>
             <label for="text">Nachricht:</label>
             <div id="text" class="grid-item">
               <!--{{}}-->
-              Text der Nachricht
+              {{ aktiveSystemnachricht.beschreibung }}
             </div>
             <div class="buttons">
               <button
@@ -187,7 +196,11 @@
         </div>
         <div class="row" v-if="systemnachrichtAusgewählt == true && nachrichtLesen==false">
           <div class="buttons">
-            <button id="nachrichtLöschenBtn" class="grid-item">Nachricht löschen</button>
+            <button
+              id="nachrichtLöschenBtn"
+              class="grid-item"
+              @click="loescheSystemnachricht()"
+            >Nachricht löschen</button>
             <button
               id="nachrichtLesenBtn"
               class="grid-item"
@@ -236,9 +249,11 @@ export default Vue.extend({
     systemnachrichtAusgewählt: false,
     nachrichtLesen: false,
     showAuenderungBestätigt: false,
-    // Logik-Variablen
+    // Logik-Variablen - Listen
     mitarbeiterListe: [],
+    systemnachrichtListe: [],
     aktiverMitarbeiter: {},
+    aktiveSystemnachricht: {},
     // Frontend-Element Variablen
     sparte: [],
     vertriebsweg: [],
@@ -269,8 +284,7 @@ export default Vue.extend({
     },
     selectMitarbeiter(mitarbeiter)
     {
-      this.aktiverMitarbeiter = mitarbeiter
-      console.log(this.aktiverMitarbeiter)
+      this.aktiverMitarbeiter = mitarbeiter;
     },
     speichereMitarbeiter(){
       var jwt = require("jsonwebtoken");
@@ -365,6 +379,52 @@ export default Vue.extend({
           )
         );
       }
+    },
+    ladeSystemnachrichten(){
+      var jwt = require("jsonwebtoken");
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axios.get("http://localhost:9090/systemnachricht", config)
+        .then((res) => {
+          this.systemnachrichtListe = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    selectSystemnachricht(systemnachricht)
+    {
+      this.aktiveSystemnachricht = systemnachricht;
+      console.log(this.aktiveSystemnachricht)
+    },
+    loescheSystemnachricht()
+    {
+      var jwt = require("jsonwebtoken");
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axiosInstance.post("http://localhost:9090/systemnachricht/loeschen",
+          {
+            titel: this.aktiveSystemnachricht.titel,
+            beschreibung: this.aktiveSystemnachricht.beschreibung
+          },
+          config
+        ).then((response) => {
+          this.ladeSystemnachrichten();
+          this.$alert(response.data, "Nachricht erfolgreich gelöscht")
+        })
+        .catch((error) => {
+          this.$alert(error.response.data.fehlertext, "Fehler beim Löschen", "error")
+        });
     }
   },
   created() {
