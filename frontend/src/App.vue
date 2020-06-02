@@ -6,6 +6,8 @@
 </template>
 
 <style lang="scss">
+$medium-green: #00894d;
+$light-green: #69a82f;
 body {
   margin: 0;
   padding: 0;
@@ -45,5 +47,33 @@ select{
   border: none;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;
   border-radius: 20px;
+}
+//Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+#anzeige-aktuelle-seite {
+  text-align: center;
+  color: grey;
+  line-height: 2;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+}
+.grauer-text {
+  color: grey;
+  line-height: 1.4;
+  font-size: 0.9rem;
 }
 </style>

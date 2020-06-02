@@ -1,5 +1,5 @@
 <template>
-  <div class="neueIdeeAnlegen">
+  <div class="neue-idee-anlegen">
      <NeueIdee msg=""/>
   </div>
 </template>
@@ -14,3 +14,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.neue-idee-anlegen{
+  height: 90%; //größer, weil mehr Inhalt
+  margin: auto;
+}
+</style>
