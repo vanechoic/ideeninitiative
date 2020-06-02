@@ -12,7 +12,12 @@ body {
   margin: 0;
   padding: 0;
 }
-h1, h2, h3, h4, h5, h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   width: 100%;
   text-align: center;
 }
@@ -34,13 +39,14 @@ h1, h2, h3, h4, h5, h6{
 .example::-webkit-scrollbar {
   display: none;
 }
-input, textarea{
+input,
+textarea {
   padding: 5px 15px;
   border: none;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;
   border-radius: 20px;
 }
-select{
+select {
   font-size: 14px !important;
   padding: 5px;
   border: none;
@@ -62,32 +68,33 @@ li {
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
-//Scrollbar
-::-webkit-scrollbar {
-  width: 8px;
-}
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-#anzeige-aktuelle-seite {
-  text-align: center;
-  color: grey;
-  line-height: 2;
-  font-size: 0.9rem;
-  padding-top: 1rem;
-}
-.grauer-text {
-  color: grey;
-  line-height: 1.4;
-  font-size: 0.9rem;
+  //Scrollbar
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  #anzeige-aktuelle-seite {
+    text-align: center;
+    color: grey;
+    line-height: 2;
+    font-size: 0.9rem;
+    padding-top: 1rem;
+  }
+  .grauer-text {
+    color: grey;
+    line-height: 1.4;
+    font-size: 0.9rem;
+  }
 }
 </style>
