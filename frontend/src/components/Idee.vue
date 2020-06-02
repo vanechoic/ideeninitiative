@@ -205,7 +205,7 @@ export default Vue.extend({
     this.ideeVertriebskanal = (this.idee as any).vertriebsweg;
     this.ideeZielgruppe = (this.idee as any).zielgruppe;
     this.ideeHandlungsfeld = (this.idee as any).handlungsfeld;
-    localStorage.removeItem("bewerten");
+    //localStorage.removeItem("bewerten");
   },
 });
 </script>

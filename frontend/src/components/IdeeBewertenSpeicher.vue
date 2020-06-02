@@ -6,7 +6,10 @@
     </div>
     <div class="bewertungsTeil" v-if="showDetails">
       <button id="späterBtn" v-on:click="goBack()">Später bewerten</button>
-      <button id="jetztBewertenBtn" v-on:click="showModal=true, showDetails=false">Jetzt bewerten</button>
+      <button
+        id="jetztBewertenBtn"
+        v-on:click="showModal=true, showDetails=false, ideeladen()"
+      >Jetzt bewerten</button>
     </div>
     <!-- Modal.....-->
     <transition name="fade" appear>
@@ -18,7 +21,7 @@
           <!--Idee annehmen oder ablehnen-->
           <div class="entscheidung">
             <div class="annehmen">
-              <label for="ideeAnnehnmen">Idee annehnmen</label>
+              <label for="ideeAnnehnmen">Idee annehmen</label>
               <input
                 type="radio"
                 id="ideeAnnehmen"
@@ -71,13 +74,13 @@ export default Vue.extend({
   data: () => ({
     // Auth Token
     token: localStorage.getItem("token"),
+    // Ideevariablen
+    ideeObjekt: {},
     // Modalfenster und Componentenlogik
     showModal: false,
     component: "idee",
     showDetails: true,
     componentKey: 0,
-    // Ideevariablen
-    ideeObjekt: {},
     Ideen: [],
     titel: "",
     beschreibung: "",
@@ -93,6 +96,8 @@ export default Vue.extend({
     erfasser: "",
     erstelldatum: "",
     unternehmensbezeichnung: "",
+    fachspezialist: "",
+    bearbeitungsstatus: "",
     // Spezialist Variablen
     radiobutton: "",
     begruendung: "",
@@ -107,11 +112,30 @@ export default Vue.extend({
       };
       var axiosInstance = Helper.getInstance().createAxiosInstance();
 
-      axiosInstance.put(
-        "http://localhost:9090/idee",
-        this.ideeObjekt,
-        config
-      ).then((response) => {
+      axiosInstance
+        .put(
+          "http://localhost:9090/idee",
+          {
+            typ: this.ideeTyp,
+            existiertBereits: this.existiert,
+            titel: this.titel,
+            erfasser: this.erfasser,
+            fachspezialist: this.fachspezialist,
+            erstellzeitpunkt: this.erstelldatum,
+            beschreibung: this.beschreibung,
+            vorteile: this.vorteile,
+            unternehmensbezeichnung: this.unternehmensbezeichnung,
+            artDerUmsetzung: this.beschreibungEx,
+            sparten: this.sparte,
+            vertriebsweg: this.vertriebsweg,
+            zielgruppe: this.zielgruppe,
+            handlungsfeld: this.handlungsfeld,
+            bearbeitungsstatus: this.radiobutton,
+            begruendung: this.begruendung,
+          },
+          config
+        )
+        .then((response) => {
           this.$alert("", "Idee bewertet");
         })
         .catch((error) =>
@@ -126,9 +150,8 @@ export default Vue.extend({
     goBack() {
       if (window.history.length > 1) this.$router.go(-1);
     },
-    created() {
-      this.ideeObjekt = JSON.parse(localStorage.getItem("idee"));
-      console.log(this.ideeObjekt)
+    ideeladen() {
+      this.ideeObjekt = JSON.parse(localStorage.getItem("idee") as string);
 
       if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
       else this.existiert = false;
@@ -136,6 +159,7 @@ export default Vue.extend({
       this.ideeTyp = (this.ideeObjekt as any).typ;
       this.titel = (this.ideeObjekt as any).titel;
       this.erfasser = (this.ideeObjekt as any).erfasser;
+      this.fachspezialist = (this.ideeObjekt as any).fachspezialist;
       this.beschreibung = (this.ideeObjekt as any).beschreibung;
       this.vorteile = (this.ideeObjekt as any).vorteile;
       this.unternehmen = (this.ideeObjekt as any).unternehmensbezeichnung;
@@ -144,7 +168,6 @@ export default Vue.extend({
       this.vertriebsweg = (this.ideeObjekt as any).vertriebsweg;
       this.zielgruppe = (this.ideeObjekt as any).zielgruppe;
       this.handlungsfeld = (this.ideeObjekt as any).handlungsfeld;
-      this.ideeBearbeitungszustand = (this.ideeObjekt as any).bearbeitungsstatus;
       this.erstelldatum = (this.ideeObjekt as any).erstellzeitpunkt;
       if (this.vorteile == null) this.vorteile = [];
     },
