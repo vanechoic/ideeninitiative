@@ -9,6 +9,8 @@ import NeueIdeeAnlegen from '../views/NeueIdeeAnlegen.vue'
 import Idee from '../views/Idee.vue'
 import IdeeBewerten from '../views/IdeeBewerten.vue'
 import IdeenSpeicher from '../views/IdeenSpeicher.vue'
+import IdeeBewertenSpeicher from '../views/IdeeBewertenSpeicher.vue'
+import Admin from '../views/Admin.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +65,16 @@ const routes: Array<RouteConfig> = [
     name: 'IdeenSpeicher',
     component: IdeenSpeicher
   },
+  {
+    path: '/Bewerten',
+    name: 'Bewerten',
+    component: IdeeBewertenSpeicher
+  },
+  {
+    path: '/Admin',
+    name: 'Admin',
+    component: Admin
+  },
 ]
 
 const router = new VueRouter({
@@ -79,7 +91,7 @@ router.beforeEach((to, from, next) => {
   if ( (to.name === 'Startseite-Mitarbeiter' || to.name === 'SystemnachrichtAnzeigen') )
     next();
   else if ( (to.name !== 'LoginScreen' && !token) )
-    next({ name: 'LoginScreen' });
+    next({ name: 'LoginScreen' });    
   else
     next();
 })

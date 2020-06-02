@@ -59,8 +59,8 @@
       </div>
       <div class="rechts">
         <div class="buttons">
-            <button id="ideeBewerten" v-on:click="push()">Idee bewerten</button>
-            <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
+          <router-link to="Bewerten" tag="button" id="ideeBewerten">Idee bewerten</router-link>
+          <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
         </div>
       </div>
     </div>
@@ -115,6 +115,26 @@ export default Vue.extend({
     goBack() {
       if (window.history.length > 1) this.$router.go(-1);
     },
+    ladeIdeenspeicher() {
+      var jwt = require("jsonwebtoken");
+      var decode = jwt.decode(this.token);
+      let config = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      var axiosInstance = Helper.getInstance().createAxiosInstance();
+      axios
+        .get("http://localhost:9090/idee/ideenspeicher", config)
+        .then((res) => {
+          console.log(res.data);
+          this.Ideen = res.data || [];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     selectFilter() {
       if (this.ideenTyp == "PRODUKTIDEE") {
         this.handlungsfelderAktiv = "inaktiv";
@@ -131,20 +151,6 @@ export default Vue.extend({
     selectIdee(idee: any) {
       this.tempIdee = idee;
       localStorage.setItem("idee", JSON.stringify(this.tempIdee));
-      this.ideeTyp = this.tempIdee.typ;
-      this.ideeExistiert = this.tempIdee.existiertBereits;
-      this.ideeTitel = this.tempIdee.titel;
-      this.ideeErsteller = this.tempIdee.erfasser;
-      this.ideeErstellt = this.tempIdee.erstellzeitpunkt;
-      this.ideeBeschreibung = this.tempIdee.beschreibung;
-      this.ideeVorteile = this.tempIdee.vorteile;
-      this.ideeUnternehmen = this.tempIdee.unternehmensbezeichnung;
-      this.ideeExistiertBeschreibung = this.tempIdee.artDerUmsetzung;
-      this.ideeSparte = this.tempIdee.sparten;
-      this.ideeVertriebskanal = this.tempIdee.vertriebsweg;
-      this.ideeZielgruppe = this.tempIdee.zielgruppe;
-      this.ideeHandlungsfeld = this.tempIdee.handlungsfeld;
-      this.ideeBearbeitungszustand = this.tempIdee.bearbeitungsstatus;
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -161,11 +167,9 @@ export default Vue.extend({
         else if ((idee as any).handlungsfeld == hf) return true;
       });
     },
-    push: function () {
-      this.$router.push({ path: "/IdeeBewerten" });
-    },
   },
   created() {
+    this.ladeIdeenspeicher();
   },
 });
 </script>
@@ -201,12 +205,12 @@ button {
   width: 50%;
   flex-direction: column;
 }
-#zurück{
-    background-color: #f80303;
+#zurück {
+  background-color: #f80303;
 }
 #ideeBewerten {
   background-color: #ffdd00;
-   color: black;
+  color: black;
 }
 .filter,
 .filterElement {
@@ -254,7 +258,7 @@ li:hover {
 .rechts {
   position: absolute;
   margin-left: 50%;
-  background-color: #00894d; 
+  background-color: #00894d;
 }
 p {
   margin: 8px 0 8px;
@@ -281,8 +285,9 @@ li {
   line-height: 30px;
   color: black;
 }
-#ideeBewerten, #zurueck{
-    width: 85%;
-    margin-left: 5.5%;
+#ideeBewerten,
+#zurueck {
+  width: 85%;
+  margin-left: 5.5%;
 }
 </style>

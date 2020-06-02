@@ -143,7 +143,7 @@ export default Vue.extend({
     selectedVorteil: [{}],
     selectedIndex: 0,
     // Data für Comboboxen und Comboboxlogik
-    ideenTyp: "",
+    ideeTyp: "",
     sparte: "",
     vertriebsweg: [{}],
     zielgruppe: [{}],
@@ -184,7 +184,7 @@ export default Vue.extend({
     },
     // Logik für das Auswählen/Ausblenden von Comboboxen
     ideeSelection() {
-      if (this.ideenTyp == "PRODUKTIDEE") {
+      if (this.ideeTyp == "PRODUKTIDEE") {
         this.handlungsfelderAktiv = "inaktiv";
         this.sparteAktiv = "aktiv";
         this.vertriebswegAktiv = "aktiv";
@@ -219,26 +219,38 @@ export default Vue.extend({
         },
       };
 
-      axiosInstance.put(
-        "http://localhost:9090/idee",
-        {
-          typ: this.ideeTyp,
-          existiertBereits: this.existiert,
-          titel: this.titel,
-          erfasser: erfasserT,
-          erstellzeitpunkt: this.erstelldatum,
-          beschreibung: this.beschreibung,
-          vorteile: this.vorteile,
-          unternehmensbezeichnung: this.unternehmensbezeichnung,
-          artDerUmsetzung: this.beschreibungEx,
-          sparten: this.sparte,
-          vertriebsweg: this.vertriebsweg,
-          zielgruppe: this.zielgruppe,
-          handlungsfeld: this.handlungsfeld,
-          bearbeitungsstatus: this.ideeBearbeitungszustand,
-        },
-        config
-      );
+      axiosInstance
+        .put(
+          "http://localhost:9090/idee",
+          {
+            typ: this.ideeTyp,
+            existiertBereits: this.existiert,
+            titel: this.titel,
+            erfasser: erfasserT,
+            erstellzeitpunkt: this.erstelldatum,
+            beschreibung: this.beschreibung,
+            vorteile: this.vorteile,
+            unternehmensbezeichnung: this.unternehmensbezeichnung,
+            artDerUmsetzung: this.beschreibungEx,
+            sparten: this.sparte,
+            vertriebsweg: this.vertriebsweg,
+            zielgruppe: this.zielgruppe,
+            handlungsfeld: this.handlungsfeld,
+            bearbeitungsstatus: this.ideeBearbeitungszustand,
+          },
+          config
+        )
+        .then((response) => {
+          this.$alert("", "Idee erfolgreich bearbeitet", "success");
+          this.$router.push("Meineideen")
+        })
+        .catch((error) =>
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Veröffentlichen",
+            "error"
+          )
+        );
     },
   },
   mounted() {},

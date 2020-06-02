@@ -69,7 +69,6 @@ import Vue from "vue";
 import axios from "axios";
 import Registrierter from "@/components/Registrierter.vue";
 import Mitarbeiter from "@/components/Mitarbeiter.vue";
-import Admin from "@/components/Admin.vue";
 import Spezialist from "@/components/Spezialist.vue";
 import { Params } from "../services/params-service";
 import { Helper } from "../services/helper";
@@ -80,7 +79,6 @@ export default Vue.extend({
     registrierter: Registrierter,
     mitarbeiter: Mitarbeiter,
     spezialist: Spezialist,
-    admin: Admin,
   },
   data: () => ({
     // Auth Token
@@ -153,12 +151,7 @@ export default Vue.extend({
     // Entsprechende Component laden, abhängig von Nutzerrolle
     if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
     else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
-    else if (rolle == "ROLE_ADMIN"){
-      this.component = "admin";
-      document.getElementById("rechts").style.width = '100%';
-      document.getElementById("rechts").style.marginLeft = '0';
-      document.getElementById("rechts").style.background = 'linear-gradient(to bottom, #efefef, #ccc)';
-    } 
+    else if (rolle == "ROLE_ADMIN") this.$router.push({ path: "/Admin" });
     else this.component = "mitarbeiter";
   },
 });

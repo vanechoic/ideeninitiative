@@ -256,6 +256,8 @@ export default Vue.extend({
               },
               config
             );
+            this.$alert("Idee erfolgreich abgespeichert")
+            this.$router.push("Startseite")
           } else {
             axiosInstance.post(
               "http://localhost:9090/idee",
@@ -273,6 +275,8 @@ export default Vue.extend({
               },
               config
             );
+            this.$alert("Idee erfolgreich abgespeichert")
+            this.$router.push("Startseite")
           }
         } else {
           axiosInstance.post(
@@ -288,6 +292,8 @@ export default Vue.extend({
             },
             config
           );
+          this.$alert("Idee erfolgreich abgespeichert")
+          this.$router.push("Startseite")
         }
       }
     },

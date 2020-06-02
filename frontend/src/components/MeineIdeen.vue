@@ -215,7 +215,12 @@ export default Vue.extend({
           bearbeitungsstatus: this.ideeBearbeitungszustand,
         },
         config
-      );
+      ).then((response) =>
+          this.$alert("", "Idee erfolgreich veröffentlicht", "success")
+        )
+        .catch((error) =>
+          this.$alert(error.response.data.fehlertext, "Fehler beim Veröffentlichen", "error")
+        );
     },
     ideeLoeschen() {
       console.log(this.tempIdee as any);
