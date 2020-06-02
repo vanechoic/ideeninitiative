@@ -48,6 +48,8 @@ p, .rechts, .links{
     }
   }
 .meineideen{
-  position: fixed;
+  //position: fixed;
+  height: 70%; //Höhe des gesamten grauen Dings
+  margin: auto;
 }
 </style>

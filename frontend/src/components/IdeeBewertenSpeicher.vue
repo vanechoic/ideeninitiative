@@ -5,7 +5,7 @@
       <component v-bind:is="component" v-if="showDetails" :key="componentKey"></component>
     </div>
     <div class="bewertungsTeil" v-if="showDetails">
-      <button id="späterBtn" v-on:click="ideeInSpeicher()">Später bewerten</button>
+      <button id="späterBtn" v-on:click="goBack()">Später bewerten</button>
       <button id="jetztBewertenBtn" v-on:click="showModal=true, showDetails=false">Jetzt bewerten</button>
     </div>
     <!-- Modal.....-->
@@ -90,94 +90,16 @@ export default Vue.extend({
     vertriebsweg: [],
     zielgruppe: [],
     handlungsfeld: "",
+    erfasser: "",
+    erstelldatum: "",
+    unternehmensbezeichnung: "",
     // Spezialist Variablen
     radiobutton: "",
     begruendung: "",
   }),
-  asyncComputed: {
-    // a computed getter
-    async getIdeen() {
-      var jwt = require("jsonwebtoken");
-      var decode = jwt.decode(this.token);
-      let config = {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      };
-      var axiosInstance = Helper.getInstance().createAxiosInstance();
-      var ideenListe = await axiosInstance
-        .get("http://localhost:9090/idee/zugewiesene", config)
-        .then((res) => {
-          return res.data || [];
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      if (ideenListe) {
-        localStorage.setItem("idee", JSON.stringify(ideenListe[0]));
-        this.forceRenderer();
-
-        this.ideeObjekt = ideenListe[0];
-        if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
-        else this.existiert = false;
-        this.ideeTyp = (this.ideeObjekt as any).typ;
-        this.titel = (this.ideeObjekt as any).titel;
-        this.erfasser = (this.ideeObjekt as any).erfasser;
-        this.beschreibung = (this.ideeObjekt as any).beschreibung;
-        this.vorteile = (this.ideeObjekt as any).vorteile;
-        this.unternehmen = (this.ideeObjekt as any).unternehmensbezeichnung;
-        this.beschreibungEx = (this.ideeObjekt as any).artDerUmsetzung;
-        this.sparte = (this.ideeObjekt as any).sparten;
-        this.vertriebsweg = (this.ideeObjekt as any).vertriebsweg;
-        this.zielgruppe = (this.ideeObjekt as any).zielgruppe;
-        this.handlungsfeld = (this.ideeObjekt as any).handlungsfeld;
-        this.ideeBearbeitungszustand = (this
-          .ideeObjekt as any).bearbeitungsstatus;
-        this.erstelldatum = (this.ideeObjekt as any).erstellzeitpunkt;
-        if (this.vorteile == null) this.vorteile = [];
-      }
-      return ideenListe;
-    },
-  },
   methods: {
-    ideeInSpeicher() {
-      var axiosInstance = Helper.getInstance().createAxiosInstance();
-      var jwt = require("jsonwebtoken");
-      var decode = jwt.decode(this.token);
-      let config = {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      };
-
-      axiosInstance.put(
-        "http://localhost:9090/idee",
-        {
-          typ: this.ideeTyp,
-          existiertBereits: this.existiert,
-          titel: this.titel,
-          erfasser: this.erfasser,
-          erstellzeitpunkt: this.erstelldatum,
-          beschreibung: this.beschreibung,
-          vorteile: this.vorteile,
-          unternehmensbezeichnung: this.unternehmensbezeichnung,
-          artDerUmsetzung: this.beschreibungEx,
-          sparten: this.sparte,
-          vertriebsweg: this.vertriebsweg,
-          zielgruppe: this.zielgruppe,
-          handlungsfeld: this.handlungsfeld,
-          bearbeitungsstatus: "GESPEICHERT",
-        },
-        config
-      );
-      this.$router.push("Startseite");
-    },
-    forceRenderer() {
-      this.componentKey += 1;
-    },
     bewertungVeroeffentlichen() {
       var jwt = require("jsonwebtoken");
-      var decode = jwt.decode(this.token);
       let config = {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -187,24 +109,7 @@ export default Vue.extend({
 
       axiosInstance.put(
         "http://localhost:9090/idee",
-        {
-          typ: this.ideeTyp,
-          existiertBereits: this.existiert,
-          titel: this.titel,
-          erfasser: this.erfasser,
-          erstellzeitpunkt: this.erstelldatum,
-          beschreibung: this.beschreibung,
-          vorteile: this.vorteile,
-          unternehmensbezeichnung: this.unternehmensbezeichnung,
-          artDerUmsetzung: this.beschreibungEx,
-          sparten: this.sparte,
-          vertriebsweg: this.vertriebsweg,
-          zielgruppe: this.zielgruppe,
-          handlungsfeld: this.handlungsfeld,
-          // Daten vom Spezialisten
-          bearbeitungsstatus: this.radiobutton,
-          begruendung: this.begruendung,
-        },
+        this.ideeObjekt,
         config
       ).then((response) => {
           this.$alert("", "Idee bewertet");
@@ -217,6 +122,31 @@ export default Vue.extend({
           )
         );
       this.$router.push("Startseite");
+    },
+    goBack() {
+      if (window.history.length > 1) this.$router.go(-1);
+    },
+    created() {
+      this.ideeObjekt = JSON.parse(localStorage.getItem("idee"));
+      console.log(this.ideeObjekt)
+
+      if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
+      else this.existiert = false;
+
+      this.ideeTyp = (this.ideeObjekt as any).typ;
+      this.titel = (this.ideeObjekt as any).titel;
+      this.erfasser = (this.ideeObjekt as any).erfasser;
+      this.beschreibung = (this.ideeObjekt as any).beschreibung;
+      this.vorteile = (this.ideeObjekt as any).vorteile;
+      this.unternehmen = (this.ideeObjekt as any).unternehmensbezeichnung;
+      this.beschreibungEx = (this.ideeObjekt as any).artDerUmsetzung;
+      this.sparte = (this.ideeObjekt as any).sparten;
+      this.vertriebsweg = (this.ideeObjekt as any).vertriebsweg;
+      this.zielgruppe = (this.ideeObjekt as any).zielgruppe;
+      this.handlungsfeld = (this.ideeObjekt as any).handlungsfeld;
+      this.ideeBearbeitungszustand = (this.ideeObjekt as any).bearbeitungsstatus;
+      this.erstelldatum = (this.ideeObjekt as any).erstellzeitpunkt;
+      if (this.vorteile == null) this.vorteile = [];
     },
   },
 });

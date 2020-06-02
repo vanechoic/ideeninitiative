@@ -1,29 +1,21 @@
 <template>
   <div class="container">
     <div class="kopfzeile" v-if="showDetails">
-      <label id="ideeName">
-        {{ ideeTitel }}
-      </label>
+      <label id="ideeName">{{ ideeTitel }}</label>
       <div class="erstellInfos">
         <!--Ersteller-->
         <label class="erstellerLbl" for="ersteller">Ersteller:</label>
-        <div id="ersteller">
-          {{ ideeErsteller }}
-        </div>
+        <div id="ersteller">{{ ideeErsteller }}</div>
         <!--Erstell Datum-->
         <label id="erstellDatumLbl">Erstellt am:</label>
-        <div id="erstellDatum">
-          {{ ideeErstellt }}
-        </div>
+        <div id="erstellDatum">{{ ideeErstellt }}</div>
       </div>
     </div>
     <div class="hauptteil" v-if="showDetails">
       <!--Beschreibung-->
       <div class="beschreibung">
         <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
-        <div id="beschreibung">
-          {{ ideeBeschreibung }}
-        </div>
+        <div id="beschreibung">{{ ideeBeschreibung }}</div>
       </div>
       <!--Vorteile-->
       <label id="vorteileLbl" for="vorteile">Vorteile:</label>
@@ -36,31 +28,23 @@
         <div id="existiertDiv">
           <!--Unternehmen-->
           <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
-          <div id="unternehmen">
-            {{ ideeUnternehmen }}
-          </div>
+          <div id="unternehmen">{{ ideeUnternehmen }}</div>
           <!--Beschreibung in welcher form es existiert-->
           <label id="beschreibungExistiertLbl" for="beschreibungExistiert"></label>
-          <div id="beschreibungExistiert">
-            {{ ideeExistiertBeschreibung }}
-          </div>
+          <div id="beschreibungExistiert">{{ ideeExistiertBeschreibung }}</div>
         </div>
       </div>
       <!--IdeeTyp-->
       <div class="ideeTyp">
         <label id="ideeTypLbl" for="ideeTyp">Idee Typ:</label>
-        <div id="ideeTyp">
-          {{ ideeTyp }}
-        </div>
+        <div id="ideeTyp">{{ ideeTyp }}</div>
       </div>
       <!--Einblenden, wenn es eine interne Idee ist-->
       <div class="intern" v-if="showIntern">
         <!--Handlungsfeld-->
         <div class="handlungsfeld">
           <label id="handlungsfeldLbl" for="handlungsfeld">Handlungsfeld:</label>
-          <div id="handlungsfeld">
-            {{ ideeHandlungsfeld }}
-          </div>
+          <div id="handlungsfeld">{{ ideeHandlungsfeld }}</div>
         </div>
       </div>
       <!--Einblenden, wenn es eine Produktidee ist-->
@@ -68,9 +52,7 @@
         <!--Sparte-->
         <div class="sparte">
           <label id="sparteLbl" for="sparte">Sparte:</label>
-          <div id="sparte">
-            {{ ideeSparte }}
-          </div>
+          <div id="sparte">{{ ideeSparte }}</div>
         </div>
         <!-- Anzeigen, wenn Vertriebskanal vorhanden ist-->
         <div class="vertriebskanal" v-if="showVertriebskanal">
@@ -81,14 +63,14 @@
             v-for="vertriebskanal in ideeVertriebskanal"
             :key="vertriebskanal"
           >
-            <li>{{ vertriebskanal }}</li>
+            <li>{{ ideeVertriebskanal }}</li>
           </ul>
         </div>
         <!--Zielgruppe-->
         <div class="zielgruppe">
           <label id="zielgruppeLbl" for="zielgruppe">Zielgruppe:</label>
           <ul id="zielgruppe" v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">
-            <li>{{ zielgruppe }}</li>
+            <li>{{ ideeZielgruppe }}</li>
           </ul>
         </div>
       </div>
@@ -117,19 +99,18 @@
         <div class="hauptteil">
           <!--Status der Idee-->
           <div class="angenommen" v-if="showAngenommen">
-            <p>Diese Idee wurde angenommen.</p>
+            <p>{{ ideeBearbeitungszustand }}</p>
           </div>
           <div class="abgelehnt" v-if="showAbgelehnt">
-            <p>Diese Idee wurde abgelehnt.</p>
+            <p>{{ ideeBearbeitungszustand }}</p>
           </div>
           <div class="nichtBewertet" v-if="showNichtBewertet">
-            <p>Diese Idee wird noch bearbeitet.</p>
+            <p>{{ ideeBearbeitungszustand }}</p>
           </div>
           <!--Bewertung der Idee-->
           <div id="bewertung">
             <!--{{}}-->
-            Hier steht eine tolle Beschreibung
-            adadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+            {{ ideeBegruendung }}
           </div>
         </div>
         <div class="fußzeile">
@@ -159,7 +140,7 @@ export default Vue.extend({
     showAngenommen: false,
     showAbgelehnt: false,
     showNichtBewertet: true,
-    wirdBewertet: false,
+    wirdBewertet: true,
     // Idee-Objekt
     idee: {},
     // Seitenattribute für Ideendetails
@@ -177,6 +158,7 @@ export default Vue.extend({
     ideeZielgruppe: [{}],
     ideeHandlungsfeld: "",
     ideeBearbeitungszustand: "",
+    ideeBegruendung: "",
   }),
   methods: {
     push: function () {
@@ -184,16 +166,24 @@ export default Vue.extend({
       this.$router.push({ path: "/Startseite" });
     },
   },
-  created() {
+  mounted() {
     this.idee = JSON.parse(localStorage.getItem("idee") as string);
-    console.log(this.idee);
+    var etc = localStorage.getItem("bewerten");
+    if (etc) this.wirdBewertet = false;
 
     this.ideeTyp = (this.idee as any).typ;
     this.ideeExistiert = (this.idee as any).existiertBereits;
+    this.ideeBegruendung = (this.idee as any).begruendung;
+    this.ideeBearbeitungszustand = (this.idee as any).bearbeitungsstatus;
+
+    if (this.ideeBegruendung == null || this.ideeBegruendung == "")
+      this.ideeBegruendung == "Keine Begründung angegeben";
+
+      if (this.bearbeitungsstatus == null)
+      this.ideeBegruendung == "Noch nicht bewertet"
 
     if (this.ideeTyp == "PRODUKTIDEE") {
       if (this.ideeExistiert) this.showExistiert = true;
-
       this.showVertriebskanal = true;
       this.showIntern = true;
       this.showProduktidee = true;
@@ -215,7 +205,7 @@ export default Vue.extend({
     this.ideeVertriebskanal = (this.idee as any).vertriebsweg;
     this.ideeZielgruppe = (this.idee as any).zielgruppe;
     this.ideeHandlungsfeld = (this.idee as any).handlungsfeld;
-    this.ideeBearbeitungszustand = (this.idee as any).bearbeitungsstatus;
+    localStorage.removeItem("bewerten");
   },
 });
 </script>
@@ -276,6 +266,7 @@ button,
   padding: 0.2% 1%;
   overflow: scroll;
   border: 0.5px solid #000;
+  overflow: hidden;
 }
 #ideeName,
 #bewertungLbl {
@@ -348,7 +339,7 @@ ul {
 }
 #bewertung,
 .abgelehnt,
-.angenommen, 
+.angenommen,
 .nichtBewertet {
   margin: 5% 0;
 }

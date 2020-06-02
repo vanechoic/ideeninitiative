@@ -1,6 +1,7 @@
 <template>
   <article>
     <div class="container">
+      <p class="rolle">Eingeloggt als Mitarbeiter</p>
         <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild">
         <div class="profilbild-upload-wrapper">
           <!-- form und action für das submit hinzufügen !-->
@@ -31,6 +32,7 @@ export default {
 <style lang="scss" scoped>
  button {
     border-radius: 20px;
+    width: 90%;
     border: 1px solid #fff;
     color: #fff;
     font-size: .75rem;
@@ -50,7 +52,7 @@ export default {
   }
   #zurSystemnachricht, .profilbildHochladen{
     background-color:#0a0404;
-    width: 80%;
+    width: 90%;
     left: 0;
     right: 0;
   }
@@ -62,7 +64,8 @@ export default {
   }
   #ideen, #ideeErstellen{
     color: #000;
-    background-color:#ccc;
+    background-color: #ffdd00;
+    border: none;
   } 
   .profilbild-upload-wrapper {
   position: relative;
@@ -75,5 +78,14 @@ export default {
   left: 0;
   top: 0;
   opacity: 0;
+  }
+  .rolle{
+    color:#000;
+  }
+  .container{
+    height: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
   }
 </style>

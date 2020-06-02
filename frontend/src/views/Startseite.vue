@@ -22,6 +22,8 @@ export default {
 
 <style lang="scss">
 .startseite{
-  position: fixed;
+  //position: fixed;
+  margin:auto;
+  height: 70%;
 }
 </style>

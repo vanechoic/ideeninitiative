@@ -182,7 +182,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
-  /idee/meineideen/bewertung:
+  /idee/zugewiesene:
     get:
       tags:
         - idee

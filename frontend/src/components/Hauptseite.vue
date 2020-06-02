@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="rechts">
+    <div class="rechts" id="rechts">
       <component v-bind:is="component"></component>
     </div>
   </div>
@@ -108,6 +108,7 @@ export default Vue.extend({
     selectIdee(idee: any) {
       this.tempIdee = idee;
       localStorage.setItem("idee", JSON.stringify(this.tempIdee));
+      localStorage.setItem("bewerten", JSON.stringify(false));
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -145,10 +146,12 @@ export default Vue.extend({
     var jwt = require("jsonwebtoken");
     var decode = jwt.decode(this.token);
     var rolle = decode["rollen"][0];
+    console.log(rolle);
 
     // Entsprechende Component laden, abhängig von Nutzerrolle
     if (rolle == "ROLE_MITARBEITER") this.component = "registrierter";
     else if (rolle == "ROLE_FACHSPEZIALIST") this.component = "spezialist";
+    else if (rolle == "ROLE_ADMIN") this.$router.push({ path: "/Admin" });
     else this.component = "mitarbeiter";
   },
 });
@@ -239,7 +242,7 @@ ul,
 }
 .container {
   overflow: hidden;
-  height: 500px;
+  height: 550px;
   width: 800px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
