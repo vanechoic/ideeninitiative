@@ -88,10 +88,12 @@ router.beforeEach((to, from, next) => {
   var jwt = require("jsonwebtoken");
   var token = jwt.decode(localStorage.getItem("token"));
 
-  if ( (to.name === 'Startseite-Mitarbeiter' || to.name === 'SystemnachrichtAnzeigen') )
+  if ((to.name === 'Startseite-Mitarbeiter' || to.name === 'SystemnachrichtAnzeigen'))
     next();
-  else if ( (to.name !== 'LoginScreen' && !token) )
-    next({ name: 'LoginScreen' });    
+  else if (to.name === 'Admin' && (token["rollen"][0] !== "ROLE_ADMIN"))
+    next({ name: 'LoginScreen' });
+  else if ((to.name !== 'LoginScreen' && !token))
+    next({ name: 'LoginScreen' });
   else
     next();
 })

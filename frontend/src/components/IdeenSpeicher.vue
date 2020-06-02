@@ -128,7 +128,6 @@ export default Vue.extend({
       axios
         .get("http://localhost:9090/idee/ideenspeicher", config)
         .then((res) => {
-          console.log(res.data);
           this.Ideen = res.data || [];
         })
         .catch((err) => {
@@ -150,6 +149,7 @@ export default Vue.extend({
     },
     selectIdee(idee: any) {
       this.tempIdee = idee;
+      console.log(this.tempIdee)
       localStorage.setItem("idee", JSON.stringify(this.tempIdee));
     },
     ideenFiltern() {
