@@ -101,12 +101,12 @@
         <span class="grauer-text">Ja, es gibt bereits ähnliche Produkte.</span>
       </span>
       <div class="grid-row-zusatzinfos" v-if="existiert">
-        <label id="unternehmenLbl" for="unternehmen" class="grid-item grauer-text">Unternehmen:</label>
+        <label id="unternehmenLbl" for="unternehmen" class="grid-item">Unternehmen:</label>
         <input type="text" id="unternehmen" v-model="unternehmen" class="grid-item" />
         <label
           id="beschreibungsTextExistiertLbl"
           for="beschreibungsTextExistiert"
-          class="grid-item grauer-text"
+          class="grid-item"
         >In welcher Form ist es dort bereits umgesetzt?</label>
         <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx" class="grid-item"></textarea>
       </div>
@@ -403,5 +403,12 @@ select {
   flex-direction: column;
   justify-content: space-around;
   padding-left: 15px;
+}
+#anzeige-aktuelle-seite, .grauer-text {
+  text-align: center;
+  color: grey;
+  line-height: 2;
+  font-size: 0.9rem;
+  padding-top: 1rem;
 }
 </style>

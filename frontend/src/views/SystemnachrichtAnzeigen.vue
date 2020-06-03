@@ -14,3 +14,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+  .systemnachricht{
+    height: 80%;
+    margin: auto;
+  }
+</style>

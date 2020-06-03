@@ -9,6 +9,7 @@
               v-for="idee in ideenFiltern()"
               :key="idee"
               v-on:click="showModal = true, selectIdee(idee)"
+              :class="{ selektierteIdee: tempIdee==idee }"
             >{{idee.titel}} von {{idee.erfasser}}</li>
           </ul>
         </div>
@@ -300,5 +301,8 @@ button {
 #zurueck {
   width: 85%;
   margin-left: 5.5%;
+}
+.selektierteIdee {
+  background: rgba(0, 0, 0, 0.1);
 }
 </style>
