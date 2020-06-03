@@ -58,19 +58,18 @@
         <div class="vertriebskanal" v-if="showVertriebskanal">
           <!--Vertriebskanal-->
           <label id="vertriebskanalLbl" for="vertriebskanal">Vertriebskanal:</label>
-          <ul
-            id="vertriebskanal"
-            v-for="vertriebskanal in ideeVertriebskanal"
-            :key="vertriebskanal"
-          >
-            <li>{{ vertriebskanal }}</li>
+          <ul id="vertriebskanal">
+            <li
+              v-for="vertriebskanal in ideeVertriebskanal"
+              :key="vertriebskanal"
+            >{{ vertriebskanal }}</li>
           </ul>
         </div>
         <!--Zielgruppe-->
         <div class="zielgruppe">
           <label id="zielgruppeLbl" for="zielgruppe">Zielgruppe:</label>
-          <ul id="zielgruppe" v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">
-            <li>{{ zielgruppe }}</li>
+          <ul id="zielgruppe">
+            <li v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">{{ zielgruppe }}</li>
           </ul>
         </div>
       </div>
@@ -168,7 +167,8 @@ export default Vue.extend({
   },
   mounted() {
     this.idee = JSON.parse(localStorage.getItem("idee") as string);
-    var etc = localStorage.getItem("bewerten");
+    var etc = localStorage.getItem("bewerten" as string);
+    console.log(etc);
     if (etc) this.wirdBewertet = false;
 
     this.ideeTyp = (this.idee as any).typ;
@@ -179,8 +179,8 @@ export default Vue.extend({
     if (this.ideeBegruendung == null || this.ideeBegruendung == "")
       this.ideeBegruendung == "Keine Begründung angegeben";
 
-      if (this.bearbeitungsstatus == null)
-      this.ideeBegruendung == "Noch nicht bewertet"
+    if (this.bearbeitungsstatus == null)
+      this.ideeBegruendung == "Noch nicht bewertet";
 
     if (this.ideeTyp == "PRODUKTIDEE") {
       if (this.ideeExistiert) this.showExistiert = true;
@@ -205,7 +205,7 @@ export default Vue.extend({
     this.ideeVertriebskanal = (this.idee as any).vertriebsweg;
     this.ideeZielgruppe = (this.idee as any).zielgruppe;
     this.ideeHandlungsfeld = (this.idee as any).handlungsfeld;
-    //localStorage.removeItem("bewerten");
+    localStorage.removeItem("bewerten");
   },
 });
 </script>
@@ -318,6 +318,7 @@ button {
 }
 li {
   line-height: 150%;
+  margin: .5em;
 }
 ul {
   list-style: none;
