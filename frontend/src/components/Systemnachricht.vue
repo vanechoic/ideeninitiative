@@ -35,7 +35,17 @@ export default Vue.extend({
         .post("http://localhost:9090/systemnachricht",{
           titel: this.titel,
           beschreibung: this.beschreibung
+        }).then((response) => {
+          this.$alert("", "Systemnachricht gesendet");
+          this.goBack();
         })
+        .catch((error) =>
+          this.$alert(
+            error.response.data.fehlertext,
+            "Fehler beim Senden",
+            "error"
+          )
+        );
     },
   },
 });
