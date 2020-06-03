@@ -61,8 +61,20 @@ public class IdeeninitiativeExceptionHandler{
      */
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<ApiFehler> handleException(DataIntegrityViolationException e){
-        boolean istEindeutigerBenutzernameConstraint = e.getMessage().contains("eindeutigerBenutzername");
-        String fehlertext = String.format("%s existiert bereits. Bitte wählen Sie eine%s", istEindeutigerBenutzernameConstraint ? "Der Benutzername" : "Die E-Mail-Adresse", istEindeutigerBenutzernameConstraint ? "n anderen Benutzernamen." : " andere E-Mail-Adresse.");
+        String fehlertext = "";
+        logger.error(e.getMessage());
+        if ( e.getMostSpecificCause().getMessage().contains("Data too long") )
+        {
+            fehlertext = String.format("Eingabe zu lang. Maximale Zeichenlänge 255");
+        }
+        else if ( e.getMessage().contains("eindeutigerBenutzername"))
+        {
+            fehlertext = String.format("Benutzer ist bereits vergeben");
+        }
+        else if ( e.getMessage().contains("eindeutigeEmail"))
+        {
+            fehlertext = String.format("Email ist bereits vergeben");
+        }
         return erzeugeApiFehler("DataIntegrityViolationException", fehlertext, HttpStatus.BAD_REQUEST);
     }
 
