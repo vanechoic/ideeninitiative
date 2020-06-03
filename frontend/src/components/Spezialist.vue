@@ -4,7 +4,7 @@
       <p class="rolle">Eingeloggt als Spezialist</p>
       <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild" />
       <button id="profilbildHochladen">Profilbild hochladen</button>
-      <router-link id="ideen" to="/IdeeBewerten" tag="button">Zugewiesende Ideen</router-link>
+      <router-link id="ideen" to="/IdeeBewerten" tag="button" @click="setVariable()">Zugewiesende Ideen</router-link>
       <button id="ideenspeicher" v-on:click="push()">Zum Ideenspeicher</button>
       <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
     </div>
@@ -18,7 +18,10 @@ export default Vue.extend({
   methods:{
     push: function () {
       this.$router.push({ path: "/IdeenSpeicher" });
-  },
+    },
+    setVariable() {
+      localStorage.setItem("bewerten", "true");
+    },
   },
 })
 </script>
@@ -58,10 +61,13 @@ button {
 #abmelden {
   background-color: #f80303;
 }
-#abmelden, #ideen, #ideenspeicher, #profilbildHochladen {
- width: 85%;
+#abmelden,
+#ideen,
+#ideenspeicher,
+#profilbildHochladen {
+  width: 85%;
 }
-.rolle{
+.rolle {
   color: #000;
 }
 </style>

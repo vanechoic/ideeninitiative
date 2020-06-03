@@ -12,3 +12,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.ideeseite{
+  //position: fixed;
+  height: 70%; //Höhe des gesamten grauen Dings
+  margin: auto;
+}
+</style>

@@ -14,3 +14,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.ideenSpeicher{
+  //position: fixed;
+  height: 70%; //Höhe des gesamten grauen Dings
+  margin: auto;
+}
+</style>
