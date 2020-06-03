@@ -9,7 +9,7 @@
             :key="idee"
             v-on:click="showModal = true, selectIdee(idee)"
             :class="{ selektierteIdee: tempIdee==idee }"
-          >{{idee.titel}} von {{idee.erfasser}}</li>
+          >{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
@@ -17,7 +17,8 @@
         <div class="filterElement">
           <select id="filter1" v-model="ideenTyp" @click="selectFilter()">
             <option value disabled selected>Ideentyp</option>
-            <option value="PRODUKTIDEE" selected>Produkt</option>
+            <option value="ALLE" selected>Alle</option>
+            <option value="PRODUKTIDEE">Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
           <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
@@ -152,15 +153,15 @@ export default Vue.extend({
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
       return this.Ideen.filter(function (idee) {
-        return it == '' || it == null || (idee as any).typ == it
+        return it == 'ALLE' || it == '' || it == null || (idee as any).typ == it
       }).filter(function(idee){
-        return sp == '' || sp == null || (idee as any).sparte == sp
+        return sp == 'ALLE' || sp == '' || sp == null || (idee as any).sparte == sp
       }).filter(function(idee){
-        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
+        return hf == 'ALLE' || hf == '' || hf == null || (idee as any).handlungsfeld == hf
       }).filter(function(idee){
-        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
+        return vw == 'ALLE' || vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
       }).filter(function(idee){
-        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
+        return zg == 'ALLE' || zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
       });
     },
     meineIdeenladen() {

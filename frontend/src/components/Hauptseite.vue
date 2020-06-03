@@ -12,7 +12,8 @@
         <div class="filterElement">
           <select id="filter1" v-model="ideenTyp">
             <option value disabled selected>Ideentyp</option>
-            <option value="PRODUKTIDEE" selected>Produkt</option>
+            <option value="ALLE" selected>Alle</option>
+            <option value="PRODUKTIDEE">Produkt</option>
             <option value="INTERNE_IDEE">Intern</option>
           </select>
           <select id="filter2" v-model="sparte" v-if="ideenTyp == 'PRODUKTIDEE'">
@@ -117,15 +118,15 @@ export default Vue.extend({
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
       return this.Ideen.filter(function (idee) {
-        return it == '' || it == null || (idee as any).typ == it
+        return it == 'ALLE' || it == '' || it == null || (idee as any).typ == it
       }).filter(function(idee){
-        return sp == '' || sp == null || (idee as any).sparte == sp
+        return sp == 'ALLE' || sp == '' || sp == null || (idee as any).sparte == sp
       }).filter(function(idee){
-        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
+        return hf == 'ALLE' || hf == '' || hf == null || (idee as any).handlungsfeld == hf
       }).filter(function(idee){
-        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
+        return vw == 'ALLE' || vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
       }).filter(function(idee){
-        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
+        return zg == 'ALLE' || zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
       });
     },
     alleIdeenladen() {
@@ -158,6 +159,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+$medium-green: #00894d;
+$light-green: #69a82f;
 .rechts,
 .container {
   position: relative;
@@ -189,12 +192,25 @@ p,
 .rechts {
   width: 50%;
 }
-li {
-  color: black;
+.listeContainer,
+ul {
+  //border: 0.5px solid #fff;
+  height: 100%;
+  border-radius: 20px;
+  list-style: none;
+  margin: 0;
+  //overflow: auto;
+  padding: 0;
+  text-indent: 10px;
 }
-li,
-.listeContainer {
-  border: 0.5px solid #000;
+li {
+  border: none;
+  border-bottom: 0.5px solid #fff;
+  line-height: 30px;
+  color: $medium-green;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 .links,
 .rechts {
@@ -221,17 +237,13 @@ button,
 .rechts {
   text-align: center;
 }
-ul,
-.listeContainer {
-  height: 300px;
-}
 #filter1,
 #filter2,
 #filter3,
 #filter4,
 #filter5 {
   margin: 2px;
-  width: 5.5em;
+  width: 7em;
 }
 #beschreibung {
   display: block;

@@ -17,8 +17,9 @@
         <div class="filter">
           <div class="filterElement">
             <select id="filter1" v-model="ideenTyp" @click="selectFilter()">
-              <option value disabled selected>Ideentyp</option>
-              <option value="PRODUKTIDEE" selected>Produkt</option>
+              <option value disabled>Ideentyp</option>
+              <option value="ALLE" selected>Alle</option>
+              <option value="PRODUKTIDEE">Produkt</option>
               <option value="INTERNE_IDEE">Intern</option>
             </select>
             <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
@@ -159,13 +160,16 @@ export default Vue.extend({
       var vw = this.vertriebsweg;
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
-
       return this.Ideen.filter(function (idee) {
-        if ((idee as any).typ == it) return true;
-        else if ((idee as any).sparten == sp) return true;
-        else if ((idee as any).vertriebsweg == vw) return true;
-        else if ((idee as any).zielgruppe == zg) return true;
-        else if ((idee as any).handlungsfeld == hf) return true;
+        return it == 'ALLE' || it == '' || it == null || (idee as any).typ == it
+      }).filter(function(idee){
+        return sp == 'ALLE' || sp == '' || sp == null || (idee as any).sparte == sp
+      }).filter(function(idee){
+        return hf == 'ALLE' || hf == '' || hf == null || (idee as any).handlungsfeld == hf
+      }).filter(function(idee){
+        return vw == 'ALLE' || vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
+      }).filter(function(idee){
+        return zg == 'ALLE' || zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
       });
     },
   },
@@ -176,6 +180,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+$medium-green: #00894d;
+$light-green: #69a82f;
 .container,
 .links,
 .rechts {
@@ -225,10 +231,6 @@ button {
   margin-right: 2px;
   width: 6em;
 }
-.listeContainer,
-li {
-  border: 0.5px solid #000;
-}
 .filter,
 .listeContainer {
   width: 100%;
@@ -243,12 +245,25 @@ ul {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
+.listeContainer,
 ul {
+  //border: 0.5px solid #fff;
+  //height: 100%;
+  border-radius: 20px;
   list-style: none;
   margin: 0;
-  overflow: auto;
+  //overflow: auto;
   padding: 0;
   text-indent: 10px;
+}
+li {
+  border: none;
+  border-bottom: 0.5px solid #fff;
+  line-height: 30px;
+  color: $medium-green;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 li:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -281,10 +296,6 @@ button {
   &:focus {
     outline: none;
   }
-}
-li {
-  line-height: 30px;
-  color: black;
 }
 #ideeBewerten,
 #zurueck {
