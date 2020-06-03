@@ -60,6 +60,9 @@ sourceSets {
         java {
             srcDirs = ['src/main/java', 'generated-api/openapi/src/main/java']
         }
+        resources { //Für die externe Konfiguation durch den Kunden
+            includes = ["**/*.properties"]
+        }
     }
 }
 
@@ -104,4 +107,24 @@ openApiGenerate{
 
 test {
     useJUnitPlatform()
+}
+
+//https://www.youtube.com/watch?v=eVUiDsq7PaY
+processResources{
+    dependsOn 'copyFrontendToBuild'
+}
+
+task copyFrontendToBuild(type: Copy){
+    dependsOn 'npmBuild'
+    from "../frontend/dist"
+    into "$buildDir/resources/main/static"
+}
+
+task npmBuild(type: Exec){
+    workingDir '../frontend'
+    commandLine 'npm', 'run', 'build'
+}
+
+task frontendStarten(type: Exec) {
+    commandLine "../frontend npm run serve"
 }
