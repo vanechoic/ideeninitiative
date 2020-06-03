@@ -12,6 +12,7 @@
           v-for="mitarbeiter in mitarbeiterListe"
           :key="mitarbeiter"
           v-on:click="selectMitarbeiter(mitarbeiter), mitarbeiterAusgewählt=true"
+          :class="{ selektiert: aktiverMitarbeiter==mitarbeiter }"
         >
           {{mitarbeiter.benutzername}} hat Rolle: Mitarbeiter
           <span
@@ -160,7 +161,7 @@
     <!--Nachrichten Modal-->
     <transition name="fade" appear>
       <div class="nachrichtenModal" v-if="showNachrichtenModal">
-        <p class="anzeige-aktuelle-seite">Systemnachrichten</p>
+        <p id="anzeige-aktuelle-seite">Systemnachrichten</p>
         <!--Nachrichten Liste-->
         <div class="row nachrichtenListe" v-if="nachrichtLesen == false">
           <label for="liste" class="grid-item">Empfangende Nachrichten:</label>
@@ -170,6 +171,7 @@
               :key="systemnachricht"
               v-on:click="selectSystemnachricht(systemnachricht),
                systemnachrichtAusgewählt = true"
+              :class="{ selektiert: aktiveSystemnachricht==systemnachricht }"
             >{{ systemnachricht.titel }}</li>
           </ul>
         </div>
@@ -437,7 +439,14 @@ export default Vue.extend({
 $medium-green: #00894d;
 $light-green: #69a82f;
 .spezialisierungsDropdown,
-select {
+select,
+#betreff,
+#text,
+ul,
+.nachrichtDetails,
+.rolleMitarbeiter,
+.rolleSpezialist,
+.rolleAdmin  {
   width: 100%;
 }
 p,
@@ -445,7 +454,8 @@ label,
 button {
   font-size: 1rem;
 }
-.container-fluid {
+.container-fluid,
+.nachrichtDetails {
   height: 100%;
 }
 .container-fluid,
@@ -454,7 +464,7 @@ button,
 #text {
   border-radius: 20px;
 }
-.container-fluid {
+.container-fluid, ul {
   overflow: hidden;
 }
 .combobox {
@@ -467,13 +477,14 @@ button,
   padding-left: 30px;
   padding-right: 30px;
 }
-.spezialisierungsDropdown {
+.spezialisierungsDropdown,
+.row {
   display: flex;
   justify-content: space-between;
 }
-.buttons {
+.buttons,
+#text {
   padding: 1%;
-  margin: auto;
 }
 #rollenBtn,
 #nachrichtLesenBtn,
@@ -518,55 +529,49 @@ select {
   background-color: #f80303;
 }
 #betreff,
-#text {
+#text{
   background: #fff;
   border: 1px solid #ccc;
-  width: 100%;
-  padding: 1%;
 }
 #text {
-  height: 80%;
-}
-.nachrichtDetails {
-  width: 100%;
-  height: 100%;
+  display: block;
+  background-color: #fff;
+  word-wrap: break-word;
+  padding: 0.2% 1%;
+  overflow: scroll;
+  border: 0.5px solid #000;
+  overflow: hidden;
 }
 ul {
-  width: 100%;
-  height: 85%;
   background: #fff;
   margin: 0;
   padding-bottom: 0;
-  overflow: hidden;
   overflow-y: scroll;
 }
 li {
   padding: 1px;
 }
-.row {
-  display: flex;
-  justify-content: space-between;
-}
 .mitarbeiterListe {
   height: 68%;
 }
 #mitarbeiterName {
-  margin: auto;
   font-size: 1.2rem;
 }
-.mitarbeiterModal {
-  height: 85%;
-}
-.rolleMitarbeiter,
-.rolleSpezialist,
-.rolleAdmin {
-  width: 100%;
+.buttons,
+#mitarbeiterName{
+  margin: auto;
 }
 .nachrichtenModal,
-.nachrichtenListe {
+.nachrichtLesen,
+.mitarbeiterModal,
+ul {
   height: 85%;
 }
-.nachrichtLesen {
-  height: 85%;
+.selektiert {
+  background: rgba(0, 0, 0, 0.1);
+}
+.nachrichtenListe,
+#text {
+  height: 80%;
 }
 </style>

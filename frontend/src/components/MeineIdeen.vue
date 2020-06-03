@@ -151,13 +151,16 @@ export default Vue.extend({
       var vw = this.vertriebsweg;
       var zg = this.zielgruppe;
       var hf = this.handlungsfeld;
-
       return this.Ideen.filter(function (idee) {
-        if ((idee as any).typ == it) return true;
-        else if ((idee as any).sparten == sp) return true;
-        else if ((idee as any).vertriebsweg == vw) return true;
-        else if ((idee as any).zielgruppe == zg) return true;
-        else if ((idee as any).handlungsfeld == hf) return true;
+        return it == '' || it == null || (idee as any).typ == it
+      }).filter(function(idee){
+        return sp == '' || sp == null || (idee as any).sparte == sp
+      }).filter(function(idee){
+        return hf == '' || hf == null || (idee as any).handlungsfeld == hf
+      }).filter(function(idee){
+        return vw == '' || vw == null || (idee as any).vertriebsweg.includes(vw)
+      }).filter(function(idee){
+        return zg == '' || zg == null || (idee as any).zielgruppe.includes(zg)
       });
     },
     meineIdeenladen() {

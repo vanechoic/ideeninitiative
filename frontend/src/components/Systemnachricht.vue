@@ -1,18 +1,16 @@
 <template>
-  <article>
-    <div class="container">
-      <p>Bitte geben sie ihren Betreff und ihre Nachricht ein.</p>
-      <form>
-        <label for="betreff">Betreff:</label>
-        <input type="text" id="betreff" v-model="titel" />
-        <label for="nachricht">Nachricht:</label>
-        <textarea id="nachricht" rows="20" cols="50" v-model="beschreibung"></textarea>
-        <!-- Beachten ob ein Nutzer eingeloggt ist! !-->
-        <button id="abbrechenButton" @click="goBack()">Abbrechen</button>
-        <button id="sendenButton" @click="nachrichtAbschicken()">Senden</button>
-      </form>
-    </div>
-  </article>
+  <div class="container">
+    <p id="anzeige-aktuelle-seite">Systemnachricht</p>
+    <form>
+      <label for="betreff">Betreff:</label>
+      <input type="text" id="betreff" v-model="titel" />
+      <label for="nachricht">Nachricht:</label>
+      <textarea id="nachricht" rows="20" cols="50" v-model="beschreibung"></textarea>
+      <!-- Beachten ob ein Nutzer eingeloggt ist! !-->
+      <button id="abbrechenButton" @click="goBack()">Abbrechen</button>
+      <button id="sendenButton" @click="nachrichtAbschicken()">Senden</button>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -56,7 +54,8 @@ textarea,
 #abbrechenButton,
 input,
 form,
-p {
+p,
+#sendenButton {
   width: 100%;
 }
 button,
@@ -73,13 +72,9 @@ div {
   font-size: 1rem;
 }
 .container {
-  position: absolute;
-  height: calc(100% - 250px);
-  top: 2%;
-  left: 2%;
-  right: 2%;
-  bottom: 2%;
   align-items: center;
+  width: 900px;
+  height: 100%;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
@@ -115,17 +110,10 @@ input {
 form {
   display: flex;
   flex-direction: column;
-  padding: 10px 60px;
-  height: calc(100% - 50px);
+  padding: 10px 50px;
+  height: 100%;
   background: linear-gradient(to bottom, #efefef, #ccc);
   transition: all 0.5s ease-in-out;
-}
-p {
-  margin: 10px 16.5%;
-  font-size: 2rem;
-}
-textarea {
-  height: 80%;
 }
 #abbrechenButton {
   background-color: #ec0b0b;
@@ -133,5 +121,15 @@ textarea {
 label {
   font-size: 1rem;
   width: 5em;
+}
+textarea{
+  height: 50%;
+}
+#anzeige-aktuelle-seite{
+  text-align: center;
+  color: grey;
+  line-height: 2;
+  font-size: 0.9rem;
+  padding-top: 1rem;
 }
 </style>
