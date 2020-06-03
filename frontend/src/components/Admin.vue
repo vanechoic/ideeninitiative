@@ -16,8 +16,8 @@
           {{mitarbeiter.benutzername}} hat Rolle: Mitarbeiter
           <span
             v-if="mitarbeiter.istFachspezialist"
-          >; Fachspezialist</span>
-          <span v-if="mitarbeiter.istAdmin">; Admin</span>
+          >| Fachspezialist</span>
+          <span v-if="mitarbeiter.istAdmin">| Admin</span>
         </li>
       </ul>
     </div>
