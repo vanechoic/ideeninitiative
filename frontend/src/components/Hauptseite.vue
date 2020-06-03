@@ -217,6 +217,7 @@ li {
   padding: 2%;
 }
 .container {
+  height: 100%;
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
 .links,

@@ -1,10 +1,10 @@
 <template>
   <article>
     <div class="container">
-        <p class="rollen">Sie sind nicht eingeloggt</p>
+        <p class="rollen">Sie sind nicht eingeloggt.</p>
         <div class="buttons">
-          <router-link to="/Systemnachricht" tag="button" id="zurSystemnachricht">Systemnachricht verfassen</router-link>
-          <router-link to="/" tag="button" id="zurückZurAnmeldung">Zurück zur Anmeldung</router-link>
+          <router-link to="/Systemnachricht" tag="button" class="hellgruener-button">Systemnachricht verfassen</router-link>
+          <router-link to="/" tag="button" class="roter-button">Zurück zur Anmeldung</router-link>
         </div>
     </div>
   </article>
@@ -17,37 +17,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  button {
-    border-radius: 20px;
-    border: 1px solid #fff;
-    color: #fff;
-    font-size: .75rem;
-    font-weight: bold;
-    margin: 5px;
-    padding: 10px 40px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform .1s ease-in;
-    &:active {
-      transform: scale(.9);
-    }
-    &:focus {
-      outline: none;
-    }
-  }
-  #zurSystemnachricht{
-    background-color:#0a0404;
-  }
-  #zurückZurAnmeldung{
-    background-color:#f80303;
-  }
-  #zurückZurAnmeldung,  #zurSystemnachricht{
+  router-link{
     width: 80%;
   }
   .rollen{
-    color: black;
-    margin-top: 1%
+    color: #444;
+    margin-top: 2%;
+    margin-right: 10px;
+    line-height: 2;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+  button{
+    width: 97%;
   }
   .buttons{
     margin-top:55%;
