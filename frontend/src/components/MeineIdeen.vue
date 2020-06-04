@@ -60,7 +60,7 @@
     </div>
     <div class="rechts">
       <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
-      <router-link id="ideeBearbeiten" to="/IdeeBearbeiten" tag="button">Bearbeiten</router-link>
+      <router-link id="ideeBearbeiten" to="/IdeeBearbeiten" tag="button" v-if="ideeBearbeitungszustand == 'ANGELEGT'">Bearbeiten</router-link>
       <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
       <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
     </div>
@@ -145,6 +145,7 @@ export default Vue.extend({
       this.ideeZielgruppe = this.tempIdee.zielgruppe;
       this.ideeHandlungsfeld = this.tempIdee.handlungsfeld;
       this.ideeBearbeitungszustand = this.tempIdee.bearbeitungsstatus;
+      console.log(this.tempIdee.bearbeitungsstatus)
     },
     ideenFiltern() {
       var it = this.ideenTyp;
