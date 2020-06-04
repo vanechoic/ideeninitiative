@@ -16,7 +16,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .neue-idee-anlegen{
-  height: 90%; //größer, weil mehr Inhalt
+  height: 95%; //größer, weil mehr Inhalt
   margin: auto;
 }
 </style>

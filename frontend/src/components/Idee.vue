@@ -326,6 +326,7 @@ ul {
   overflow: auto;
   text-indent: 10px;
   padding: 0;
+  height: 80px;
 }
 .fußzeile {
   padding: 1%;
