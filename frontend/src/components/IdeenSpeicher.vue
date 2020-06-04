@@ -5,12 +5,8 @@
         <p>Ideenspeicher</p>
         <div class="listeContainer">
           <ul class="liste">
-            <li
-              v-for="idee in ideenFiltern()"
-              :key="idee"
-              v-on:click="showModal = true, selectIdee(idee)"
-              :class="{ selektierteIdee: tempIdee==idee }"
-            >{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus | status}}</li>
+            <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}}  
+            <br><span class="grauer-text">von {{idee.erfasser}} im Status: {{idee.bearbeitungsstatus | status}}</span></li>
           </ul>
         </div>
         <!--3 Filter Dropdowns -->
@@ -24,6 +20,7 @@
             </select>
             <select id="filter2" v-model="sparte" v-bind:class="[ sparteAktiv ]">
               <option value disabled selected>Sparte</option>
+              <option value="ALLE" selected>Alle</option>
               <option value="KFZ">KFZ</option>
               <option value="UNFALL">Unfall</option>
               <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
@@ -36,6 +33,7 @@
             </select>
             <select id="filter3" v-model="vertriebsweg" v-bind:class="[ vertriebswegAktiv ]">
               <option value disabled selected>Vertriebsweg</option>
+              <option value="ALLE" selected>Alle</option>
               <option value="STATIONAERER_VERTRIEB">Stationärer Vertrieb in eigenen Geschäftsstelle</option>
               <option value="VERSICHERUNGSMAKLER">Versicherungsmakler</option>
               <option value="KOOPERATION_MIT_KREDITINSTITUTEN">Kooperation mit Kreditinstituten</option>
@@ -43,6 +41,7 @@
             </select>
             <select id="filter4" v-model="zielgruppe" v-bind:class="[ zielgruppeAktiv ]">
               <option value disabled selected>Zielgruppe</option>
+              <option value="ALLE" selected>Alle</option>
               <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
               <option value="FAMILIEN">Familien</option>
               <option value="SINGLES">Singles</option>
@@ -52,6 +51,7 @@
             </select>
             <select id="filter5" v-model="handlungsfeld" v-bind:class="[ handlungsfelderAktiv ]">
               <option value disabled selected>Handlungsfeld</option>
+              <option value="ALLE" selected>Alle</option>
               <option value="KOSTENSENKUNG">Kostensenkung</option>
               <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
               <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
@@ -61,8 +61,8 @@
       </div>
       <div class="rechts">
         <div class="buttons">
-          <router-link to="Bewerten" tag="button" id="ideeBewerten">Idee bewerten</router-link>
-          <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
+          <router-link to="Bewerten" tag="button" class="hellgruener-button">Idee bewerten</router-link>
+          <router-link to="Startseite" tag="button" class="roter-button">Zurück</router-link>
         </div>
       </div>
     </div>
@@ -192,8 +192,7 @@ p,
 .links {
   top: 0;
 }
-.container,
-button {
+.container{
   border-radius: 20px;
 }
 #ideeVeroeffentlichen,
@@ -211,13 +210,6 @@ button {
   justify-content: space-around;
   width: 50%;
   flex-direction: column;
-}
-#zurück {
-  background-color: #f80303;
-}
-#ideeBewerten {
-  background-color: #ffdd00;
-  color: black;
 }
 .filter,
 .filterElement {
@@ -280,25 +272,6 @@ p {
   margin: 8px 0 8px;
 }
 button {
-  border: 1px solid #fff;
-  padding: 10px 40px;
-  margin-top: 10px;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
-#ideeBewerten,
-#zurueck {
   width: 85%;
   margin-left: 5.5%;
 }

@@ -17,5 +17,6 @@ export default {
 .ideeseite{
   margin: auto;
   width: 900px;
+  height: 90%;
 }
 </style>

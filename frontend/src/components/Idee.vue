@@ -1,89 +1,87 @@
 <template>
   <div class="container">
-    <div class="kopfzeile" v-if="showDetails">
+    <!--<div class="kopfzeile" v-if="showDetails">-->
+    <div class="kopfzeile">
       <label id="ideeName">{{ ideeTitel }}</label>
-      <div class="erstellInfos">
+      <div class="erstellInfos grauer-text grid-row">
         <!--Ersteller-->
-        <label class="erstellerLbl" for="ersteller">Ersteller:</label>
-        <div id="ersteller">{{ ideeErsteller }}</div>
+        <label for="ersteller" class="grid-item">Ersteller:</label>
+        <div id="ersteller" class="grid-item">{{ ideeErsteller }}</div>
         <!--Erstell Datum-->
-        <label id="erstellDatumLbl">Erstellt am:</label>
-        <div id="erstellDatum">{{ ideeErstellt }}</div>
+        <label class="grid-item">Erstellt am:</label>
+        <div id="erstellDatum" class="grid-item">{{ ideeErstellt }}</div>
+        <label for="typ" class="grid-item">Typ:</label>
+        <div id="typ" class="grid-item">{{ ideeTyp | ideetyp}}</div>
+        <label for="status" class="grid-item">Bearbeitungsstatus:</label>
+        <div id="status" class="grid-item">{{ ideeBearbeitungszustand | status}}</div>
       </div>
     </div>
-    <div class="hauptteil" v-if="showDetails">
+    <!--<div class="hauptteil" v-if="showDetails">-->
+    <div class="hauptteil">
       <!--Beschreibung-->
-      <div class="beschreibung">
-        <label id="beschreibungLbl" for="beschreibung">Beschreibung:</label>
-        <div id="beschreibung">{{ ideeBeschreibung }}</div>
-      </div>
+      <label id="beschreibungLbl" for="beschreibung">Beschreibung</label>
+      <div id="beschreibung">{{ ideeBeschreibung }}</div>
       <!--Vorteile-->
-      <label id="vorteileLbl" for="vorteile">Vorteile:</label>
+      <label id="vorteileLbl" for="vorteile">Vorteile</label>
       <ul id="vorteile">
         <li v-for="vorteil in ideeVorteile" :key="vorteil">{{ vorteil }}</li>
       </ul>
       <!--Existiert-->
-      <div class="existiert" v-if="showExistiert">
-        <label id="existiertLbl" for="existiertDiv">Existiert:</label>
-        <div id="existiertDiv">
-          <!--Unternehmen-->
-          <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
-          <div id="unternehmen">{{ ideeUnternehmen }}</div>
-          <!--Beschreibung in welcher form es existiert-->
-          <label id="beschreibungExistiertLbl" for="beschreibungExistiert">Beschreibung:</label>
-          <div id="beschreibungExistiert">{{ ideeExistiertBeschreibung }}</div>
-        </div>
-      </div>
-      <!--IdeeTyp-->
-      <div class="ideeTyp">
-        <label id="ideeTypLbl" for="ideeTyp">Idee Typ:</label>
-        <div id="ideeTyp">{{ ideeTyp | ideetyp}}</div>
+      <div class="existiertDiv" v-if="showExistiert">
+        <!--Unternehmen-->
+        <label
+          for="unternehmen"
+          class="grauer-text"
+        >Das Produkt ist bereits umgesetzt im Unternehmen</label>
+        <div id="unternehmen">{{ ideeUnternehmen }}</div>
+        <!--Beschreibung in welcher form es existiert-->
+        <label for="beschreibungExistiert" class="grauer-text">auf folgende Art und Weise:</label>
+        <div id="beschreibungExistiert">{{ ideeExistiertBeschreibung }}</div>
       </div>
       <!--Einblenden, wenn es eine interne Idee ist-->
-      <div class="intern" v-if="showIntern">
-        <!--Handlungsfeld-->
-        <div class="handlungsfeld">
-          <label id="handlungsfeldLbl" for="handlungsfeld">Handlungsfeld:</label>
-          <div id="handlungsfeld">{{ ideeHandlungsfeld | handlungsfeld}}</div>
-        </div>
+      <!--Handlungsfeld-->
+      <div class="handlungsfeld" v-if="ideeTyp == 'INTERNE_IDEE'">
+        <label id="handlungsfeldLbl" for="handlungsfeld">Handlungsfeld</label>
+        <div
+          id="handlungsfeld"
+          class="schriftgroesse-spezialisierung"
+        >{{ ideeHandlungsfeld | handlungsfeld}}</div>
       </div>
       <!--Einblenden, wenn es eine Produktidee ist-->
       <div class="produktIdee" v-if="showProduktidee">
         <!--Sparte-->
-        <div class="sparte">
-          <label id="sparteLbl" for="sparte">Sparte:</label>
-          <div id="sparte">{{ ideeSparte | sparte}}</div>
+        <div>
+          <label for="sparte">Sparte</label>
+          <div id="sparte" class="schriftgroesse-spezialisierung">{{ ideeSparte | sparte}}</div>
         </div>
         <!-- Anzeigen, wenn Vertriebskanal vorhanden ist-->
-        <div class="vertriebskanal" v-if="showVertriebskanal">
+        <div v-if="showVertriebskanal">
           <!--Vertriebskanal-->
-          <label id="vertriebskanalLbl" for="vertriebskanal">Vertriebskanal:</label>
+          <label for="vertriebskanal">Vertriebskanal</label>
           <ul id="vertriebskanal">
             <li
               v-for="vertriebskanal in ideeVertriebskanal"
               :key="vertriebskanal"
+              class="schriftgroesse-spezialisierung"
             >{{ vertriebskanal | vertriebsweg}}</li>
           </ul>
         </div>
         <!--Zielgruppe-->
-        <div class="zielgruppe">
-          <label id="zielgruppeLbl" for="zielgruppe">Zielgruppe:</label>
+        <div>
+          <label for="zielgruppe">Zielgruppe</label>
           <ul id="zielgruppe">
-            <li v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">{{ zielgruppe | zielgruppe}}</li>
+            <li
+              v-for="zielgruppe in ideeZielgruppe"
+              :key="zielgruppe"
+              class="schriftgroesse-spezialisierung"
+            >{{ zielgruppe | zielgruppe}}</li>
           </ul>
         </div>
       </div>
-      <!--Status-->
-      <label id="statusLbl" for="status">Status:</label>
-      <div id="status">{{ ideeBearbeitungszustand | status}}</div>
     </div>
     <div class="fußzeile" v-if="showDetails == true && wirdBewertet==false ">
-      <button class="zurueckBtn" v-on:click="push()">Zurück</button>
-      <button
-        class="bewertungBtn"
-        v-if="showButton"
-        v-on:click="(showModal = true), (showDetails = false)"
-      >Zur Bewertung</button>
+      <button class="roter-button" v-on:click="push()">Zurück</button>
+      <button v-if="showButton" v-on:click="(showModal = true), (showDetails = false)">Zur Bewertung</button>
     </div>
 
     <!--Modal mit der Bewertung. Wird nur angezeigt, wenn bewertungBtn betätigt wird-->
@@ -113,7 +111,7 @@
           </div>
         </div>
         <div class="fußzeile">
-          <button class="zurueckBtn" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
+          <button class="roter-button" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
         </div>
       </div>
     </transition>
@@ -215,7 +213,6 @@ li,
 #beschreibung,
 #ersteller,
 #erstellDatum,
-#ideeTyp,
 #handlungsfeld,
 #sparte,
 #status,
@@ -224,7 +221,6 @@ li,
 #bewertung {
   color: black;
 }
-button,
 .container,
 #beschreibung,
 .modal-overlay,
@@ -233,15 +229,24 @@ button,
   border-radius: 20px;
 }
 .hauptteil,
-.fußzeile .container,
-.modal-overlay {
+.fußzeile .container {
   position: relative;
 }
-.container,
 .modal-overlay {
+  padding: 2%;
+  margin: auto;
+  position: relative;
+  width: 80%;
+  top: -40rem;
+  height: auto;
+  background: linear-gradient(to bottom, #efefef, #ccc);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+}
+.container{
   width: 100%;
   background: linear-gradient(to bottom, #efefef, #ccc);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  height: 100%;
 }
 .erstellInfos,
 #ideeName,
@@ -253,20 +258,20 @@ button,
 }
 .erstellInfos,
 #ideeName,
-.produktIdee,
 .fußzeile,
 #bewertungLbl {
-  justify-content: space-between;
+  justify-content: space-evenly;
+}
+.produktIdee {
+  justify-content: space-evenly;
 }
 #beschreibung,
 #beschreibungExistiert,
 #bewertung {
   display: block;
-  background-color: #fff;
   word-wrap: break-word;
   padding: 0.2% 1%;
   overflow: scroll;
-  border: 0.5px solid #000;
   overflow: hidden;
 }
 #ideeName,
@@ -275,12 +280,10 @@ button,
   align-items: center;
   font-size: 1.5rem;
 }
-#existiertDiv,
-.intern,
+.existiertDiv,
 .produktIdee,
 #status,
 ul,
-#ideeTyp,
 #handlungsfeld,
 #handlungsfeldLbl,
 #unternehmen {
@@ -295,36 +298,17 @@ ul,
 .fade-leave-to {
   opacity: 0;
 }
-.zurueckBtn {
-  background-color: #f80303;
-  right: 5%;
-}
 button {
-  border: 1px solid #fff;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 8px 20px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  background-color: #00894d;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
+  margin-top: 10px;
 }
 li {
   line-height: 150%;
-  margin: .5em;
+  margin: 0.5em;
+  text-indent: 0;
 }
 ul {
   list-style: none;
   overflow: auto;
-  text-indent: 10px;
   padding: 0;
   height: 80px;
 }
@@ -339,6 +323,7 @@ ul {
   left: 0;
   right: 0;
   width: 80%;
+
 }
 #bewertung,
 .abgelehnt,
@@ -357,5 +342,26 @@ p {
 }
 #app {
   position: relative;
+}
+#ideeName {
+  line-height: 3;
+}
+.grid-row {
+  display: grid;
+  grid-template-columns: 20% 30% 20% 30%;
+  grid-template-rows: 50%;
+}
+.container {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.schriftgroesse-spezialisierung {
+  font-size: 0.9rem;
+}
+.handlungsfeld,
+.produktIdee,
+#beschreibungLbl,
+#vorteileLbl {
+  margin-top: 3%;
 }
 </style>

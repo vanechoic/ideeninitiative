@@ -4,12 +4,12 @@
       <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus | status}}</li>
+          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}}  
+            <br><span class="grauer-text">von {{idee.erfasser}} im Status: {{idee.bearbeitungsstatus | status}}</span></li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
       <div class="filter">
-        <div class="filterElement">
           <select id="filter1" v-model="ideenTyp">
             <option value disabled selected>Ideentyp</option>
             <option value="ALLE" selected>Alle</option>
@@ -17,7 +17,8 @@
             <option value="INTERNE_IDEE">Intern</option>
           </select>
           <select id="filter2" v-model="sparte" v-if="ideenTyp == 'PRODUKTIDEE'">
-            <option value disabled selected>Sparte</option>
+            <option value disabled selected>Sparten</option>
+            <option value="ALLE" selected>Alle</option>
             <option value="KFZ">KFZ</option>
             <option value="UNFALL">Unfall</option>
             <option value="KRANKENVERSICHERUNG">Krankenversicherung</option>
@@ -31,7 +32,8 @@
             >
           </select>
           <select id="filter3" v-model="vertriebsweg" v-if="ideenTyp == 'PRODUKTIDEE'">
-            <option value disabled selected>Vertriebsweg</option>
+            <option value disabled selected>Vertriebswege</option>
+            <option value="ALLE" selected>Alle</option>
             <option value="STATIONAERER_VERTRIEB"
               >Stationärer Vertrieb in eigenen Geschäftsstelle</option
             >
@@ -43,6 +45,7 @@
           </select>
           <select id="filter4" v-model="zielgruppe" v-if="ideenTyp == 'PRODUKTIDEE'">
             <option value disabled selected>Zielgruppe</option>
+            <option value="ALLE" selected>Alle</option>
             <option value="KINDER_JUGENDLICHE">Kinder/Jugendliche</option>
             <option value="FAMILIEN">Familien</option>
             <option value="SINGLES">Singles</option>
@@ -52,11 +55,11 @@
           </select>
           <select id="filter5" v-model="handlungsfeld" v-if="ideenTyp == 'INTERNE_IDEE'">
             <option value disabled selected>Handlungsfeld</option>
+            <option value="ALLE" selected>Alle</option>
             <option value="KOSTENSENKUNG">Kostensenkung</option>
             <option value="ERTRAGSSTEIGERUNG">Ertragssteigerung</option>
             <option value="ZUKUNFTSFAEHIGKEIT">Zukunftsfähigkeit</option>
           </select>
-        </div>
       </div>
     </div>
     <div class="rechts" id="rechts">
@@ -120,7 +123,7 @@ export default Vue.extend({
       return this.Ideen.filter(function (idee) {
         return it == 'ALLE' || it == '' || it == null || (idee as any).typ == it
       }).filter(function(idee){
-        return sp == 'ALLE' || sp == '' || sp == null || (idee as any).sparte == sp
+        return sp == 'ALLE' || sp == '' || sp == null || (idee as any).sparten == sp
       }).filter(function(idee){
         return hf == 'ALLE' || hf == '' || hf == null || (idee as any).handlungsfeld == hf
       }).filter(function(idee){

@@ -44,7 +44,12 @@ export default {
   opacity: 0;
   }
   .rolle{
-    color:#000;
+     color: #444;
+    margin-top: 2%;
+    margin-right: 10px;
+    line-height: 2;
+    font-size: 0.9rem;
+    text-align: right;
   }
   .container{
     height: 100%;

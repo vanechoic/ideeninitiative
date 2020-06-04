@@ -14,11 +14,11 @@
           v-on:click="selectMitarbeiter(mitarbeiter), mitarbeiterAusgewählt=true"
           :class="{ selektiert: aktiverMitarbeiter==mitarbeiter }"
         >
-          {{mitarbeiter.benutzername}} hat Rolle: Mitarbeiter
+          {{mitarbeiter.benutzername}} <span class="grauer-text">hat Rolle: Mitarbeiter
           <span
             v-if="mitarbeiter.istFachspezialist"
           >| Fachspezialist</span>
-          <span v-if="mitarbeiter.istAdmin">| Admin</span>
+          <span v-if="mitarbeiter.istAdmin">| Admin</span></span>
         </li>
       </ul>
     </div>

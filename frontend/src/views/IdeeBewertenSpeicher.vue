@@ -14,3 +14,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.Ideebewerten {
+  margin: auto;
+  width: 900px;
+  height: 90%;
+}
+</style>

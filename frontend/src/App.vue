@@ -48,7 +48,7 @@ textarea {
   border-radius: 20px;
 }
 select {
-  font-size: 14px !important;
+  font-size: 0.8rem !important;
   padding: 5px;
   border: none;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;

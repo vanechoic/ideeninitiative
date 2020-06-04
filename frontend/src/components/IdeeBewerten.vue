@@ -5,8 +5,8 @@
       <component v-bind:is="component" :key="componentKey"></component>
     </div>
     <div class="bewertungsTeil" v-if="showDetails">
-      <button id="späterBtn" v-on:click="ideeInSpeicher()">Später bewerten</button>
-      <button id="jetztBewertenBtn" v-on:click="showModal=true, showDetails=false">Jetzt bewerten</button>
+      <button class="roter-button" v-on:click="ideeInSpeicher()">Später bewerten</button>
+      <button v-on:click="showModal=true, showDetails=false">Jetzt bewerten</button>
     </div>
     <!-- Modal.....-->
     <transition name="fade" appear>
@@ -45,9 +45,8 @@
           </div>
         </div>
         <div class="fußzeile">
-          <button class="zurueckBtn" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
+          <button class="roter-button" v-on:click="(showModal = false), (showDetails = true)">Zurück</button>
           <button
-            class="bewertenBtn"
             v-on:click="(showModal = false), (showDetails = true), bewertungVeroeffentlichen()"
           >Bewertung veröffentlichen</button>
         </div>
@@ -118,8 +117,8 @@ export default Vue.extend({
         this.forceRenderer();
 
         this.ideeObjekt = ideenListe[0];
-        console.log("ideeObjekt: " , this.ideeObjekt)
-        console.log("spezi: " , this.fachspezialist)
+        console.log("ideeObjekt: ", this.ideeObjekt);
+        console.log("spezi: ", this.fachspezialist);
         this.fachspezialist = (this.ideeObjekt as any).fachspezialist;
         if ((this.ideeObjekt as any).existiertBereit) this.existiert = true;
         else this.existiert = false;
@@ -134,7 +133,8 @@ export default Vue.extend({
         this.vertriebsweg = (this.ideeObjekt as any).vertriebsweg;
         this.zielgruppe = (this.ideeObjekt as any).zielgruppe;
         this.handlungsfeld = (this.ideeObjekt as any).handlungsfeld;
-        this.ideeBearbeitungszustand = (this.ideeObjekt as any).bearbeitungsstatus;
+        this.ideeBearbeitungszustand = (this
+          .ideeObjekt as any).bearbeitungsstatus;
         this.erstelldatum = (this.ideeObjekt as any).erstellzeitpunkt;
         if (this.vorteile == null) this.vorteile = [];
       }
@@ -151,7 +151,7 @@ export default Vue.extend({
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       };
-      console.log(this.ideeObjekt)
+      console.log(this.ideeObjekt);
       axiosInstance.put(
         "http://localhost:9090/idee",
         {
@@ -188,29 +188,31 @@ export default Vue.extend({
       };
       var axiosInstance = Helper.getInstance().createAxiosInstance();
 
-      axiosInstance.put(
-        "http://localhost:9090/idee",
-        {
-          fachspezialist: this.fachspezialist,
-          typ: this.ideeTyp,
-          existiertBereits: this.existiert,
-          titel: this.titel,
-          erfasser: this.erfasser,
-          erstellzeitpunkt: this.erstelldatum,
-          beschreibung: this.beschreibung,
-          vorteile: this.vorteile,
-          unternehmensbezeichnung: this.unternehmensbezeichnung,
-          artDerUmsetzung: this.beschreibungEx,
-          sparten: this.sparte,
-          vertriebsweg: this.vertriebsweg,
-          zielgruppe: this.zielgruppe,
-          handlungsfeld: this.handlungsfeld,
-          // Daten vom Spezialisten
-          bearbeitungsstatus: this.radiobutton,
-          begruendung: this.begruendung,
-        },
-        config
-      ).then((response) => {
+      axiosInstance
+        .put(
+          "http://localhost:9090/idee",
+          {
+            fachspezialist: this.fachspezialist,
+            typ: this.ideeTyp,
+            existiertBereits: this.existiert,
+            titel: this.titel,
+            erfasser: this.erfasser,
+            erstellzeitpunkt: this.erstelldatum,
+            beschreibung: this.beschreibung,
+            vorteile: this.vorteile,
+            unternehmensbezeichnung: this.unternehmensbezeichnung,
+            artDerUmsetzung: this.beschreibungEx,
+            sparten: this.sparte,
+            vertriebsweg: this.vertriebsweg,
+            zielgruppe: this.zielgruppe,
+            handlungsfeld: this.handlungsfeld,
+            // Daten vom Spezialisten
+            bearbeitungsstatus: this.radiobutton,
+            begruendung: this.begruendung,
+          },
+          config
+        )
+        .then((response) => {
           this.$alert("", "Idee bewertet");
         })
         .catch((error) =>
@@ -230,26 +232,26 @@ export default Vue.extend({
 .container {
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .bewertungsTeil {
   position: relative;
   display: flex;
-  justify-content: space-between;
-  margin: 3%;
+  justify-content: space-evenly;
+  margin-bottom: 3%;
 }
 h2 {
-  width: 100%;
-  margin: auto;
-  margin-bottom: 4%;
-  text-align: center;
-  position: relative;
+  line-height: 3;
+  margin-top: inherit;
 }
 .idee {
   text-align: left;
   position: relative;
-  border: 1px solid rgb(99, 91, 91);
   padding: 1%;
+  flex: 1;
 }
 .modal-overlay {
   position: relative;
@@ -273,22 +275,6 @@ h2 {
 .ablehnen {
   justify-content: space-between;
 }
-button {
-  border: 1px solid #fff;
-  font-weight: bold;
-  padding: 2px 8px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: #fff;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
 .entscheidung {
   justify-content: space-around;
 }
@@ -300,7 +286,10 @@ button {
   color: #f80303;
   width: 30%;
 }
-button,
+button {
+  margin-top: 10px;
+  width: 40%;
+}
 #bewertung,
 .modal-overlay,
 .container,
@@ -311,12 +300,6 @@ button,
 .modal-overlay {
   background: linear-gradient(to bottom, #efefef, #ccc);
 }
-.zurueckBtn {
-  background-color: #f80303;
-}
-.bewertenBtn {
-  background-color: #00894d;
-}
 .fußzeile {
   padding: 1%;
 }
@@ -326,11 +309,5 @@ button,
   width: 20px;
   margin-left: 10px;
   margin-top: 2px;
-}
-#jetztBewertenBtn {
-  background-color: #00894d;
-}
-#späterBtn {
-  background-color: black;
 }
 </style>
