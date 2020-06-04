@@ -60,7 +60,7 @@
     </div>
     <div class="rechts">
       <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
-      <router-link id="ideeBearbeiten" to="/IdeeBearbeiten" tag="button">Bearbeiten</router-link>
+      <router-link id="ideeBearbeiten" to="/IdeeBearbeiten" tag="button" v-if="ideeBearbeitungszustand == 'ANGELEGT'">Bearbeiten</router-link>
       <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
       <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
     </div>
@@ -145,6 +145,7 @@ export default Vue.extend({
       this.ideeZielgruppe = this.tempIdee.zielgruppe;
       this.ideeHandlungsfeld = this.tempIdee.handlungsfeld;
       this.ideeBearbeitungszustand = this.tempIdee.bearbeitungsstatus;
+      console.log(this.tempIdee.bearbeitungsstatus)
     },
     ideenFiltern() {
       var it = this.ideenTyp;
@@ -223,6 +224,7 @@ export default Vue.extend({
         )
         .then((response) => {
           this.$alert("", "Idee erfolgreich veröffentlicht", "success");
+          this.meineIdeenladen();
         })
         .catch((error) =>
           this.$alert(
@@ -301,9 +303,11 @@ p,
   top: 0;
 }
 .container,
-button,
 #fliterButton {
   border-radius: 20px;
+}
+button, .roter-button, .hellgruener-button{
+  width: 70%;
 }
 #ideeVeroeffentlichen,
 #ideeBearbeiten,
@@ -322,8 +326,7 @@ button,
   width: 50%;
   flex-direction: column;
 }
-.rechts,
-#filterButton {
+.rechts{
   background-color: $medium-green;
 }
 .filter,
@@ -337,22 +340,6 @@ button,
 #filter5 {
   margin-right: 2px;
   width: 6em;
-}
-button,
-#filterButton {
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
 }
 .listeContainer,
 ul {
@@ -394,24 +381,10 @@ li {
 p {
   margin: 8px 0 8px;
 }
-#filterButton {
-  border: 1px solid #00894d;
-  padding: 2px 5px;
-  margin-left: 60%;
-}
 #ideeLoeschen {
   background-color: #f80303;
 }
-button {
-  border: none;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 5px 5px rgba(0, 0, 0, 0.2);
-  //border: 1px solid #fff;
-  padding: 10px 40px;
-  margin-top: 10px;
-  &:hover {
-    background-color: #555;
-  }
-}
+
 .selektierteIdee {
   background: rgba(0, 0, 0, 0.1);
 }

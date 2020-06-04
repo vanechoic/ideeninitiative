@@ -10,9 +10,9 @@
           </div>
           <div class="overlay-rechts">
             <h2>Zur Registrierung!</h2>
-            <p>Bitte ihre Daten eingeben</p>
+            <p>Möchten Sie weiter ohne Registrierung oder eigene Ideen anlegen?</p>
             <button
-              class="nichtRegistriert"
+              id="weiterOhneRegistrierung"
               @click="weiterOhneAnmeldung()"
             >Weiter ohne Registrierung</button>
             <button class="invert" id="zurRegistrierung" @click="signUp = !signUp">Registrieren</button>
@@ -41,7 +41,7 @@
       </form>
       <form class="anmelden" action="#">
         <h2>Anmeldung</h2>
-        <div>Bitte geben sie ihre Benutzerdaten ein</div>
+        <div>Bitte geben sie Ihre Benutzerdaten ein:</div>
         <input type="text" placeholder="Benutzername" id="benutzernameAn" v-model="benutzernameAn" />
         <input type="password" placeholder="Passwort" id="passwortAn" v-model="passwortAn" />
         <button class="login" id="anmeldungButton" v-on:click="anmelden()">Anmelden</button>
@@ -150,19 +150,13 @@ form {
 .overlay {
   transition: transform 0.5s ease-in-out;
 }
-button,
 .container,
 input {
   border-radius: 20px;
 }
-.overlay,
-button {
+.overlay {
   color: #fff;
   background: linear-gradient(to bottom right, #00894d, #009345);
-}
-.nichtRegistriert,
-button.invert {
-  border-color: #fff;
 }
 .container {
   width: 768px;
@@ -183,31 +177,13 @@ p {
 div {
   font-size: 1rem;
 }
-.nichtRegistriert {
-  font-size: 0.5rem;
-}
 .overlay {
   position: relative;
   left: -100%;
   width: 200%;
   transform: translateX(0);
 }
-button {
-  border: 1px solid #00894d;
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 10px 40px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
+
 form {
   display: flex;
   align-items: center;
@@ -224,7 +200,6 @@ input {
   background-color: #eee;
   border: none;
   padding: 5px 15px;
-  margin: 6px 0;
   width: calc(100% - 30px);
   border-bottom: 1px solid #ddd;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 -1px 1px #fff, 0 1px 0 #fff;
@@ -301,5 +276,8 @@ input {
     opacity: 1;
     z-index: 10;
   }
+}
+#weiterOhneRegistrierung{
+  font-size: 0.6rem;
 }
 </style>

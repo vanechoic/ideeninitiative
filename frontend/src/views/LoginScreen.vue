@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss">
 .loginScreen{
-  //position: fixed;
+  height: 70%;
   margin:auto;
 }
 </style>

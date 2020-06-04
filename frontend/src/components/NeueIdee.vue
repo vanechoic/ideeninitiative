@@ -35,8 +35,8 @@
         </select>
       </div>
       <div class="grid-item" id="spalte-vorteile-buttons">
-        <button class="ideeButton" id="hinzu" @click="vorteilHinzufuegen()">+ hinzufügen</button>
-        <button class="ideeButton" id="entfernen" @click="vorteilEntfernen()">- entfernen</button>
+        <button class="ideeButton" @click="vorteilHinzufuegen()">+ hinzufügen</button>
+        <button class="ideeButton roter-button" @click="vorteilEntfernen()">- entfernen</button>
       </div>
     </div>
 <!--Comboboxen zur Ideen-Spezifikation -->
@@ -101,19 +101,19 @@
         <span class="grauer-text">Ja, es gibt bereits ähnliche Produkte.</span>
       </span>
       <div class="grid-row-zusatzinfos" v-if="existiert">
-        <label id="unternehmenLbl" for="unternehmen" class="grid-item">Unternehmen:</label>
+        <label id="unternehmenLbl" for="unternehmen" class="grid-item grauer-text">Unternehmen:</label>
         <input type="text" id="unternehmen" v-model="unternehmen" class="grid-item" />
         <label
           id="beschreibungsTextExistiertLbl"
           for="beschreibungsTextExistiert"
-          class="grid-item"
+          class="grid-item grauer-text"
         >In welcher Form ist es dort bereits umgesetzt?</label>
         <textarea id="beschreibungsTextExistiert" v-model="beschreibungEx" class="grid-item"></textarea>
       </div>
     </div>
     <div class="buttons">
-      <button id="entfernen" @click="goBack()">Abbrechen</button>
-      <button id="hinzu" @click="ideeSpeichern()">Speichern</button>
+      <button class="roter-button" @click="goBack()">Abbrechen</button>
+      <button @click="ideeSpeichern()">Speichern</button>
     </div>
   </div>
 </template>
@@ -277,18 +277,15 @@ $light-green: #69a82f;
 select {
   width: 100%;
 }
-.ideeButton,
 #vorteile,
 #titel {
   height: 30px;
   width: 100%;
 }
-label,
-button {
+label {
   font-size: 1rem;
 }
-.container-fluid,
-button {
+.container-fluid {
   border-radius: 20px;
 }
 .container-fluid,
@@ -298,10 +295,6 @@ button {
 #vorteile,
 #titel {
   margin-bottom: 2px;
-}
-#entfernen,
-#hinzu {
-  color: #fff;
 }
 .combobox,
 #entfernen {
@@ -341,29 +334,6 @@ h1 {
   padding: 1%;
   margin: auto;
 }
-#hinzu {
-  background-color: $light-green;
-  border: none;
-}
-#entfernen {
-  border: 1.5px solid #8300008e;
-  color: #830000d5;
-}
-button {
-  border: 1px solid #fff;
-  font-weight: bold;
-  padding: 2px 8px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
 select {
   font-size: 0.8rem;
 }
@@ -372,7 +342,7 @@ select {
 }
 .grid-row {
   display: grid;
-  grid-template-columns: 75% auto;
+  grid-template-columns: 70% auto;
   grid-template-rows: 100%;
 }
 .grid-row-zusatzinfos {

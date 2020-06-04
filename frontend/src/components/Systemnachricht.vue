@@ -7,8 +7,8 @@
       <label for="nachricht">Nachricht:</label>
       <textarea id="nachricht" rows="20" cols="50" v-model="beschreibung"></textarea>
       <!-- Beachten ob ein Nutzer eingeloggt ist! !-->
-      <button id="abbrechenButton" @click="goBack()">Abbrechen</button>
-      <button id="sendenButton" @click="nachrichtAbschicken()">Senden</button>
+      <button class="roter-button" @click="goBack()">Abbrechen</button>
+      <button @click="nachrichtAbschicken()">Senden</button>
     </form>
   </div>
 </template>
@@ -51,14 +51,12 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 textarea,
-#abbrechenButton,
 input,
 form,
 p,
-#sendenButton {
+button {
   width: 100%;
 }
-button,
 .container,
 input {
   border-radius: 20px;
@@ -67,7 +65,6 @@ input,
 .container {
   overflow: hidden;
 }
-button,
 div {
   font-size: 1rem;
 }
@@ -77,24 +74,6 @@ div {
   height: 100%;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   background: linear-gradient(to bottom, #efefef, #ccc);
-}
-button {
-  border: 1px solid #fff;
-  background-color: #00894d;
-  color: #fff;
-  font-weight: bold;
-  padding: 10px 40px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin: 5px;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
 }
 input {
   background-color: #eee;
@@ -115,9 +94,6 @@ form {
   background: linear-gradient(to bottom, #efefef, #ccc);
   transition: all 0.5s ease-in-out;
 }
-#abbrechenButton {
-  background-color: #ec0b0b;
-}
 label {
   font-size: 1rem;
   width: 5em;
@@ -125,11 +101,7 @@ label {
 textarea{
   height: 50%;
 }
-#anzeige-aktuelle-seite{
-  text-align: center;
-  color: grey;
-  line-height: 2;
-  font-size: 0.9rem;
-  padding-top: 1rem;
+button{
+  margin-top: 10px;
 }
 </style>

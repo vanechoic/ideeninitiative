@@ -4,9 +4,9 @@
       <p class="rolle">Eingeloggt als Spezialist</p>
       <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild" />
       <button id="profilbildHochladen">Profilbild hochladen</button>
-      <router-link id="ideen" to="/IdeeBewerten" tag="button" @click="setVariable()">Zugewiesende Ideen</router-link>
-      <button id="ideenspeicher" v-on:click="push()">Zum Ideenspeicher</button>
-      <router-link id="abmelden" to="/" tag="button">Abmelden</router-link>
+      <router-link to="/IdeeBewerten" tag="button" @click="setVariable()" class="hellgruener-button">Zugewiesende Ideen</router-link>
+      <button v-on:click="push()">Zum Ideenspeicher</button>
+      <router-link to="/" tag="button" class="roter-button">Abmelden</router-link>
     </div>
   </article>
 </template>
@@ -27,47 +27,20 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-button {
-  border-radius: 20px;
-  border: 1px solid #fff;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 10px 40px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
+article, .container{
+  height: 100%;
 }
-#profilbildHochladen {
-  background-color: #0a0404;
-}
-#ideen {
-  margin-right: 2px;
-}
-#ideen,
-#ideenspeicher {
-  color: #000;
-  background-color: #ffdd00;
-  border: none;
-}
-#abmelden {
-  background-color: #f80303;
-}
-#abmelden,
-#ideen,
-#ideenspeicher,
+button,
 #profilbildHochladen {
   width: 85%;
+  margin-top: 10px;
 }
-.rolle {
-  color: #000;
+.rolle{
+  color: #444;
+  margin-top: 2%;
+  margin-right: 10px;
+  line-height: 2;
+  font-size: 0.9rem;
+  text-align: right;
 }
 </style>

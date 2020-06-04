@@ -26,7 +26,6 @@
     <div class="row" v-if="showMitarbeiterModal==false && showNachrichtenModal==false">
       <div class="buttons">
         <button
-          id="rollenBtn"
           v-if="mitarbeiterAusgewählt"
           v-on:click="showMitarbeiterModal=true"
         >Rolle bearbeiten</button>
@@ -142,14 +141,13 @@
         <div class="row">
           <div class="buttons">
             <button
-              class="zurueckBtn grid-item"
+              class="roter-button grid-item"
               v-on:click="showMitarbeiterModal = false, 
               mitarbeiterAusgewählt= false, 
               showAuenderungBestätigt=false,
               ladeMitarbeiter()"
             >Zurück</button>
             <button
-              id="rolleBestätigenBtn"
               class="grid-item"
               v-if="showAuenderungBestätigt"
               @click="speichereMitarbeiter()"
@@ -190,7 +188,7 @@
             </div>
             <div class="buttons">
               <button
-                class="zurueckBtn grid-item"
+                class="roter-button grid-item"
                 v-on:click="nachrichtLesen=false, systemnachrichtAusgewählt=false"
               >Zurück</button>
             </div>
@@ -199,12 +197,10 @@
         <div class="row" v-if="systemnachrichtAusgewählt == true && nachrichtLesen==false">
           <div class="buttons">
             <button
-              id="nachrichtLöschenBtn"
-              class="grid-item"
+              class="grid-item roter-button"
               @click="loescheSystemnachricht()"
             >Nachricht löschen</button>
             <button
-              id="nachrichtLesenBtn"
               class="grid-item"
               v-on:click="nachrichtLesen= true"
             >Nachricht lesen</button>
@@ -213,7 +209,7 @@
         <div class="row">
           <div class="buttons">
             <button
-              class="zurueckBtn grid-item"
+              class="roter-button grid-item"
               v-on:click="showNachrichtenModal=false, systemnachrichtAusgewählt=false"
               v-if="nachrichtLesen==false"
             >Zurück</button>
@@ -459,7 +455,6 @@ button {
   height: 100%;
 }
 .container-fluid,
-button,
 #betreff,
 #text {
   border-radius: 20px;
@@ -486,33 +481,6 @@ button,
 #text {
   padding: 1%;
 }
-#rollenBtn,
-#nachrichtLesenBtn,
-#rolleBestätigenBtn {
-  background-color: $light-green;
-  border: none;
-}
-#nachrichten,
-#nachrichtLöschenBtn {
-  border: 1.5px solid #8300008e;
-  color: #830000d5;
-  font-size: 1rem;
-}
-button {
-  border: 1px solid #fff;
-  font-weight: bold;
-  padding: 2px 8px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.1s ease-in;
-  &:active {
-    transform: scale(0.9);
-  }
-  &:focus {
-    outline: none;
-  }
-}
 select {
   font-size: 0.8rem;
 }
@@ -523,13 +491,11 @@ select {
   font-size: 0.9rem;
   padding-top: 1rem;
 }
-.zurueckBtn,
 #abmelden {
   color: #fff;
   background-color: #f80303;
 }
-#betreff,
-#text{
+#betreff{
   background: #fff;
   border: 1px solid #ccc;
 }
@@ -537,9 +503,10 @@ select {
   display: block;
   background-color: #fff;
   word-wrap: break-word;
+  background: #fff;
+  border: 1px solid #ccc;
   padding: 0.2% 1%;
   overflow: scroll;
-  border: 0.5px solid #000;
   overflow: hidden;
 }
 ul {
