@@ -15,8 +15,7 @@ export default {
 
 <style lang="scss" scoped>
 .ideeseite{
-  //position: fixed;
-  height: 70%; //Höhe des gesamten grauen Dings
   margin: auto;
+  width: 900px;
 }
 </style>
