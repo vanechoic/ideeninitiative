@@ -19,18 +19,18 @@
       </div>
       <!--Vorteile-->
       <label id="vorteileLbl" for="vorteile">Vorteile:</label>
-      <ul id="vorteile" v-for="vorteil in ideeVorteile" :key="vorteil">
-        <li>{{ vorteil }}</li>
+      <ul id="vorteile">
+        <li v-for="vorteil in ideeVorteile" :key="vorteil">{{ vorteil }}</li>
       </ul>
       <!--Existiert-->
       <div class="existiert" v-if="showExistiert">
-        <label id="existiertLbl" for="existiertDiv">Existiert: {{ ideeExistiert }}</label>
+        <label id="existiertLbl" for="existiertDiv">Existiert:</label>
         <div id="existiertDiv">
           <!--Unternehmen-->
           <label id="unternehmenLbl" for="unternehmen">Unternehmen:</label>
           <div id="unternehmen">{{ ideeUnternehmen }}</div>
           <!--Beschreibung in welcher form es existiert-->
-          <label id="beschreibungExistiertLbl" for="beschreibungExistiert"></label>
+          <label id="beschreibungExistiertLbl" for="beschreibungExistiert">Beschreibung:</label>
           <div id="beschreibungExistiert">{{ ideeExistiertBeschreibung }}</div>
         </div>
       </div>
@@ -228,7 +228,8 @@ button,
 .container,
 #beschreibung,
 .modal-overlay,
-#bewertung {
+#bewertung,
+#beschreibungExistiert {
   border-radius: 20px;
 }
 .hauptteil,
