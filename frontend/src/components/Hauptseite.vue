@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="links">
-      <p v-on:click="pushDemo()">Alle Ideen</p>
+      <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
           <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>

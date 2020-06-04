@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <h2 v-if="showDetails">Bewertung</h2>
-    <div class="idee">
-      <component v-bind:is="component" v-if="showDetails" :key="componentKey"></component>
+    <div class="idee" v-if="showDetails">
+      <component v-bind:is="component" :key="componentKey"></component>
     </div>
     <div class="bewertungsTeil" v-if="showDetails">
       <button id="späterBtn" v-on:click="goBack()">Später bewerten</button>

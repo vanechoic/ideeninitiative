@@ -224,6 +224,7 @@ export default Vue.extend({
         )
         .then((response) => {
           this.$alert("", "Idee erfolgreich veröffentlicht", "success");
+          this.meineIdeenladen();
         })
         .catch((error) =>
           this.$alert(
