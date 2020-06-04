@@ -37,14 +37,14 @@
       <!--IdeeTyp-->
       <div class="ideeTyp">
         <label id="ideeTypLbl" for="ideeTyp">Idee Typ:</label>
-        <div id="ideeTyp">{{ ideeTyp }}</div>
+        <div id="ideeTyp">{{ ideeTyp | ideetyp}}</div>
       </div>
       <!--Einblenden, wenn es eine interne Idee ist-->
       <div class="intern" v-if="showIntern">
         <!--Handlungsfeld-->
         <div class="handlungsfeld">
           <label id="handlungsfeldLbl" for="handlungsfeld">Handlungsfeld:</label>
-          <div id="handlungsfeld">{{ ideeHandlungsfeld }}</div>
+          <div id="handlungsfeld">{{ ideeHandlungsfeld | handlungsfeld}}</div>
         </div>
       </div>
       <!--Einblenden, wenn es eine Produktidee ist-->
@@ -52,7 +52,7 @@
         <!--Sparte-->
         <div class="sparte">
           <label id="sparteLbl" for="sparte">Sparte:</label>
-          <div id="sparte">{{ ideeSparte }}</div>
+          <div id="sparte">{{ ideeSparte | sparte}}</div>
         </div>
         <!-- Anzeigen, wenn Vertriebskanal vorhanden ist-->
         <div class="vertriebskanal" v-if="showVertriebskanal">
@@ -62,20 +62,20 @@
             <li
               v-for="vertriebskanal in ideeVertriebskanal"
               :key="vertriebskanal"
-            >{{ vertriebskanal }}</li>
+            >{{ vertriebskanal | vertriebsweg}}</li>
           </ul>
         </div>
         <!--Zielgruppe-->
         <div class="zielgruppe">
           <label id="zielgruppeLbl" for="zielgruppe">Zielgruppe:</label>
           <ul id="zielgruppe">
-            <li v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">{{ zielgruppe }}</li>
+            <li v-for="zielgruppe in ideeZielgruppe" :key="zielgruppe">{{ zielgruppe | zielgruppe}}</li>
           </ul>
         </div>
       </div>
       <!--Status-->
       <label id="statusLbl" for="status">Status:</label>
-      <div id="status">{{ ideeBearbeitungszustand }}</div>
+      <div id="status">{{ ideeBearbeitungszustand | status}}</div>
     </div>
     <div class="fußzeile" v-if="showDetails == true && wirdBewertet==false ">
       <button class="zurueckBtn" v-on:click="push()">Zurück</button>
@@ -98,13 +98,13 @@
         <div class="hauptteil">
           <!--Status der Idee-->
           <div class="angenommen" v-if="showAngenommen">
-            <p>{{ ideeBearbeitungszustand }}</p>
+            <p>{{ ideeBearbeitungszustand | status}}</p>
           </div>
           <div class="abgelehnt" v-if="showAbgelehnt">
-            <p>{{ ideeBearbeitungszustand }}</p>
+            <p>{{ ideeBearbeitungszustand | status}}</p>
           </div>
           <div class="nichtBewertet" v-if="showNichtBewertet">
-            <p>{{ ideeBearbeitungszustand }}</p>
+            <p>{{ ideeBearbeitungszustand | status}}</p>
           </div>
           <!--Bewertung der Idee-->
           <div id="bewertung">

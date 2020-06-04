@@ -9,7 +9,7 @@
             :key="idee"
             v-on:click="showModal = true, selectIdee(idee)"
             :class="{ selektierteIdee: tempIdee==idee }"
-          >{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus}}</li>
+          >{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus | status}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->

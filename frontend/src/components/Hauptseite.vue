@@ -4,7 +4,7 @@
       <p>Alle Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}}</li>
+          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}} von {{idee.erfasser}} Status: {{idee.bearbeitungsstatus | status}}</li>
         </ul>
       </div>
       <!--3 Filter Dropdowns -->
