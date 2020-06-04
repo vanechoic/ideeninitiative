@@ -61,7 +61,7 @@
     <div class="rechts">
       <button id="ideeVeroeffentlichen" @click="ideeVeroeffentlichen()">Idee veröffentlichen</button>
       <router-link id="ideeBearbeiten" to="/IdeeBearbeiten" tag="button" v-if="ideeBearbeitungszustand == 'ANGELEGT'">Bearbeiten</router-link>
-      <button id="ideeLoeschen" @click="ideeLoeschen()">Löschen</button>
+      <button id="ideeLoeschen" @click="ideeLoeschen()" v-if="ideeBearbeitungszustand == 'ANGELEGT'">Löschen</button>
       <router-link to="Startseite" tag="button" id="zurueck">Zurück</router-link>
     </div>
   </div>

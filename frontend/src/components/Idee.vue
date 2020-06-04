@@ -162,7 +162,7 @@ export default Vue.extend({
   methods: {
     push: function () {
       localStorage.removeItem("idee");
-      this.$router.push({ path: "/Startseite" });
+      if (window.history.length > 1) this.$router.go(-1);
     },
   },
   mounted() {
