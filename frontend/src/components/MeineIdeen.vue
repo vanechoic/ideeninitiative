@@ -4,7 +4,10 @@
       <p>Meine Ideen</p>
       <div class="listeContainer">
         <ul class="liste">
-          <li v-for="idee in ideenFiltern()" :key="idee" v-on:click="push(), selectIdee(idee)">{{idee.titel}}  
+          <li v-for="idee in ideenFiltern()"
+            :key="idee"
+            v-on:click="showModal = true, selectIdee(idee)"
+            :class="{ selektierteIdee: tempIdee==idee }">{{idee.titel}}  
             <br><span class="grauer-text">von {{idee.erfasser}} im Status: {{idee.bearbeitungsstatus | status}}</span></li>
         </ul>
       </div>
