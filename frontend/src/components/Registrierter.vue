@@ -3,7 +3,7 @@
     <div class="container">
       <p class="rolle">Eingeloggt als Mitarbeiter</p>
         <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild">
-        <div class="profilbild-upload-wrapper">
+        <div class="profilbild-upload-wrapper" v-if="false">
           <!-- form und action für das submit hinzufügen !-->
           <input type="file" name="profilbild">
           <button class="profilbildHochladen hellgruener-button">Profilbild hochladen</button>
