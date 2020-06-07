@@ -2,10 +2,7 @@ package awe.ideeninitiative.model.idee;
 
 import awe.ideeninitiative.model.AbstractEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Vorteil extends AbstractEntity {
@@ -13,6 +10,7 @@ public class Vorteil extends AbstractEntity {
     @JoinColumn(name="idee_id", referencedColumnName = "id")
     private Idee idee;
 
+    @Lob
     private String beschreibung;
 
     public Idee getIdee() {

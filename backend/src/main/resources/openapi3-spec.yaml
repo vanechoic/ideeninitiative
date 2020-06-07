@@ -338,6 +338,73 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/ApiFehler"
+  /benutzer/profilbild:
+    get:
+      tags:
+        - benutzer
+      summary: Lädt das Profilbild des registrierten Mitarbeiters oder Spezialisten.
+      operationId: profilbildLaden
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DateiDTO"
+        "500":
+          description: Es gab einen unerwarteten internen Server-Fehler.
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: Nicht autorisiert. Sind Sie angemeldet?
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
+    post:
+      tags:
+        - benutzer
+      summary: Profilbild aktualisieren fuer registrierte Mitarbeiter und Spezialisten
+      description: This can only be done by the logged in user.
+      operationId: profilbildAktualisieren
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        description: Hochgeladenes Profilbild
+        required: true
+      responses:
+        "200":
+          description: erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Fehlende Eingabe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFehler"
   /benutzer/login:
     post:
       tags:
@@ -605,4 +672,11 @@ components:
         fehlertyp:
           type: string
         fehlertext:
+          type: string
+    DateiDTO:
+      type: object
+      properties:
+        dateiinhalt:
+          type: string
+        dateityp:
           type: string

@@ -1,9 +1,7 @@
 package awe.ideeninitiative.restapi.controller;
 
 import awe.ideeninitiative.api.BenutzerApi;
-import awe.ideeninitiative.api.model.BenutzerDTO;
-import awe.ideeninitiative.api.model.IdeeDTO;
-import awe.ideeninitiative.api.model.InlineObject;
+import awe.ideeninitiative.api.model.*;
 import awe.ideeninitiative.exception.MitarbeiterExistiertBereitsException;
 import awe.ideeninitiative.model.builder.MitarbeiterBuilder;
 import awe.ideeninitiative.model.mitarbeiter.Mitarbeiter;
@@ -13,10 +11,12 @@ import awe.ideeninitiative.restapi.service.BenutzerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -68,7 +68,20 @@ public class BenutzerController implements BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<String> benutzerAnmelden(InlineObject anmeldedaten) throws Exception {
+    public ResponseEntity<String> profilbildAktualisieren(String authorization, MultipartFile profilbildDatei) throws Exception {
+        String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
+        benutzerService.profilbildAktualisieren(benutzername, profilbildDatei);
+        return ResponseEntity.ok(String.format("Profilbild für Benutzer %s erfolgreich aktualisiert.",  benutzername));
+    }
+
+    @Override
+    public ResponseEntity<DateiDTO> profilbildLaden(String authorization) throws Exception {
+        String benutzername = jwtUtil.extrahiereBenutzernamenAusAuthorizationHeader(authorization);
+        return ResponseEntity.ok(benutzerService.profilbildLaden(benutzername));
+    }
+
+    @Override
+    public ResponseEntity<String> benutzerAnmelden(InlineObject1 anmeldedaten) throws Exception {
         final String token;
         try {
             token = benutzerService.mitarbeiterAnmelden(anmeldedaten.getBenutzername(), anmeldedaten.getPasswort());

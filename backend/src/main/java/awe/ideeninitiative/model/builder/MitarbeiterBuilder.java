@@ -3,7 +3,6 @@ package awe.ideeninitiative.model.builder;
 import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.mitarbeiter.*;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +12,8 @@ public final class MitarbeiterBuilder {
     private String nachname;
     private String email;
     private String passwort;
-    private File profilbild;
+    //private File profilbild;
+    private ProfilbildDatei profilbildDatei;
     private boolean istFachspezialist;
     private boolean istAdmin;
     private List<Idee> erstellteIdeen;
@@ -57,8 +57,8 @@ public final class MitarbeiterBuilder {
         return this;
     }
 
-    public MitarbeiterBuilder withProfilbild(File profilbild) {
-        this.profilbild = profilbild;
+    public MitarbeiterBuilder withProfilbildDatei(ProfilbildDatei profilbildDatei) {
+        this.profilbildDatei = profilbildDatei;
         return this;
     }
 
@@ -119,7 +119,7 @@ public final class MitarbeiterBuilder {
         mitarbeiter.setNachname(nachname);
         mitarbeiter.setEmail(email);
         mitarbeiter.setPasswort(passwort);
-        mitarbeiter.setProfilbild(profilbild);
+        mitarbeiter.setProfilbildDatei(profilbildDatei);
         mitarbeiter.setIstFachspezialist(istFachspezialist);
         mitarbeiter.setIstAdmin(istAdmin);
         mitarbeiter.setErstellteIdeen(erstellteIdeen);

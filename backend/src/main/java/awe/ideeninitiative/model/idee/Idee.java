@@ -28,9 +28,11 @@ public class Idee extends AbstractEntity {
     private String titel;
 
     @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
+    @Lob
     private String beschreibung;
 
     @Pattern(regexp = "[^\\^°=*#~;:(){}§$%<>|'`´\\/\\\\]*")
+    @Lob
     private String begruendung;
 
     @NotNull

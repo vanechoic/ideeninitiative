@@ -3,7 +3,7 @@
     <div class="container">
       <p class="rolle">Eingeloggt als Spezialist</p>
       <img src="https://www.w3schools.com/images/picture.jpg" alt="Profilbild" />
-      <button id="profilbildHochladen" v-if="false">Profilbild hochladen</button>
+      <button id="profilbildHochladen">Profilbild hochladen</button>
       <router-link to="/IdeeBewerten" tag="button" @click="setVariable()" class="hellgruener-button">Zugewiesende Ideen</router-link>
       <button v-on:click="push()">Zum Ideenspeicher</button>
       <router-link to="/" tag="button" class="roter-button">Abmelden</router-link>

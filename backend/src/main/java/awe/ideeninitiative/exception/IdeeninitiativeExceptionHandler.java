@@ -1,6 +1,7 @@
 package awe.ideeninitiative.exception;
 
 import awe.ideeninitiative.api.model.ApiFehler;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -106,6 +107,11 @@ public class IdeeninitiativeExceptionHandler{
     @ExceptionHandler({DateTimeParseException.class})
     public ResponseEntity<ApiFehler> handleException(DateTimeParseException e) {
         return erzeugeApiFehler("DatumFormatierung", e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({FileSizeLimitExceededException.class})
+    public ResponseEntity<ApiFehler> handleException(FileSizeLimitExceededException e) {
+        return erzeugeApiFehler("Maximale Dateigröße überschritten", "Die hochgeladene Datei überschreitet die maximale Größe.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public static ResponseEntity<ApiFehler> erzeugeApiFehler(String fehlertyp, String fehlertext, HttpStatus httpStatus){

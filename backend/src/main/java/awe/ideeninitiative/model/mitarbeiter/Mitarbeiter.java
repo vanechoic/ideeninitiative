@@ -13,6 +13,7 @@ import awe.ideeninitiative.model.idee.Idee;
 import awe.ideeninitiative.model.idee.ProduktideeVertriebsweg;
 import awe.ideeninitiative.restapi.security.BenutzerRollen;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -49,7 +50,9 @@ public class Mitarbeiter extends AbstractEntity {
     @Pattern(regexp = "[^\\s]*")
     private String passwort;
 
-    private File profilbild;
+    //private File profilbild;
+    @OneToOne(mappedBy = "mitarbeiter", cascade=CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ProfilbildDatei profilbildDatei;
 
     private boolean istFachspezialist;
 
@@ -107,14 +110,6 @@ public class Mitarbeiter extends AbstractEntity {
 
     public void setPasswort(String passwort) {
         this.passwort = passwort;
-    }
-
-    public File getProfilbild() {
-        return profilbild;
-    }
-
-    public void setProfilbild(File profilbild) {
-        this.profilbild = profilbild;
     }
 
     public String getBenutzername() {
@@ -291,5 +286,13 @@ public class Mitarbeiter extends AbstractEntity {
     public void addFachspezialistVertriebsweg(Vertriebskanal... vertriebsweg) {
         Arrays.stream(vertriebsweg).forEach(vw -> fachspezialistVertriebswege.add(FachspezialistVertriebswegBuilder.aFachspezialistVertriebsweg()
                 .withMitarbeiter(this).withVertriebsweg(vw).build()));
+    }
+
+    public ProfilbildDatei getProfilbildDatei() {
+        return profilbildDatei;
+    }
+
+    public void setProfilbildDatei(ProfilbildDatei profilbildDatei) {
+        this.profilbildDatei = profilbildDatei;
     }
 }

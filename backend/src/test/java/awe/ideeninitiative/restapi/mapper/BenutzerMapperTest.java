@@ -86,7 +86,6 @@ public class BenutzerMapperTest extends AbstrakterApiTest {
                     .withEmail("draco@malfoy.com").withPasswort("slytheringForever")
                     .withIstAdmin(true)
                     .withIstFachspezialist(true)
-                    .withProfilbild(new File("BenutzerMapperTest.java"))
                     .withId(1l)
                     .withErstellzeitpunkt(LocalDateTime.now())
                     .build();
