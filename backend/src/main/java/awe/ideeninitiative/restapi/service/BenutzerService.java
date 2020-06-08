@@ -182,7 +182,7 @@ public class BenutzerService {
      * @param profilbildDatei
      * @throws IOException
      * @throws MitarbeiterExistiertNichtException
-     * @author njuergens
+     * @author Vanessa Haubrok
      */
     public void profilbildAktualisieren(String benutzername, MultipartFile profilbildDatei) throws IOException, MitarbeiterExistiertNichtException {
         logger.error("Profilbild-Datei:" + profilbildDatei);
@@ -202,7 +202,7 @@ public class BenutzerService {
      * lädt Profilbild  des Nutzers aus der Datenbank.
      * @param benutzername
      * @return
-     * @author njuergens
+     * @author Vanessa Haubrok
      */
     public DateiDTO profilbildLaden(String benutzername) {
         ProfilbildDatei profilbild = profilbildDateiRepository.findByMitarbeiterBenutzername(benutzername).orElse(null);

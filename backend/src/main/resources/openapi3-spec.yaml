@@ -449,16 +449,6 @@ paths:
                 type: string
         "400":
           description: Ungültige Benutzerdaten
-  /benutzer/logout:
-    get:
-      tags:
-        - benutzer
-      summary: Meldet den aktuellen Benutzer ab
-      description: ""
-      operationId: benutzerAbmelden
-      responses:
-        default:
-          description: erfolgreich
   /systemnachricht:
     get:
       tags:

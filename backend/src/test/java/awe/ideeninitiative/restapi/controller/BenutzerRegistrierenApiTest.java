@@ -66,7 +66,7 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
 
     /**
      * Prüft, dass bei fehlender Eingabe des Benutzernamens ein Fehler geworfen und ein HTTP.BAD_REQUEST zurückgegeben wird.
-     * @author Vanessa Haubrok
+     * @author Jakob Franke
      * @throws Exception
      */
     @Test
@@ -78,7 +78,7 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
 
     /**
      * Prüft, dass bei Eingabe eines zu kurzen Benutzernamens ein Fehler geworfen und ein HTTP.BAD_REQUEST zurückgegeben wird.
-     * @author Vanessa Haubrok
+     * @author Jakob Franke
      * @throws Exception
      */
     @Test

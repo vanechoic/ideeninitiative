@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 /**
  * Testet die Umformungsmethode im Mitarbeiter darauf, dass sie die Benutzerrollen korrekt als eine String-Liste zurückgibt.
- * @author //TODO
+ * @author Vanessa Haubrok
  */
 @SpringBootTest
 public class MitarbeiterBenutzerrollenUnitTest {
@@ -26,7 +26,6 @@ public class MitarbeiterBenutzerrollenUnitTest {
     /**
      * Gegeben ist ein Mitarbeiter mit allen drei zutreffenden Rollen FS, Admin und Mitarbeiter. Als Ergebnis geliefert wird
      * eine Liste mit drei String-Einträgen. Zu jeder Rolle gibt es einen Eintrag.
-     * @author //TODO
      */
     @Test
     public void ermittleBenutzerrollenAlsStringMitAllenRollen(){
@@ -41,7 +40,6 @@ public class MitarbeiterBenutzerrollenUnitTest {
     /**
      * Gegeben ist ein Mitarbeiter mit nur einer Rolle Mitarbeiter. Als Ergebnis geliefert wird
      * eine Liste mit einem String-Eintrag "Mitarbeiter".
-     * @author //TODO
      */
     @Test
     public void ermittleBenutzerrollenAlsStringNurMitarbeiterrolle(){

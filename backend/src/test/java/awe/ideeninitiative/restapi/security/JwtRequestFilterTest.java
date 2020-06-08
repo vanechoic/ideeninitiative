@@ -74,7 +74,6 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
     /**
      * Prüft, dass das Laden "Meiner Ideen" ohne validen JWT eine Fehlermeldung erzeugt und nicht möglich ist.
      * @throws Exception
-     * @author //TODO:
      */
     @Test
     public void meineIdeenOhneAuthentifizierungAufrufen() throws Exception {
@@ -86,7 +85,6 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
     /**
      * Prüft, dass das Laden "Meiner Ideen" mit validem JWT möglich ist.
      * @throws Exception
-     * @author //TODO
      */
     @Test
     public void meineIdeenMitGueltigemJwtAufrufen() throws Exception {
@@ -98,7 +96,6 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
     /**
      * Prüft, dass das Laden "Meiner Ideen" mit abgelaufenem JWT eine Fehlermeldung erzeugt und nicht möglich ist.
      * @throws Exception
-     * @author //TODO:
      */
     @Test
     public void meineIdeenMitAbgelaufenemJwtAufrufen() throws Exception{

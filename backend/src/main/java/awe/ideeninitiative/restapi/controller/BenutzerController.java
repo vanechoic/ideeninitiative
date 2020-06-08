@@ -44,13 +44,6 @@ public class BenutzerController implements BenutzerApi {
     }
 
     @Override
-    public ResponseEntity<Void> benutzerAbmelden() {
-        logger.error("funzt");
-        //TODO: Impl und Verwendung
-        return new ResponseEntity<Void>(HttpStatus.I_AM_A_TEAPOT);
-    }
-
-    @Override
     public ResponseEntity<String> benutzerRegistrieren(BenutzerDTO benutzer) throws MitarbeiterExistiertBereitsException {
         Mitarbeiter neuerMitarbeiter = MitarbeiterBuilder.aMitarbeiter()//
                 .withBenutzername(benutzer.getBenutzername())//
