@@ -16,6 +16,20 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
+/**
+ * @author Jakob
+ * Serviceklasse für Ideen -
+ * Enthält die Businesslogik für
+ * (1) das Abrufen von Ideen:
+ * - Meine Ideen
+ * - Zugewiesene Ideen
+ * - Alle Ideen
+ * (2) das Anlegen, Bearbeiten, Löschen
+ * von Ideen
+ * (3) prüfen, ob relevante Ideen
+ * bzw. Fachspezialist vorhanden ist
+ * (4) Zugriff auf die Datenbank
+ */
 @Service
 public class IdeeService {
 

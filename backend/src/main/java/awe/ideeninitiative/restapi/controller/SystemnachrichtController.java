@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+/***
+ * @author Jakob
+ * Controller für das Laden, Anlegen und Löschen von Ideen
+ */
 @RestController
 public class SystemnachrichtController implements SystemnachrichtApi {
 

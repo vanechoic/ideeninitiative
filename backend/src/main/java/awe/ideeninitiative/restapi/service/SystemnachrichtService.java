@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/***
+ * @author Jakob
+ * Serviceklasse für die Systemnachrichten -
+ * Enthält die Businesslogik für das Anlegen, Laden und Löschen
+ * von Systemnachrichten
+ */
 @Service
 public class SystemnachrichtService {
 
@@ -33,6 +39,12 @@ public class SystemnachrichtService {
         return systemnachrichtRepository.findAll();
     }
 
+    /**
+     * Prüfen ob ein Nutzer der Admin ist,
+     * um die Systemnachricht ggf. anzuzeigen
+     * @param benutzername
+     * @throws FehlendeRolleAdminException
+     */
     private void pruefeDassDerBenutzerEinAdminIst(String benutzername) throws FehlendeRolleAdminException {
         mitarbeiterRepository.findFirstByBenutzernameAndIstAdminTrue(benutzername).orElseThrow(() -> new FehlendeRolleAdminException(benutzername));
     }
