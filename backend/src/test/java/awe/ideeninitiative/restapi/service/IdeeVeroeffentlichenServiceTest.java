@@ -49,6 +49,14 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
         super.setup();
     }
 
+    /**
+     * Testet ob eine interne Idee veröffentlicht werden kann und ein entschprechender Spezialist existiert.
+     * @throws KeinFachspezialistVerfuegbarException
+     * @throws KeineBefugnisFuerIdeeAenderungenException
+     * @throws IdeeBereitsVeroeffentlichtException
+     * @throws IdeeExistiertNichtException
+     * @author njuergens
+     */
     @Test
     public void interneIdeeErfolgreichVeroeffentlicht() throws KeinFachspezialistVerfuegbarException, KeineBefugnisFuerIdeeAenderungenException, IdeeBereitsVeroeffentlichtException, IdeeExistiertNichtException {
         given.eineGespeicherteInterneIdeeMitHandlungsfeldZUKUNFTSFAEHIGKEIT();
@@ -59,6 +67,14 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
         then.dieIdeeBefindetSichImStatusInBearbeitung();
     }
 
+    /**
+     * Testet ob eine Produkt-Idee veröffentlicht werden kann und ein entschprechender Spezialist existiert.
+     * @throws IdeeExistiertNichtException
+     * @throws IdeeBereitsVeroeffentlichtException
+     * @throws KeineBefugnisFuerIdeeAenderungenException
+     * @throws KeinFachspezialistVerfuegbarException
+     * @author njuergens
+     */
     @Test
     public void produktideeErfolgreichVeroeffentlicht() throws IdeeExistiertNichtException, IdeeBereitsVeroeffentlichtException, KeineBefugnisFuerIdeeAenderungenException, KeinFachspezialistVerfuegbarException {
         given.eineGespeicherteProduktideeMitSparteZusatzinformationZielgruppeUndVertriebsweg();
@@ -69,6 +85,11 @@ public class IdeeVeroeffentlichenServiceTest extends AbstrakterApiTest {
         then.dieIdeeBefindetSichImStatusInBearbeitung();
     }
 
+    /**
+     * Testet ob eine Produkt-Idee nur einem Fachspezialisten zugeordnet wird auch wenn mehrere potenzielle Fachspezialisten existieren
+     * @throws ApiException
+     * @author njuergens
+     */
     @Test
     public void produktideeErfolgreichVeroeffentlichtBeiMehrerenInfragekommendenSpezialisten() throws ApiException {
         given.eineGespeicherteProduktideeMitSparteZusatzinformationZielgruppeUndVertriebsweg();

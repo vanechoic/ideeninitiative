@@ -20,6 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * Leitet Benutzerdaten vom Mapper zum Service und zurück
+ * @author njuergens
+ */
 @RestController
 public class BenutzerController implements BenutzerApi {
 

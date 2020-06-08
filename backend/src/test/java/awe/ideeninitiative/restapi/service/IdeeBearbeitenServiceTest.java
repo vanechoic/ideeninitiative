@@ -42,6 +42,11 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
         super.setup();
     }
 
+    /**
+     * Testet ob die Bearbeitung einer internen Idee korrekt funktioniert
+     * @throws ApiException
+     * @author njuergens
+     */
     @Test
     public void aktualisiereInterneIdee() throws ApiException {
         given.eineGespeicherteInterneIdee();
@@ -51,6 +56,11 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
         then.dieIdeeWurdeEntsprechendDerEingabenAktualisiert();
     }
 
+    /**
+     * Testet ob die Bearbeitung einer  Produkt-Idee korrekt funktioniert
+     * @throws ApiException
+     * @author njuergens
+     */
     @Test
     public void aktualisiereProduktidee() throws ApiException {
         given.eineGespeicherteProduktidee();
@@ -60,6 +70,11 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
         then.dieIdeeWurdeEntsprechendDerEingabenAktualisiert();
     }
 
+    /**
+     * Testet ob eine interne Idee in eine Produktidee umgewandelt werden kann
+     * @throws ApiException
+     * @author njuergens
+     */
     @Test
     public void formeInterneZuProduktideeUm() throws ApiException {
         given.eineGespeicherteInterneIdee();
@@ -69,6 +84,11 @@ public class IdeeBearbeitenServiceTest extends AbstrakterApiTest {
         then.dieIdeeWurdeEntsprechendDerEingabenAktualisiert();
     }
 
+    /**
+     * Testet das Bearbeiten nur möglich ist, wenn Ideen existieren
+     * @throws ApiException
+     * @author njuergens
+     */
     @Test(expected = IdeeExistiertNichtException.class)
     public void ideeExistiertNicht() throws ApiException {
         given.benutzereingabenZurBearbeitungEinerNichtExistentenIdee();

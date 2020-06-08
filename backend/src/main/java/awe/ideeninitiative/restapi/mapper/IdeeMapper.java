@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  * @author Jakob
  * Mapper Datei für Idee-Objekt <-> Data Transfer Objekt
+ * Übersetzt Frontend Dateiformat in Backend Format
  * Mappt außerdem relevante Informationen wie
  * Zielgruppen, Sparte und Vorteile
  */
