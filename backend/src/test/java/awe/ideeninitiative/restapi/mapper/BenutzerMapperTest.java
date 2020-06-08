@@ -43,7 +43,6 @@ public class BenutzerMapperTest extends AbstrakterApiTest {
 
     @Before
     public void setup(){
-        //MockitoAnnotations.initMocks(this);
         sparten = Arrays.asList(Sparte.KFZ, Sparte.HAFTPFLICHT);
         vertriebswege = Arrays.asList(Vertriebskanal.STATIONAERER_VERTRIEB, Vertriebskanal.DIREKTVERSICHERUNG, Vertriebskanal.VERSICHERUNGSMAKLER);
         zielgruppen = Arrays.asList(Zielgruppe.SINGLES, Zielgruppe.PERSONEN_50PLUS);

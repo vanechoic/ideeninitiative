@@ -30,7 +30,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 /**
  * Prüft, dass die in der WebSecurityConfig definierten Filter passen und der JWT bei benötigten Endpunkten korrekt geprüft wird.
- * Beispiel: /idee/meineideen
+ * Beispiel hier: /idee/meineideen
+ * @author Vanessa Haubrok
  */
 public class JwtRequestFilterTest extends AbstrakterApiTest {
 
@@ -59,12 +60,22 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
         given.einGemockterUserDetailsServiceFuerSheldon();
     }
 
+    /**
+     * Prüft, dass das Laden aller Ideen ohne Authentifizierung möglich ist.
+     * @author Vanessa Haubrok
+     * @throws Exception
+     */
     @Test
     public void alleIdeenAbrufenOhneJwt() throws Exception {
         when.alleIdeenOhneBesondereAuthentifizierungAufgerufenWerden();
         then.werdenAlleIdeenGeladen();
     }
 
+    /**
+     * Prüft, dass das Laden "Meiner Ideen" ohne validen JWT eine Fehlermeldung erzeugt und nicht möglich ist.
+     * @throws Exception
+     * @author //TODO:
+     */
     @Test
     public void meineIdeenOhneAuthentifizierungAufrufen() throws Exception {
         when.meineIdeenOhneBesondereAuthentifizierungAufgerufenWird();
@@ -72,6 +83,11 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
         then.dasAufrufergebnisHatHttpStatusCode(HttpStatus.FORBIDDEN);
     }
 
+    /**
+     * Prüft, dass das Laden "Meiner Ideen" mit validem JWT möglich ist.
+     * @throws Exception
+     * @author //TODO
+     */
     @Test
     public void meineIdeenMitGueltigemJwtAufrufen() throws Exception {
         given.einGueltigerJwtZumMitarbeiter();
@@ -79,6 +95,11 @@ public class JwtRequestFilterTest extends AbstrakterApiTest {
         then.werdenMeineIdeenGeladen();
     }
 
+    /**
+     * Prüft, dass das Laden "Meiner Ideen" mit abgelaufenem JWT eine Fehlermeldung erzeugt und nicht möglich ist.
+     * @throws Exception
+     * @author //TODO:
+     */
     @Test
     public void meineIdeenMitAbgelaufenemJwtAufrufen() throws Exception{
         given.einAbgelaufenerJwtZumMitarbeiter();

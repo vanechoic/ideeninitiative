@@ -27,6 +27,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 /**
  * Testet die korrekte Übermittlung der Daten vom Benutzer registrieren-REST-Endpunkt hin bis zum Aufruf des
  * Benutzer registrieren-Services. Dabei wird auch das Exception Handling geprüft.
+ * @author Vanessa Haubrok
  */
 public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
 
@@ -51,7 +52,9 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
     }
 
     /**
-     * Prüft, dass bei vollständigen Benutzereingaben keine Warnung erzeugt wird.
+     * Prüft, dass bei vollständigen Benutzereingaben keine Warnung erzeugt und der BenutzerService korrekt für
+     * das Benutzer registrieren aufgerufen wird.
+     * @author Vanessa Haubrok
      */
     @Test
     public void vollstaendigeEingaben() throws Exception {
@@ -61,6 +64,11 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
         then.derBenutzerServiceMitarbeiterAnlegenWurdeAufgerufen();
     }
 
+    /**
+     * Prüft, dass bei fehlender Eingabe des Benutzernamens ein Fehler geworfen und ein HTTP.BAD_REQUEST zurückgegeben wird.
+     * @author Vanessa Haubrok
+     * @throws Exception
+     */
     @Test
     public void fehlenderBenutzername() throws Exception {
         given.vollstaendigeBenutzereingabenOhneBenutzername();
@@ -68,6 +76,11 @@ public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
         then.dasAufrufergebnisHatHttpStatusCode(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Prüft, dass bei Eingabe eines zu kurzen Benutzernamens ein Fehler geworfen und ein HTTP.BAD_REQUEST zurückgegeben wird.
+     * @author Vanessa Haubrok
+     * @throws Exception
+     */
     @Test
     public void zuKurzerBenutzername() throws Exception {
         given.vollstaendigeBenutzereingabenMitZuKurzemBenutzernamen();

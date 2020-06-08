@@ -24,7 +24,6 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-//TODO: WARUM FUNKTIONIERT DAS HIER NICHT?! @ExtendWith(MockitoExtension.class) Stattdessen unten: initMocks
 public class IdeeMapperTest {
 
     private Given given = new Given();

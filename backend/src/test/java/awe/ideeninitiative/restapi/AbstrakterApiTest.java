@@ -27,6 +27,11 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+/**
+ * Grundgerüst für sämtliche Testklassen. Sorgt dafür, dass Mocking möglich ist und die Applikation korrekt hochgefahren wird.
+ * Legt zudem grundlegende Testdaten an.
+ * @author Vanessa Haubrok
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -63,6 +68,9 @@ public abstract class AbstrakterApiTest {
         einGueltigerJwtZumMitarbeiter(erfasser);
     }
 
+    /**
+     * Stellt für jeden Test einen Mitarbeiter als Erfasser als Testdatensatz zur Verfügung.
+     */
     private void einRegistrierterMitarbeiterAlsErfasser() {
         erfasser = MitarbeiterBuilder.aMitarbeiter().withBenutzername("plankton")//
                 .withEmail("sheldon.j@plankton.de").withVorname("Sheldon J.")//
@@ -70,6 +78,9 @@ public abstract class AbstrakterApiTest {
                 .build();
     }
 
+    /**
+     * Stellt für jeden Test einen Fachspezialisten als Testdatensatz zur Verfügung.
+     */
     private void einRegistrierterMitarbeiterAlsFachspezialist() {
         fachspezialist = MitarbeiterBuilder.aMitarbeiter()
                 .withBenutzername("maleficent")
