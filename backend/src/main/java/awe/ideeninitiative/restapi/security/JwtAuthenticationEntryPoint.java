@@ -18,7 +18,8 @@ import java.io.Serializable;
 
 /**
  * Leitet die Access-Denied-Exceptions auf den IdeeninitiativeExceptionHandler um, die durch mangelnde JWT entstehen.
- * @author https://stackoverflow.com/questions/19767267/handle-spring-security-authentication-exceptions-with-exceptionhandler
+ * Dieser Teil wurde mithilfe von StackOverflow gelöst.
+ * @author Christophe Bornet, https://stackoverflow.com/a/46530064
  */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {

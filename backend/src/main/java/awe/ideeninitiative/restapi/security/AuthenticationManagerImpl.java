@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * Dient als eigener AuthenticationProvider und stellt die Korrektheit des Benutzernamens und Passworts sicher.
+ * @author Vanessa Haubrok
+ */
 @Component
 public class AuthenticationManagerImpl implements AuthenticationProvider {
     @Autowired
@@ -22,9 +26,10 @@ public class AuthenticationManagerImpl implements AuthenticationProvider {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
-     * @author https://stackoverflow.com/questions/31826233/custom-authentication-manager-with-spring-security-and-java-configuration
+     * Ermittelt den Benutzer aus der Datenbank und führt eine Überprüfung des Passworts durch.
+     * @author Halko Karr-Sajtarevic, https://stackoverflow.com/a/31826550
      * @param authentication
-     * @return
+     * @return Authentication
      * @throws AuthenticationException
      */
     @Override

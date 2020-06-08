@@ -16,7 +16,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * https://dzone.com/articles/spring-boot-security-json-web-tokenjwt-hello-world
+ * Hilfsklasse für die Erstellung und Prüfung von JWTs. Diese Klasse wurde
+ * nach dem Beispiel eines DZone-Artikels von Rida Shaikh geschrieben (vgl. author). Zur Vereinfachung des Codes wurden
+ * Methoden übersetzt, zusammengefasst oder umstrukturiert.
+ * @author Rida Shaikh, https://dzone.com/articles/spring-boot-security-json-web-tokenjwt-hello-world, Vanessa Haubrok
  */
 @Component
 public class JwtUtil implements Serializable {

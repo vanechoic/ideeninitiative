@@ -24,6 +24,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
+/**
+ * Testet die korrekte Übermittlung der Daten vom Benutzer registrieren-REST-Endpunkt hin bis zum Aufruf des
+ * Benutzer registrieren-Services. Dabei wird auch das Exception Handling geprüft.
+ */
 public class BenutzerRegistrierenApiTest extends AbstrakterApiTest {
 
     private Given given = new Given();

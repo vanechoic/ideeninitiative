@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author https://dzone.com/articles/spring-boot-security-json-web-tokenjwt-hello-world
+ * Filter, der jede eingehende Anfrage darauf prüft, dass ein valider JWT übergeben wurde. Die Klasse wurde
+ * nach dem Beispiel eines DZone-Artikels von Rida Shaikh geschrieben (vgl. author).
+ * @author Rida Shaikh, https://dzone.com/articles/spring-boot-security-json-web-tokenjwt-hello-world
  */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {

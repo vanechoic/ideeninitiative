@@ -21,6 +21,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Prüft die Funktionalität einzelner JPA-Methoden auf Korrektheit und spricht die Datenbank direkt an.
+ * @author Vanessa Haubrok
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class MitarbeiterRepositoryTest {
@@ -35,7 +39,6 @@ public class MitarbeiterRepositoryTest {
 
     @Before
     public void setup(){
-        //given.keineMitarbeiterInDerDB();
         gefundeneFachspezialisten = new ArrayList<>();
         bob = null;
         given.einFachspezialistMitHandlungsfeldernVertriebswegenSpartenUndZielgruppen();
@@ -92,7 +95,6 @@ public class MitarbeiterRepositoryTest {
      */
     @Test
     public void zweiFachspezialistenMitZielgruppeFamilienSuchen(){
-
         given.einZweiterFachspezialistMitAnderenSpezialisierungen();
         when.nachEinemFachspezialistenGesuchtWird(new ArrayList<>(), Arrays.asList(Sparte.values()), Arrays.asList(Zielgruppe.FAMILIEN));
         then.esWurdenBeideFachspezialistenGefunden();
