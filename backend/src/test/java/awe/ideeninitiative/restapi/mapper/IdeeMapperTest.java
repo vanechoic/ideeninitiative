@@ -24,7 +24,16 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-//TODO: WARUM FUNKTIONIERT DAS HIER NICHT?! @ExtendWith(MockitoExtension.class) Stattdessen unten: initMocks
+/**
+ * @author Jakob
+ * Testklasse für unterschiedliche Mapper Szenarien
+ * Überprüft werden Datentechnische abläufe des Mappens von
+ * - Idee <-> IdeeDTO
+ * - Ideen Typen zu beliebigen anderen Typen
+ * - (Komplette / Teilkomplette) Eingaben beim Idee Erstellen
+ * Im Then Block:
+ * Testen der Datenvollständigkeit
+ */
 public class IdeeMapperTest {
 
     private Given given = new Given();
