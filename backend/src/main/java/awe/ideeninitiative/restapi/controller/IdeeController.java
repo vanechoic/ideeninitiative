@@ -16,6 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/***
+ * @author Jakob
+ * Controller für das Abrufen von
+ * - Meine Ideen
+ * - Alle Ideen
+ * - Zugewiesene Ideen
+ * - Ideenspeicher
+ * Bearbeiten, Löschen und
+ * Anlegen neuer Ideen
+ */
 @RestController
 public class IdeeController implements IdeeApi {
 

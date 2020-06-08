@@ -17,6 +17,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jakob
+ * Mapper Datei für Idee-Objekt <-> Data Transfer Objekt
+ * Mappt außerdem relevante Informationen wie
+ * Zielgruppen, Sparte und Vorteile
+ */
 @Component
 public class IdeeMapper {
 

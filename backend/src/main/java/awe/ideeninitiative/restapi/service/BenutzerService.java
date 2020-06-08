@@ -32,6 +32,11 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Der Benutzer-Service enthält die Business-Logik für die Verwaltung der Benutzer.
+ * @author njuergens
+ */
 @Service
 public class BenutzerService {
     static final Logger logger = LoggerFactory.getLogger(BenutzerService.class);
@@ -50,6 +55,13 @@ public class BenutzerService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * mitarbeiterRegistrieren speichert einen Mitarbeiter in der Datenbank wenn dieser noch nicht existiert.
+     * @param mitarbeiter
+     * @return
+     * @throws MitarbeiterExistiertBereitsException
+     * @author njuergens
+     */
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter mitarbeiter) throws MitarbeiterExistiertBereitsException {
         pruefeObMitarbeiterExistiert(mitarbeiter);
         mitarbeiter.setPasswort(bCryptPasswordEncoder.encode(mitarbeiter.getPasswort()));
@@ -57,6 +69,12 @@ public class BenutzerService {
         return mitarbeiter;
     }
 
+    /**
+     * prüft ob mitarbeiter schon existiert
+     * @param mitarbeiter
+     * @throws MitarbeiterExistiertBereitsException
+     * @author njuergens
+     */
     private void pruefeObMitarbeiterExistiert(Mitarbeiter mitarbeiter) throws MitarbeiterExistiertBereitsException {
         Optional<Mitarbeiter> bereitsVorhandenerMitarbeiter = mitarbeiterRepository.findFirstByEmailOrBenutzername(mitarbeiter.getEmail(), mitarbeiter.getBenutzername());
         if(bereitsVorhandenerMitarbeiter.isPresent()){
@@ -66,16 +84,27 @@ public class BenutzerService {
         }
     }
 
+    /**
+     * meldet einen Benutzer in System an, wenn die richtige Kombination aus Passwort und Benutzername übergeben wurde.
+     * @param benutzername
+     * @param passwort
+     * @return
+     * @throws Exception
+     * @author njuergens
+     */
     public String mitarbeiterAnmelden(String benutzername, String passwort) throws Exception {
         pruefeBenutzernamenUndPasswort(benutzername, passwort);
         final UserDetails anmeldedaten = userDetailsService.loadUserByUsername(benutzername);
        return jwtUtil.generiereToken(anmeldedaten);
     }
 
-    /** authenticate!
+
+    /**
+     * prüft die Kombination aus Benutzername und Passwort
      * @param benutzername
      * @param passwort
      * @throws Exception
+     * @author njuergens
      */
     private void pruefeBenutzernamenUndPasswort(String benutzername, String passwort) throws Exception {
         try {
@@ -87,14 +116,36 @@ public class BenutzerService {
         }
     }
 
+    /**
+     * Lädt eine liste aller Mitarbeiter wenn Benutzer die Rolle Admin hat.
+     * @param benutzername
+     * @return
+     * @throws FehlendeRolleAdminException
+     * @author njuergens
+     */
     public List<Mitarbeiter> alleBenutzerLaden(String benutzername) throws FehlendeRolleAdminException {
         pruefeDassDerBenutzerEinAdminIst(benutzername);
         return mitarbeiterRepository.findAll();
     }
+
+    /**
+     * prüft ob der der Benutzer ein Admin ist
+     * @param benutzername
+     * @throws FehlendeRolleAdminException
+     * @author njuergens
+     */
     private void pruefeDassDerBenutzerEinAdminIst(String benutzername) throws FehlendeRolleAdminException {
         mitarbeiterRepository.findFirstByBenutzernameAndIstAdminTrue(benutzername).orElseThrow(() -> new FehlendeRolleAdminException(benutzername));
     }
 
+    /**
+     * aktualisiert die Rolle von Mitarbeitern im System wenn Benutzer admin ist
+     * @param benutzername
+     * @param mitarbeiter
+     * @throws FehlendeRolleAdminException
+     * @throws MitarbeiterExistiertNichtException
+     * @author njuergens
+     */
     public void mitarbeiterAktualisieren(String benutzername, Mitarbeiter mitarbeiter) throws FehlendeRolleAdminException, MitarbeiterExistiertNichtException {
         pruefeDassDerBenutzerEinAdminIst(benutzername);
         Mitarbeiter zuAktualisierenderMitarbeiter = ladeMitarbeiterAusDatenbank(mitarbeiter.getBenutzername());
@@ -114,10 +165,25 @@ public class BenutzerService {
         mitarbeiterRepository.save(zuAktualisierenderMitarbeiter);
     }
 
+    /**
+     * liefert EINEN Mitarbeiter aus der Datenbank mit passenden Benutzername
+     * @param benutzername
+     * @return
+     * @throws MitarbeiterExistiertNichtException
+     * @author njuergens
+     */
     protected Mitarbeiter ladeMitarbeiterAusDatenbank(String benutzername) throws MitarbeiterExistiertNichtException {
         return mitarbeiterRepository.findFirstByBenutzername(benutzername).orElseThrow(() -> new MitarbeiterExistiertNichtException(benutzername));
     }
 
+    /**
+     * ändert das Profilbild des Nutzers in der Datenbank
+     * @param benutzername
+     * @param profilbildDatei
+     * @throws IOException
+     * @throws MitarbeiterExistiertNichtException
+     * @author njuergens
+     */
     public void profilbildAktualisieren(String benutzername, MultipartFile profilbildDatei) throws IOException, MitarbeiterExistiertNichtException {
         logger.error("Profilbild-Datei:" + profilbildDatei);
 
@@ -132,6 +198,12 @@ public class BenutzerService {
 
     }
 
+    /**
+     * lädt Profilbild  des Nutzers aus der Datenbank.
+     * @param benutzername
+     * @return
+     * @author njuergens
+     */
     public DateiDTO profilbildLaden(String benutzername) {
         ProfilbildDatei profilbild = profilbildDateiRepository.findByMitarbeiterBenutzername(benutzername).orElse(null);
         if(profilbild != null){

@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Jakob
+ * Mapper Datei für Nachricht-Objekt <-> Data Transfer Objekt
+ * und Liste der Systemnachrichten
+ */
 @Component
 public class SystemnachrichtMapper {
 
