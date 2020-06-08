@@ -21,7 +21,8 @@ export default Vue.extend({
   name: "Systemnachricht",
   data: () => ({
     titel: "",
-    beschreibung: ""
+    beschreibung: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     goBack() {
@@ -30,7 +31,7 @@ export default Vue.extend({
     nachrichtAbschicken() {
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axios
-        .post("http://localhost:9090/systemnachricht",{
+        .post(this.baseUrl + "/systemnachricht",{
           titel: this.titel,
           beschreibung: this.beschreibung
         }).then((response) => {

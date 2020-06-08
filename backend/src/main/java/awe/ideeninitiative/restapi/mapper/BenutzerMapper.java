@@ -57,7 +57,6 @@ public class BenutzerMapper {
                 .withPasswort(benutzerDTO.getPasswort())
                 .withIstFachspezialist(benutzerDTO.getIstFachspezialist() == null ? false : benutzerDTO.getIstFachspezialist())
                 .withIstAdmin(benutzerDTO.getIstAdmin() == null ? false : benutzerDTO.getIstAdmin())
-                //.TODO: withProfilbild(benutzerDTO.getProfilbild())
                 .build();
         mappeBenutzerDTOSpartenZuMitarbeiterSparten(benutzerDTO, mitarbeiter);
         mappeBenutzerDTOHandlungsfeldZuMitarbeiterHandlungsfelder(benutzerDTO, mitarbeiter);
@@ -131,7 +130,7 @@ public class BenutzerMapper {
         if(sparten == null || sparten.isEmpty()){
             return null;
         }
-        return sparten.stream() //TODO: Generics?
+        return sparten.stream()
                 .map(vw -> vw.getSparte().toString())
                 .collect(Collectors.toList());
     }

@@ -120,19 +120,15 @@ public class BenutzerService {
 
     public void profilbildAktualisieren(String benutzername, MultipartFile profilbildDatei) throws IOException, MitarbeiterExistiertNichtException {
         logger.error("Profilbild-Datei:" + profilbildDatei);
-        //Benutzername stimmt überein?
+
         Mitarbeiter mitarbeiter = ladeMitarbeiterAusDatenbank(benutzername);
-        //MultipartFile -> File
+
         ProfilbildDatei profilbild = ProfilbildDateiBuilder.aProfilbildDatei().withMitarbeiter(mitarbeiter)
                 .withDateiname(profilbildDatei.getOriginalFilename())
                 .withDateityp(profilbildDatei.getContentType())
         .withDateiinhalt(profilbildDatei.getBytes()).build();
         mitarbeiter.setProfilbildDatei(profilbild);
         mitarbeiterRepository.save(mitarbeiter);
-
-        //Gucken, ob bereits ein Profilbild vorliegt
-        //Wenn Bild vorliegt: aktualisieren
-        //Sonst: Neu anlegen -> wird schon automatisch gemacht?
 
     }
 

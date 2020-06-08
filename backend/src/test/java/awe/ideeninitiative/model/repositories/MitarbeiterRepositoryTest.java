@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class MitarbeiterRepositoryTest {
-    //TODO: Config für Testdatenbank!!!
 
     @Autowired private MitarbeiterRepository mitarbeiterRepository;
 

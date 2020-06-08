@@ -99,6 +99,7 @@ export default Vue.extend({
     // Spezialist Variablen
     radiobutton: "",
     begruendung: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     bewertungVeroeffentlichen() {
@@ -112,7 +113,7 @@ export default Vue.extend({
 
       axiosInstance
         .put(
-          "http://localhost:9090/idee",
+          this.baseUrl + "/idee",
           {
             typ: this.ideeTyp,
             existiertBereits: this.existiert,

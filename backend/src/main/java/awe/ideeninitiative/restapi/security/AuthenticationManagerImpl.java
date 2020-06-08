@@ -39,9 +39,6 @@ public class AuthenticationManagerImpl implements AuthenticationProvider {
         if (!bCryptPasswordEncoder.matches(password, user.get().getPasswort())) {
             throw new BadCredentialsException("1000");
         }
-        /*if (user.isDisabled()) {
-            throw new DisabledException("1001");
-        }*/
         return new UsernamePasswordAuthenticationToken(username, password);
     }
 
@@ -50,13 +47,4 @@ public class AuthenticationManagerImpl implements AuthenticationProvider {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
-    /*
-    private String ermittleBenutzerrollenAlsString(Mitarbeiter mitarbeiter) {
-        List<String> rollen = new ArrayList<String>();
-        rollen.add(BenutzerRollen.ROLE_MITARBEITER.toString()); //TODO: Sauber: Wie wird der Admin gekennzeichnet?
-        if(mitarbeiter.istFachspezialist()){
-            rollen.add(BenutzerRollen.ROLE_ADMIN.toString());
-        }
-        return rollen.toString();
-    }*/
 }

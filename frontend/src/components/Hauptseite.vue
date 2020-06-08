@@ -107,6 +107,7 @@ export default Vue.extend({
     Ideen: [],
     gefilterteIdeen: [],
     tempIdee: {},
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     selectIdee(idee: any) {
@@ -134,7 +135,7 @@ export default Vue.extend({
     },
     alleIdeenladen() {
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axiosInstance.get("http://localhost:9090/idee").then((res) => {
+      axiosInstance.get(this.baseUrl + "/idee").then((res) => {
         this.Ideen = res.data || [];
       });
     },

@@ -150,6 +150,7 @@ export default Vue.extend({
     // Zusätzliche Attribute
     ideeBearbeitungszustand: "",
     erstelldatum: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     // Methode für Abbrechen-Button => Zurück im Browser
@@ -198,7 +199,7 @@ export default Vue.extend({
 
       axiosInstance
         .put(
-          "http://localhost:9090/idee",
+          this.baseUrl + "/idee",
           {
             typ: this.ideenTyp,
             existiertBereits: this.existiert,

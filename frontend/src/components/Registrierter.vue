@@ -42,6 +42,7 @@ export default Vue.extend({
   data: () => ({
     // Auth Token
     token: localStorage.getItem("token"),
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   asyncComputed: {
     profilbildLaden: {
@@ -57,7 +58,7 @@ export default Vue.extend({
 
         var axiosInstance = Helper.getInstance().createAxiosInstance();
         return axios
-          .get("http://localhost:9090/benutzer/profilbild", config)
+          .get(this.baseUrl + "/benutzer/profilbild", config)
           .then((res) => {
             if (res.data) {
               return (
@@ -96,7 +97,7 @@ export default Vue.extend({
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axios
-        .post("http://localhost:9090/benutzer/profilbild", formData, config)
+        .post(this.baseUrl + "/benutzer/profilbild", formData, config)
         .then((res) => {
           this.$alert("", res.data, "success");
         })

@@ -70,12 +70,13 @@ export default Vue.extend({
     // Alert Variablen
     res: "",
     hasError: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     anmelden: function (event: Event) {
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
-        .post("http://localhost:9090/benutzer/login", {
+        .post(this.baseUrl + "/benutzer/login", {
           benutzername: this.benutzernameAn,
           passwort: this.passwortAn,
         })
@@ -92,7 +93,7 @@ export default Vue.extend({
     registrieren() {
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axiosInstance
-        .post("http://localhost:9090/benutzer", {
+        .post(this.baseUrl + "/benutzer", {
           benutzername: this.benutzernameReg,
           vorname: this.vorname,
           nachname: this.nachname,

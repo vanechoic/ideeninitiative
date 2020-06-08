@@ -39,11 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/idee").permitAll()
-                .antMatchers( "/benutzer", "/benutzer/login", "/systemnachricht").permitAll()
+                .antMatchers( "/benutzer", "/benutzer/login", "/systemnachricht", "/", "/index.html", "/resources/**", "/css/**", "/js/**", "/images/**").permitAll()
         .anyRequest().authenticated()
         .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -56,7 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
-        //TODO: adds salt automatically? HOW exactly does it work?
         return new BCryptPasswordEncoder();
     }
 
@@ -66,11 +64,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
-
-    /*@Override
-    @Bean
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-	    return super.userDetailsServiceBean();
-	 }*/
 }

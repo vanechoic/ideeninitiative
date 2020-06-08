@@ -113,6 +113,7 @@ export default Vue.extend({
     ideeZielgruppe: [{}],
     ideeHandlungsfeld: "",
     ideeBearbeitungszustand: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     goBack() {
@@ -180,7 +181,7 @@ export default Vue.extend({
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axios
-        .get("http://localhost:9090/idee/meineideen", config)
+        .get(this.baseUrl + "/idee/meineideen", config)
         .then((res) => {
           this.Ideen = res.data || [];
         })
@@ -206,7 +207,7 @@ export default Vue.extend({
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axios
         .post(
-          "http://localhost:9090/idee/veroeffentlichen",
+          this.baseUrl + "/idee/veroeffentlichen",
           {
             typ: this.ideeTyp,
             existiertBereits: this.ideeExistiert,
@@ -254,7 +255,7 @@ export default Vue.extend({
 
       axiosInstance
         .post(
-          "http://localhost:9090/idee/loeschen",
+          this.baseUrl + "/idee/loeschen",
           {
             typ: this.ideeTyp,
             existiertBereits: this.ideeExistiert,

@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-//TODO: Mockito Annotation?
 public class BenutzerMapperTest extends AbstrakterApiTest {
 
     private Given given = new Given();
@@ -60,7 +59,6 @@ public class BenutzerMapperTest extends AbstrakterApiTest {
 
     @Test
     public void mappeMitarbeiterZuBenutzerDTOMax(){
-        //TODO: Impl
         given.einMitarbeiterMax();
         when.mappeMitarbeiterZuBenutzerDTOAufgerufenWird();
         then.wirdEinBenutzerDTOMitDenWertenDesMitarbeitersZurueckgegeben();

@@ -174,7 +174,7 @@ public class IdeeMapperTest {
             idee.addVorteil("Vorteil3");
             interneIdeeHandlungsfeld = InterneIdeeHandlungsfeldBuilder.anInterneIdeeHandlungsfeld()
                     .withHandlungsfeld(Handlungsfeld.ZUKUNFTSFAEHIGKEIT).withIdee(idee).build();
-            idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld); //TODO: Brauchen wir hier einen Setter?
+            idee.setInterneIdeeHandlungsfeld(interneIdeeHandlungsfeld);
         }
 
         public void eineBereitsExistierendeProduktideeMitSparteVertriebswegenUndZielgruppen() {

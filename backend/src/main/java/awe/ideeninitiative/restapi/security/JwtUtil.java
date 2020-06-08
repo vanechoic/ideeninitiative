@@ -20,18 +20,16 @@ import java.util.stream.Collectors;
  */
 @Component
 public class JwtUtil implements Serializable {
-    private static final long serialVersionUID = -2550185165626007488L;
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_ABLAUFDAUER = 360*5;
 
     @Value("${jwt.secret}")
     private String secret;
 
 
-    //retrieve username from jwt token
     public String extrahiereBenutzernamenAusToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
-    //retrieve expiration date from jwt token
+
     public Date extrahiereAblaufzeitpunktAusToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -80,17 +78,10 @@ public class JwtUtil implements Serializable {
      *  sowie der konfigurierte secret key. Gesetzt werden das Subject, das Ablaufdatum, das Erstelldatum und die Rollen.
      * @param rollen
      * @param benutzername
-     * @return Generierter JWT //TODO: protected?
+     * @return Generierter JWT
      */
     public String generiereEinzelnenToken(List<String> rollen, String benutzername) {
-        return generiereEinzelnenTokenMitAblaufzeitpunkt(rollen, benutzername, new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000));
-        /*return Jwts.builder()
-                .setSubject(benutzername)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .claim("rollen", rollen)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();*/
+        return generiereEinzelnenTokenMitAblaufzeitpunkt(rollen, benutzername, new Date(System.currentTimeMillis() + JWT_ABLAUFDAUER * 1000));
     }
 
     /**

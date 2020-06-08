@@ -5,26 +5,27 @@ import awe.ideeninitiative.model.builder.FachspezialistHandlungsfeldBuilder;
 import awe.ideeninitiative.model.builder.FachspezialistSparteBuilder;
 import awe.ideeninitiative.model.builder.FachspezialistVertriebswegBuilder;
 import awe.ideeninitiative.model.builder.FachspezialistZielgruppeBuilder;
+import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Sparte;
 import awe.ideeninitiative.model.enums.Vertriebskanal;
-import awe.ideeninitiative.model.enums.Handlungsfeld;
 import awe.ideeninitiative.model.enums.Zielgruppe;
 import awe.ideeninitiative.model.idee.Idee;
-import awe.ideeninitiative.model.idee.ProduktideeVertriebsweg;
 import awe.ideeninitiative.restapi.security.BenutzerRollen;
 import org.hibernate.validator.constraints.Email;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ *  Speichert den registrierten Mitarbeiter, Admin und Fachspezialisten. Die Rollen werden über die Felder istFachspezialist
+ *  und istAdmin gesetzt.
+ * @author
+ */
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "benutzername", name = "eindeutigerBenutzername"),
@@ -50,7 +51,6 @@ public class Mitarbeiter extends AbstractEntity {
     @Pattern(regexp = "[^\\s]*")
     private String passwort;
 
-    //private File profilbild;
     @OneToOne(mappedBy = "mitarbeiter", cascade=CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private ProfilbildDatei profilbildDatei;
 

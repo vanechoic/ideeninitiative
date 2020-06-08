@@ -258,6 +258,7 @@ export default Vue.extend({
     zielgruppe: [],
     handlungsfeld: [],
     radiobutton: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods:{
     logout: function(){
@@ -272,7 +273,7 @@ export default Vue.extend({
       };
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axios.get("http://localhost:9090/benutzer", config)
+      axios.get(this.baseUrl +"/benutzer", config)
         .then((res) => {
           this.mitarbeiterListe = res.data || [];
         })
@@ -295,7 +296,7 @@ export default Vue.extend({
 
       if (this.radiobutton == "ROLE_MITARBEITER")
       {
-        axiosInstance.put("http://localhost:9090/benutzer",
+        axiosInstance.put(this.baseUrl + "/benutzer",
           {
             benutzername: this.aktiverMitarbeiter.benutzername,
             vorname: this.aktiverMitarbeiter.vorname,
@@ -323,7 +324,7 @@ export default Vue.extend({
       }
       else if(this.radiobutton == "ROLE_FACHSPEZIALIST")
       {
-        axiosInstance.put("http://localhost:9090/benutzer",
+        axiosInstance.put(this.baseUrl + "/benutzer",
           {
             benutzername: this.aktiverMitarbeiter.benutzername,
             vorname: this.aktiverMitarbeiter.vorname,
@@ -351,7 +352,7 @@ export default Vue.extend({
       }
       else if(this.radiobutton == "ROLE_ADMIN")
       {
-        axiosInstance.put("http://localhost:9090/benutzer",
+        axiosInstance.put(this.baseUrl + "/benutzer",
           {
             benutzername: this.aktiverMitarbeiter.benutzername,
             vorname: this.aktiverMitarbeiter.vorname,
@@ -387,7 +388,7 @@ export default Vue.extend({
       };
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axios.get("http://localhost:9090/systemnachricht", config)
+      axios.get(this.baseUrl + "/systemnachricht", config)
         .then((res) => {
           this.systemnachrichtListe = res.data || [];
         })
@@ -410,7 +411,7 @@ export default Vue.extend({
       };
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
-      axiosInstance.post("http://localhost:9090/systemnachricht/loeschen",
+      axiosInstance.post(this.baseUrl + "/systemnachricht/loeschen",
           {
             titel: this.aktiveSystemnachricht.titel,
             beschreibung: this.aktiveSystemnachricht.beschreibung

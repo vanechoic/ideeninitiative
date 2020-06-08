@@ -152,6 +152,7 @@ export default Vue.extend({
     zielgruppeAktiv: "aktiv",
     handlungsfelderAktiv: "aktiv",
     existiertAktiv: "aktiv",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     // Methode für Abbrechen-Button => Zurück im Browser
@@ -200,7 +201,7 @@ export default Vue.extend({
         if (this.ideenTyp == "PRODUKTIDEE") {
           if (this.existiert) {
             axiosInstance.post(
-              "http://localhost:9090/idee",
+              this.baseUrl + "/idee",
               {
                 bearbeitungsstatus: "ANGELEGT",
                 beschreibung: this.beschreibung,
@@ -221,7 +222,7 @@ export default Vue.extend({
             this.$router.push("Startseite");
           } else {
             axiosInstance.post(
-              "http://localhost:9090/idee",
+              this.baseUrl + "/idee",
               {
                 titel: this.titel,
                 beschreibung: this.beschreibung,
@@ -241,7 +242,7 @@ export default Vue.extend({
           }
         } else {
           axiosInstance.post(
-            "http://localhost:9090/idee",
+            this.baseUrl + "/idee",
             {
               titel: this.titel,
               beschreibung: this.beschreibung,

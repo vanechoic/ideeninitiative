@@ -128,7 +128,6 @@ public class IdeeService {
         List<Mitarbeiter> fachspezialistenMitPassenderSpezialisierung = null;
         switch (zuVeroeffentlichendeIdee.getTyp()){
             case INTERNE_IDEE:
-                //TODO: Prüfung, ob Handlungsfeld vorliegt. Wenn nicht: Fehler!
                 fachspezialistenMitPassenderSpezialisierung = mitarbeiterRepository.findAllByIstFachspezialistTrueAndFachspezialistHandlungsfelderHandlungsfeldLike(zuVeroeffentlichendeIdee.getInterneIdeeHandlungsfeld().getHandlungsfeld());
                 break;
             case PRODUKTIDEE:

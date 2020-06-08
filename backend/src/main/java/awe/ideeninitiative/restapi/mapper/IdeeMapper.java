@@ -93,7 +93,6 @@ public class IdeeMapper {
                 .withFachspezialist(ideeDTO.getFachspezialist() != null ? ermittleMitarbeiterZuBenutzernamen(ideeDTO.getFachspezialist()) : null)
                 .withTyp(ideentyp)
         .build();
-        //TODO: Muss ID auch gemappt werden?
         mappeIdeeDTOVorteileZuIdeeVorteile(ideeDTO, idee);
 
         switch (ideentyp){

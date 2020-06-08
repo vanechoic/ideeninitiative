@@ -115,6 +115,7 @@ export default Vue.extend({
     ideeZielgruppe: [{}],
     ideeHandlungsfeld: "",
     ideeBearbeitungszustand: "",
+    baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   methods: {
     goBack() {
@@ -131,7 +132,7 @@ export default Vue.extend({
 
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       axios
-        .get("http://localhost:9090/idee/ideenspeicher", config)
+        .get(this.baseUrl + "/idee/ideenspeicher", config)
         .then((res) => {
           this.Ideen = res.data || [];
         })

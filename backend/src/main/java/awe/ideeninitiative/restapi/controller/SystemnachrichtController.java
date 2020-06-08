@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 public class SystemnachrichtController implements SystemnachrichtApi {
 

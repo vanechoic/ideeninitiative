@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 public class BenutzerController implements BenutzerApi {
 
@@ -54,7 +53,7 @@ public class BenutzerController implements BenutzerApi {
                 .withVorname(benutzer.getVorname())//
                 .withNachname(benutzer.getNachname())//
                 .withEmail(benutzer.getEmail())//
-                .withPasswort(benutzer.getPasswort()).build(); //TODO: Passwort verschlüsseln!
+                .withPasswort(benutzer.getPasswort()).build();
         benutzerService.mitarbeiterRegistrieren(neuerMitarbeiter);
         return ResponseEntity.ok(String.format("Benutzer %s wurde erfolgreich registriert.", neuerMitarbeiter.getBenutzername()));
     }
@@ -89,6 +88,6 @@ public class BenutzerController implements BenutzerApi {
             e.printStackTrace();
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(token); //TODO: new JwtResponse?
+        return ResponseEntity.ok(token);
     }
 }

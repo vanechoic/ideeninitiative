@@ -1,10 +1,10 @@
 server:
-  port: 9090
+  port: 6969
 
 spring:
   profiles:
     active:
-      - Nils
+      - vanechoic
       - dev
   jpa:
     hibernate:

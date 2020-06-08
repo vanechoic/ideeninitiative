@@ -92,6 +92,7 @@ export default Vue.extend({
     // Spezialist Variablen
     radiobutton: "",
     begruendung: "",
+     baseUrl: process.env.VUE_APP_BACKEND_BASE_URL,
   }),
   asyncComputed: {
     // a computed getter
@@ -105,7 +106,7 @@ export default Vue.extend({
       };
       var axiosInstance = Helper.getInstance().createAxiosInstance();
       var ideenListe = await axiosInstance
-        .get("http://localhost:9090/idee/zugewiesene", config)
+        .get(this.baseUrl + "/idee/zugewiesene", config)
         .then((res) => {
           return res.data || [];
         })
@@ -153,7 +154,7 @@ export default Vue.extend({
       };
       console.log(this.ideeObjekt);
       axiosInstance.put(
-        "http://localhost:9090/idee",
+        this.baseUrl + "/idee",
         {
           fachspezialist: this.fachspezialist,
           typ: this.ideeTyp,
@@ -190,7 +191,7 @@ export default Vue.extend({
 
       axiosInstance
         .put(
-          "http://localhost:9090/idee",
+          this.baseUrl + "/idee",
           {
             fachspezialist: this.fachspezialist,
             typ: this.ideeTyp,
