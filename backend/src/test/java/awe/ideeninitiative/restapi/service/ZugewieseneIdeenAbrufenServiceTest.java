@@ -48,12 +48,22 @@ public class ZugewieseneIdeenAbrufenServiceTest extends AbstrakterApiTest {
         zugewieseneIdeen = new ArrayList<Idee>();
     }
 
+    /**
+     * Testet ob Fehler geworfen wird wenn ein nicht Spezialist eine Idee zugewiesen haben möchte.
+     * @throws FehlendeRolleFachspezialistException
+     * @author njuergens
+     */
     @Test(expected = FehlendeRolleFachspezialistException.class)
     public void benutzerIstKeinFachspezialist() throws FehlendeRolleFachspezialistException {
         given.einGemocktesMitarbeiterRepositoryOhneFachspezialisten();
         when.meineZugewiesenenIdeenAbrufenVomErfasserAufgerufenWird();
     }
 
+    /**
+     * Prüft ob eine leere Liste übergeben wird wenn keine Ideen zugewiesen wurden
+     * @throws FehlendeRolleFachspezialistException
+     * @author njuergens
+     */
     @Test
     public void keineZugewiesenenIdeenVorhanden() throws FehlendeRolleFachspezialistException {
         given.einGemocktesMitarbeiterRepositoryMitFachspezialisten();
@@ -62,6 +72,11 @@ public class ZugewieseneIdeenAbrufenServiceTest extends AbstrakterApiTest {
         then.esWurdenKeineZugewiesenenIdeenZurueckgegeben();
     }
 
+    /**
+     * Testet ob ein Fachspezialist mehrere Ideen zugewiesen bekommen kann.
+     * @throws FehlendeRolleFachspezialistException
+     * @author njuergens
+     */
     @Test
     public void ladeErfolgreichZweiZugewieseneIdeen() throws FehlendeRolleFachspezialistException {
         given.einFachspezialistMitZweiZugewiesenenIdeen();

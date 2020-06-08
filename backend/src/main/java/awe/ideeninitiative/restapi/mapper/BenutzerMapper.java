@@ -20,6 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mappt Backend-Benuterdaten auf Frontend Layout und anders rum
+ * DTO ist Benutzerdaten Backend Richtung Frontend
+ * DTOZU ist Forntend Benutzerdaten Richtung Backend
+ * @author njuergens
+ */
 @Component
 public class BenutzerMapper {
     public List<BenutzerDTO> mappeMitarbeiterZuBenutzerDTO(List<Mitarbeiter> mitarbeiter) {

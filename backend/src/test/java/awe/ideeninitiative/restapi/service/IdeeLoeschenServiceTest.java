@@ -60,6 +60,12 @@ public class IdeeLoeschenServiceTest{
         erfasser = null;
     }
 
+    /**
+     * Testet ob eine Idee gelöscht wird
+     * @throws IdeeExistiertNichtException
+     * @throws KeineBefugnisFuerIdeeAenderungenException
+     * @author njuergens
+     */
     @Test
     public void ideeErfolgreichLoeschen() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         given.einGemocktesRepositoryMitEinerIdee();
@@ -67,12 +73,24 @@ public class IdeeLoeschenServiceTest{
         then.dieIdeeWurdeGeloescht();
     }
 
+    /**
+     * Testet ob eine Idee nur gelöscht werden kann wenn diese existiert
+     * @throws IdeeExistiertNichtException
+     * @throws KeineBefugnisFuerIdeeAenderungenException
+     * @author njuergens
+     */
     @Test(expected = IdeeExistiertNichtException.class)
     public void ideeExistiertNicht() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         given.einGemocktesRepositoryOhneIdee();
         when.ideeLoeschenMitDenWertenDerIdeeAufgerufenWird();
     }
 
+    /**
+     * Testet ob nur der Benutzer der die Idee angelegt hat diese löschen darf
+     * @throws IdeeExistiertNichtException
+     * @throws KeineBefugnisFuerIdeeAenderungenException
+     * @author njuergens
+     */
     @Test(expected = KeineBefugnisFuerIdeeAenderungenException.class)
     public void benutzerVersuchtIdeeEinesAnderenBenutzersZuLoeschen() throws IdeeExistiertNichtException, KeineBefugnisFuerIdeeAenderungenException {
         given.einGemocktesRepositoryMitEinerIdee();
