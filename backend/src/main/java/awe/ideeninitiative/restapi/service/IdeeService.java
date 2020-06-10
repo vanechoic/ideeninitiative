@@ -49,7 +49,7 @@ public class IdeeService {
 
     /**
      * Stellt sicher, dass der aufrufende Benutzer ein Fachspezialist ist und gibt alle ihm zur Bearbeitung zugewiesenen Ideen zurück.
-     * @param benutzername
+     * @param benutzername Benutzername
      * @return Zugewiesene Ideen im Status IN_BEARBEITUNG
      * @throws FehlendeRolleFachspezialistException
      */

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @author Jakob
- * Mapper Datei für Nachricht-Objekt <-> Data Transfer Objekt
+ * Mapper Datei für Nachricht-Objekt und Data Transfer Objekt
  * und Liste der Systemnachrichten
  */
 @Component

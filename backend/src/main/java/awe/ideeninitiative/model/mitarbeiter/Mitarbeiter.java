@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  *  Speichert den registrierten Mitarbeiter, Admin und Fachspezialisten. Die Rollen werden über die Felder istFachspezialist
  *  und istAdmin gesetzt.
- * @author
+ * @author Vanessa Haubrok
  */
 @Entity
 @Table(uniqueConstraints = {

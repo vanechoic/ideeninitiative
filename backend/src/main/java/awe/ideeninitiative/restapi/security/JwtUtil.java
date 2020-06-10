@@ -92,6 +92,7 @@ public class JwtUtil implements Serializable {
      *  sowie der konfigurierte secret key. Gesetzt werden das Subject, das Ablaufdatum, das Erstelldatum und die Rollen.
      * @param rollen
      * @param benutzername
+     * @param ablaufzeitpunkt
      * @return Generierter JWT
      */
     protected String generiereEinzelnenTokenMitAblaufzeitpunkt(List<String> rollen, String benutzername, Date ablaufzeitpunkt) {
@@ -108,7 +109,7 @@ public class JwtUtil implements Serializable {
      * Prüft, dass der Benutzername aus dem Token mit dem durch die DB ermittelten übereinstimmt und noch nicht abgelaufen ist.
      * @param token
      * @param userDetails
-     * @return
+     * @return Wahrheitswert
      */
     public Boolean istTokenValide(String token, UserDetails userDetails) {
         final String username = extrahiereBenutzernamenAusToken(token);
@@ -117,8 +118,9 @@ public class JwtUtil implements Serializable {
 
     /**
      * Entfernt das "Bearer " aus dem Wert des AuthorizationHeaders und gibt nur den Token zurück.
-     * @param authorizationHeader im Format "Bearer <jwt>"
+     * @param authorizationHeader im Format "Bearer jwt"
      * @return jwt
+     * @throws ApiException
      */
     public String extrahiereJwtAusAuthorizationHeader(String authorizationHeader) throws ApiException {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -130,7 +132,7 @@ public class JwtUtil implements Serializable {
 
     /**
      * Liest das Subject, hier den Benutzernamen, aus dem AuthorizationHeader aus.
-     * @param authorizationHeader im Format "Bearer <jwt>"
+     * @param authorizationHeader im Format "Bearer jwt"
      * @return benutzername (sub)
      */
     public String extrahiereBenutzernamenAusAuthorizationHeader(String authorizationHeader) throws ApiException {
